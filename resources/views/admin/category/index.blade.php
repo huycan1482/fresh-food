@@ -55,8 +55,7 @@
                                     class="label label-{{ ($category->is_active == 1) ? 'success' : 'danger' }}">{{ ($category->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</span>
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('admin.category.edit', ['id'=> $category->id]) }}"
-                                    class="btn btn-primary">
+                                <a href="{{ route('admin.category.edit', ['id'=> $category->id]) }}" class="btn  btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="javascript:void(0)" class="btn btn-danger"
