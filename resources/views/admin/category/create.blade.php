@@ -11,7 +11,7 @@
 <section class="content">
     <div class="row">
         <!-- left column -->
-        <div class="col-md-6">
+        <div class="col-md-8">
             <!-- general form elements -->
 
             <div class="box box-primary">
@@ -60,7 +60,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary add-cate">Add</a>
+                        <a class="btn btn-primary add-product">Add</a>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
@@ -80,12 +80,12 @@
 
 
     <script>
-        $('.add-cate').click(function (e) {
+        $('.add-product').click(function (e) {
             // disabled the submit button
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
-            var model = '/admin/category';
+            var model = '/admin/product';
             var data;
             data = new FormData();
             data.append('name', $('#name').val());
