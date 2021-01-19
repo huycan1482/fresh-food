@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class VendorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
-        return view ('admin.category.index', [
-            'categories' => $categories,
+        $vendors = Vendor::latest()->paginate(10);
+        return view ('admin.vendor.index', [
+            'vendors' => $vendors,
         ]);
     }
 
@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view ('admin.category.create');
+        return view ('admin.vendor.create');
     }
 
     /**
@@ -39,26 +39,38 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
+
         $request['trueName'] = $request->input('name');
         $request['name'] = Str::slug($request->input('name'));
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,slug|max:255',
+            'name' => 'required|unique:vendors,slug|max:255',
+            'email' => 'required|unique:vendors,email|email',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
-            'position' => 'integer', 
+            'website' => 'nullable|url|unique:vendors,website',
+            'address' => 'required|unique:vendors,address',
+            'position' => 'integer|min:0', 
             'is_active' => 'integer|boolean',
-            'is_hot' => 'integer|boolean',
         ], [
             'name.required' => 'Tên không được để trống',
             'name.unique' => 'Tên bị trùng',
+            'email.required' => 'Tên không được để trống',
+            'email.unique' => 'Email bị trùng',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'phone.regex' => 'Số điện thoại không đúng định dạng',
             'image.required' => 'Ảnh không được để trống',
-            'image.image' => 'Ảnh không đúng định dạng',
+            // 'image.image' => 'Ảnh không đúng định dạng',
             'image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
+            'website.url' => 'Website không đúng định dạng',
+            'website.unique' => 'Website bị trùng',
+            'address.required' => 'Địa chỉ không được để trống',
+            'address.unique' => 'Địa chỉ bị trùng',
             'is_active.integer' => 'Sai kiểu dữ liệu',
             'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-            'is_hot.integer' => 'Sai kiểu dữ liệu',
-            'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+            
+            'position.min' => 'Dữ liệu không được nhỏ hơn 0',
             'position.integer' => 'Sai kiểu dữ liệu',
         ]);
 
@@ -67,9 +79,11 @@ class CategoryController extends Controller
         if ( $validator->fails() ) {
             return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
-            $category = new Category;
-            $category->name = $request->input('trueName');
-            $category->slug = $request->input('name');
+            $vendor = new Vendor;
+            $vendor->name = $request->input('trueName');
+            $vendor->slug = $request->input('name');
+            $vendor->email = $request->input('email');
+            $vendor->phone = $request->input('phone');
 
             if ($request->hasFile('image')) {
                 // get file
@@ -77,25 +91,27 @@ class CategoryController extends Controller
                 // get ten
                 $filename = time().'_'.$file->getClientOriginalName();
                 // duong dan upload
-                $path_upload = 'uploads/category/';
+                $path_upload = 'uploads/vendor/';
                 // upload file
     
-                $category->image = $path_upload.$filename;
+                $vendor->image = $path_upload.$filename;
             }
 
-            $category->position = (int)$request->input('position');
-            $category->is_active = (int)$request->input('is_active');
-            $category->is_hot = (int)$request->input('is_hot');
+            $vendor->website = $request->input('website');
+            $vendor->address = $request->input('address');
+            $vendor->position = (int)$request->input('position');
+            $vendor->is_active = (int)$request->input('is_active');
+            $vendor->is_hot = (int)$request->input('is_hot');
 
-            if ($category->save()) {
+            if ($vendor->save()) {
                 // upload file
                 $request->file('image')->move($path_upload,$filename);
+
                 return response()->json(['mess' => 'Thêm bản ghi thành công'], 200);
 
             } else {
                 return response()->json(['mess' => 'Thêm bản ghi lỗi'], 500);
             }
-
         }
     }
 
@@ -118,12 +134,12 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        if (empty($category)) {
+        $vendor = Vendor::find($id);
+        if (empty($vendor)) {
             dd(false);
         }
-        return view ('admin.category.edit', [
-            'category' => $category,
+        return view ('admin.vendor.edit', [
+            'vendor' => $vendor,
         ]);
     }
 
@@ -136,64 +152,77 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
+        $vendor = Vendor::find($id);
 
-        if ( empty($category) ) {
+        if (empty($vendor)) {
             return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
         }
 
         $request['trueName'] = $request->input('name');
         $request['name'] = Str::slug($request->input('name'));
 
-        // dd($request->all());
-
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:categories,slug,'.$id,
-            'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-            'position' => 'integer|boolean', 
+            'name' => 'required|max:255|unique:vendors,slug,'.$id,
+            'email' => 'required|email|unique:vendors,email,'.$id,
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'new_image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
+            'website' => 'nullable|url|unique:vendors,website,'.$id,
+            'address' => 'required|unique:vendors,address,'.$id,
+            'position' => 'integer|min:0', 
             'is_active' => 'integer|boolean',
-            'is_hot' => 'integer|boolean',
         ], [
             'name.required' => 'Tên không được để trống',
             'name.unique' => 'Tên bị trùng',
-            // 'new_image.required' => 'Ảnh không được để trống',
-            'new_image.image' => 'Ảnh không đúng định dạng',
+            'email.required' => 'Tên không được để trống',
+            'email.unique' => 'Email bị trùng',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'phone.regex' => 'Số điện thoại không đúng định dạng',
+            'new_image.required' => 'Ảnh không được để trống',
+            // 'image.image' => 'Ảnh không đúng định dạng',
             'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
+            'website.url' => 'Website không đúng định dạng',
+            'website.unique' => 'Website bị trùng',
+            'address.required' => 'Địa chỉ không được để trống',
+            'address.unique' => 'Địa chỉ bị trùng',
             'is_active.integer' => 'Sai kiểu dữ liệu',
             'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-            'is_hot.integer' => 'Sai kiểu dữ liệu',
-            'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
             'position.integer' => 'Sai kiểu dữ liệu',
-            'position.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-        ]); 
+            'position.min' => 'Dữ liệu không được nhỏ hơn 0',
+        ]);
 
         $errs = $validator->errors();
 
         if ( $validator->fails() ) {
             return response()->json(['errors' => $errs, 'mess' => 'Sửa bản ghi lỗi'], 400);
         } else {
-            $category->name = $request->input('trueName');
-            $category->slug = $request->input('name');
+            $vendor->name = $request->input('trueName');
+            $vendor->slug = $request->input('name');
+            $vendor->email = $request->input('email');
+            $vendor->phone = $request->input('phone');
             if ($request->hasFile('new_image')) {
                 // xóa file cũ
-                @unlink(public_path($category->image));
+                @unlink(public_path($vendor->image));
                 // get file mới
                 $file = $request->file('new_image');
                 // get tên
                 $filename = time().'_'.$file->getClientOriginalName();
                 // duong dan upload
-                $path_upload = 'uploads/category/';
+                $path_upload = 'uploads/vendor/';
                 // upload file
 
-                $category->image = $path_upload.$filename;
+                $vendor->image = $path_upload.$filename;
             }
-            $category->position = (int)$request->input('position');
-            $category->is_active = (int)$request->input('is_active');
-            $category->is_hot = (int)$request->input('is_hot');
+            
+            $vendor->website = $request->input('website');
+            $vendor->address = $request->input('address');
+            $vendor->position = (int)$request->input('position');
+            $vendor->is_active = (int)$request->input('is_active');
 
-            if ($category->save()) {
-                ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
-                return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+            if ($vendor->save()) {
+                // upload file
+                $request->file('new_image')->move($path_upload,$filename);
+
+                return response()->json(['mess' => 'Sửa bản ghi thành công'], 200);
 
             } else {
                 return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
@@ -210,17 +239,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        if ( empty($category) ) {
+        $vendor = Vendor::find($id);
+        if ( empty($vendor) ) {
             return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
         }
 
-        if( Category::destroy($id) != 0 ) {
+        if( Vendor::destroy($id) != 0 ) {
             return response()->json(['mess' => 'Xóa bản ghi thành công'], 200);
         } else {
             return response()->json(['mess' => 'Xóa bản không thành công'], 400);
 
         }
-        
     }
 }
