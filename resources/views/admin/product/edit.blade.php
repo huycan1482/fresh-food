@@ -193,35 +193,36 @@
             })
         });
 
-        $('.add-product').click(function (e) {
+        $('.edit-product').click(function (e) {
             // disabled the submit button
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
             // console.log($('#category_id').val());
 
-            // var model = '/admin/category';
-            // var data;
-            // data = new FormData();
-            // data.append('name', $('#name').val());
-            // data.append('category_id', $('#category_id').val());
-            // data.append('vednor_id', $('#vendor_id').val());
-            // data.append('image', $('#image')[0].files[0]);
-            // data.append('number', $('#number').val());
-            // data.append('price', $('#price').val());
-            // data.append('sale', $('#sale').val());
-            // data.append('sku', $('#sku').val());
-            // data.append('NSX', $('#NSX').val());
-            // data.append('HSD', $('#HSD').val());
-            // data.append('season_start', $('#season_start').val());
-            // data.append('season_end', $('#season_end').val());
-            // data.append('summary', CKEDITOR.instances.summary.getData());
-            // data.append('description', CKEDITOR.instances.description.getData());
-            // data.append('position', $('#position').val());
-            // data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0 );
-            // data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
+            var model = '/admin/category';
+            var data;
+            data = new FormData();
+            data.append('_method', 'PUT');
+            data.append('name', $('#name').val());
+            data.append('category_id', $('#category_id').val());
+            data.append('vednor_id', $('#vendor_id').val());
+            data.append('new_image', ($('#new_image').val()) ? $('#new_image')[0].files[0] : '');
+            data.append('number', $('#number').val());
+            data.append('price', $('#price').val());
+            data.append('sale', $('#sale').val());
+            data.append('sku', $('#sku').val());
+            data.append('NSX', $('#NSX').val());
+            data.append('HSD', $('#HSD').val());
+            data.append('season_start', $('#season_start').val());
+            data.append('season_end', $('#season_end').val());
+            data.append('summary', CKEDITOR.instances.summary.getData());
+            data.append('description', CKEDITOR.instances.description.getData());
+            data.append('position', $('#position').val());
+            data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0 );
+            data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
 
-            addModel(model, data);
+            updateModel(model, data);
 
             e.preventDefault();
             
