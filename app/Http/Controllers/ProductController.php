@@ -309,7 +309,7 @@ class ProductController extends Controller
 
             if ($product->save()) {
                 // upload file
-                $request->file('new_image')->move($path_upload,$filename);
+                ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';  
                 return response()->json(['mess' => 'Thêm bản ghi thành công'], 200);
 
             } else {

@@ -220,7 +220,7 @@ class VendorController extends Controller
 
             if ($vendor->save()) {
                 // upload file
-                $request->file('new_image')->move($path_upload,$filename);
+                ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';  
 
                 return response()->json(['mess' => 'Sửa bản ghi thành công'], 200);
 

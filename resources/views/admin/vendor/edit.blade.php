@@ -75,7 +75,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary edit-vendor" data-id="{{ $vendor->id }}">Add</a>
+                        <a class="btn btn-primary edit-vendor" data-id="{{ $vendor->id }}">Update</a>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
