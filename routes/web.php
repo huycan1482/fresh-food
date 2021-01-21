@@ -24,4 +24,5 @@ Route::group(['prefix'  => 'admin',  'as' => 'admin.'], function () {
     Route::resource('vendor', 'VendorController');
     Route::resource('product', 'ProductController');
     Route::resource('productImage', 'ProductImageController');
+    Route::resource('article', 'ArticleController');
 });
