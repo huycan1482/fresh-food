@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
-use App\Category;
+use App\Banner;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ArticleController extends Controller
+class BannerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
-        $categories = Category::all();
-        return view ('admin.article.index', [
-            'articles' => $articles,
-            'categories' => $categories,
+        $banners = Banner::latest()->paginate(10);
+        return view ('admin.banner.index', [
+            'banners' => $banners,
         ]);
     }
 
@@ -32,10 +29,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view ('admin.article.create', [
-            'categories' => $categories,
-        ]);
+        return view ('admin.banner.create');
     }
 
     /**
@@ -50,24 +44,21 @@ class ArticleController extends Controller
         $request['title'] = Str::slug($request->input('title'));
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required|unique:articles,slug|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|unique:banners,slug|max:255',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
-            'summary' => 'required',
-            'description' => 'required',
+            'url' => 'nullable|url',
+            'target' => 'required',
+            'position' =>  'nullable|integer|min:0',
             'is_active' => 'integer|boolean',
         ], [
-            'name.required' => 'Tên không được để trống',
-            'name.unique' => 'Tên bị trùng',
-            'category_id.required' => 'Tên không được để trống',
-            'category_id.exists' => 'Dữ liệu không tồn tại',
-            'phone.required' => 'Số điện thoại không được để trống',
-            'phone.regex' => 'Số điện thoại không đúng định dạng',
+            'title.required' => 'Tên không được để trống',
+            'title.unique' => 'Tên bị trùng',
             'image.required' => 'Ảnh không được để trống',
-            // 'image.image' => 'Ảnh không đúng định dạng',
             'image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
-            'summary.required' => 'Yêu cầu không để trống',
-            'description.required' => 'Yêu cầu không để trống',
+            'url.url' => 'Dữ liệu không đúng định dạng',
+            'target.required' => 'Yêu cầu không được để trống',
+            'position.integer' => 'Sai kiểu dữ liệu',
+            'position.min' => '',
             'is_active.integer' => 'Sai kiểu dữ liệu',
             'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
 
@@ -78,10 +69,10 @@ class ArticleController extends Controller
         if ( $validator->fails() ) {
             return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
-            $article = new Article;
-            $article->name = $request->input('trueTitle');
-            $article->slug = $request->input('title');
-            $article->category_id = $request->input('category_id');
+            $banner = new Banner;
+            $banner->name = $request->input('trueTitle');
+            $banner->slug = $request->input('title');
+            $banner->category_id = $request->input('category_id');
 
             if ($request->hasFile('image')) {
                 // get file
@@ -89,17 +80,18 @@ class ArticleController extends Controller
                 // get ten
                 $filename = time().'_'.$file->getClientOriginalName();
                 // duong dan upload
-                $path_upload = 'uploads/article/';
+                $path_upload = 'uploads/banner/';
                 // upload file
     
-                $article->image = $path_upload.$filename;
+                $banner->image = $path_upload.$filename;
             }
 
-            $article->summary = $request->input('summary');
-            $article->description = $request->input('description');
-            $article->is_active = (int)$request->input('is_active');
+            $banner->url = $request->input('url');
+            $banner->target = $request->input('target');
+            $banner->is_active = (int)$request->input('position');
+            $banner->is_active = (int)$request->input('is_active');
 
-            if ($article->save()) {
+            if ($banner->save()) {
                 // upload file
                 $request->file('image')->move($path_upload,$filename);
 
@@ -130,11 +122,9 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
-        $categories = Category::all();
-        return view ('admin.article.edit', [
-            'article' => $article,
-            'categories' => $categories,
+        $banner = Banner::findOrFail($id);
+        return view ('admin.banner.edit', [
+            'banner' => $banner,
         ]);
     }
 
@@ -147,9 +137,9 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $article = Article::find($id);
+        $banner = Banner::find($id);
 
-        if (empty($article)) {
+        if (empty($banner)) {
             return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
         }
 
@@ -157,22 +147,20 @@ class ArticleController extends Controller
         $request['title'] = Str::slug($request->input('title'));
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255|unique:articles,slug,'.$id,
-            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|max:255|unique:banners,slug,'.$id,
             'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-            'summary' => 'required',
-            'description' => 'required',
+            'url' => 'nullable|url',
+            'target' => 'required',
+            'position' =>  'nullable|integer|min:0',
             'is_active' => 'integer|boolean',
         ], [
-            'name.required' => 'Tên không được để trống',
-            'name.unique' => 'Tên bị trùng',
-            'category_id.required' => 'Tên không được để trống',
-            'category_id.exists' => 'Dữ liệu không tồn tại',
-            'phone.required' => 'Số điện thoại không được để trống',
-            'phone.regex' => 'Số điện thoại không đúng định dạng',
+            'title.required' => 'Tên không được để trống',
+            'title.unique' => 'Tên bị trùng',
             'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
-            'summary.required' => 'Yêu cầu không để trống',
-            'description.required' => 'Yêu cầu không để trống',
+            'url.url' => 'Dữ liệu không đúng định dạng',
+            'target.required' => 'Yêu cầu không được để trống',
+            'position.integer' => 'Sai kiểu dữ liệu',
+            'position.min' => '',
             'is_active.integer' => 'Sai kiểu dữ liệu',
             'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
 
@@ -181,38 +169,39 @@ class ArticleController extends Controller
         $errs = $validator->errors();
 
         if ( $validator->fails() ) {
-            return response()->json(['errors' => $errs, 'mess' => 'Sửa bản ghi lỗi'], 400);
+            return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
-            $article->name = $request->input('trueTitle');
-            $article->slug = $request->input('title');
-            $article->category_id = $request->input('category_id');
+            $banner->name = $request->input('trueTitle');
+            $banner->slug = $request->input('title');
+            $banner->category_id = $request->input('category_id');
 
             if ($request->hasFile('new_image')) {
                 // xóa file cũ
-                @unlink(public_path($article->image));
+                @unlink(public_path($banner->image));
                 // get file mới
                 $file = $request->file('new_image');
                 // get tên
                 $filename = time().'_'.$file->getClientOriginalName();
                 // duong dan upload
-                $path_upload = 'uploads/article/';
+                $path_upload = 'uploads/banner/';
                 // upload file
 
-                $article->image = $path_upload.$filename;
+                $banner->image = $path_upload.$filename;
             }
-            
-             $article->summary = $request->input('summary');
-            $article->description = $request->input('description');
-            $article->is_active = (int)$request->input('is_active');
 
-            if ($article->save()) {
+            $banner->url = $request->input('url');
+            $banner->target = $request->input('target');
+            $banner->is_active = (int)$request->input('position');
+            $banner->is_active = (int)$request->input('is_active');
+
+            if ($banner->save()) {
                 // upload file
                 ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';  
 
-                return response()->json(['mess' => 'Sửa bản ghi thành công'], 200);
+                return response()->json(['mess' => 'Thêm bản ghi thành công'], 200);
 
             } else {
-                return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                return response()->json(['mess' => 'Thêm bản ghi lỗi'], 500);
             }
         }
     }
@@ -225,12 +214,12 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::find($id);
-        if ( empty($article) ) {
+        $banner = Banner::find($id);
+        if ( empty($banner) ) {
             return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
         }
 
-        if( Article::destroy($id) != 0 ) {
+        if( Banner::destroy($id) != 0 ) {
             return response()->json(['mess' => 'Xóa bản ghi thành công'], 200);
         } else {
             return response()->json(['mess' => 'Xóa bản không thành công'], 400);

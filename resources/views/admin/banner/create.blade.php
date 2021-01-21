@@ -3,7 +3,7 @@
 
 <section class="content-header">
     <h1>
-        Thêm - Ảnh sản phẩm
+        Thêm - Ảnh bìa
         <small><a href="{{ route('admin.productImage.index') }}">Danh sách</a></small>
     </h1>
 </section>
@@ -16,7 +16,7 @@
 
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Thông tin Ảnh Sản phẩm</h3>
+                    <h3 class="box-title">Thông tin Ảnh bìa</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
@@ -26,14 +26,9 @@
                 <form class="">
                     <div class="box-body">
 
-                        <div class="form-group" id="form-product_id">
-                            <label for="product_id">Sản phẩm</label>
-                            <select class="form-control" id="product_id" name="product_id">
-                                <option value="0">-- chọn --</option>
-                                @foreach ($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name}}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-group" id="form-title">
+                            <label for="title">Tiêu đề</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề">
                         </div>
 
                         <div class="form-group" id="form-image">
@@ -44,6 +39,14 @@
                         <div class="form-group" id="form-url">
                             <label for="url">URL</label>
                             <input type="text" class="form-control" id="url" name="url" placeholder="URL">
+                        </div>
+
+                        <div class="form-group" id="form-target">
+                            <label for="target">Target</label>
+                            <select class="form-control" id="target" name="target">
+                                <option value="_blank">Mở tab mới</option>
+                                <option value="_self">Trang hiện tại</option>
+                            </select>
                         </div>
 
                         <div class="form-group" id="form-position">
@@ -62,7 +65,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary add-image">Add</a>
+                        <a class="btn btn-primary add-banner">Add</a>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
@@ -82,17 +85,18 @@
 
 
     <script>
-        $('.add-image').click(function (e) {
+        $('.add-banner').click(function (e) {
             // disabled the submit button
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
-            var model = '/admin/productImage';
+            var model = '/admin/banner/';
             var data;
             data = new FormData();
-            data.append('product_id', $('#product_id').val());
+            data.appen('title', $('#title').val());
             data.append('image', $('#image')[0].files[0]);
             data.append('url', $('#url').val());
+            data.append('target', $('#target').val());
             data.append('position', $('#position').val());
             data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
 
