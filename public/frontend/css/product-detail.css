@@ -1,0 +1,101 @@
+.carousel-container {
+    height: 450px;
+}
+
+.carousel-slide img {
+    height: 100%;
+    /* width: 100%; */
+}
+
+.product-main .container {
+    align-items: flex-start;
+}
+
+.header-title a {
+    font-family: smoothy-sans;
+    color: #7f8c8d;
+    transition: .3s ease-in-out;
+}
+
+.header-title a:hover {
+    color: black;
+}
+
+.product-title {
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+.price {
+    justify-content: flex-start;
+}
+
+.old-price, .new-price {
+    margin-top: 10px ;
+    font-size: 30px;
+}
+
+.old-price {
+    font-size: 20px;
+}
+
+.summary, .form-cart, .product-status, .header-title  {
+    margin-top: 20px;
+}
+
+.product-status span {
+    font-weight: 600;
+}
+.product-status-success span {
+    color: #49a010;
+}
+
+.product-status-danger span {
+    color: #c0392b;
+}
+
+.product-status-warning span {
+    color: #f1c40f;
+}
+
+
+.form-cart form {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+}
+
+.form-cart input {
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    width: 40px;
+    padding: 10px;
+}
+
+.form-cart button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: #d35400;
+    color: #fff;
+    
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.form-cart button:hover {
+    background-color: #c0392b;
+}
+
+.product-descriptions .container {
+    justify-content: flex-start;
+}
+
+.product-description-title {
+    color: #49a010;
+}
+
+.product-description {
+    margin: 20px 0;
+}

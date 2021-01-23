@@ -13,9 +13,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'ShopController@index')->name('shop.home');
 
 
 Route::group(['prefix'  => 'admin',  'as' => 'admin.'], function () {
