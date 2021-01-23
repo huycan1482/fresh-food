@@ -48,7 +48,7 @@ class BannerController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
             'url' => 'nullable|url',
             'target' => 'required',
-            'position' =>  'nullable|integer|min:0',
+            'position' =>  'required|integer|min:0',
             'is_active' => 'integer|boolean',
         ], [
             'title.required' => 'Tên không được để trống',
@@ -70,9 +70,8 @@ class BannerController extends Controller
             return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
             $banner = new Banner;
-            $banner->name = $request->input('trueTitle');
+            $banner->title = $request->input('trueTitle');
             $banner->slug = $request->input('title');
-            $banner->category_id = $request->input('category_id');
 
             if ($request->hasFile('image')) {
                 // get file
@@ -88,7 +87,7 @@ class BannerController extends Controller
 
             $banner->url = $request->input('url');
             $banner->target = $request->input('target');
-            $banner->is_active = (int)$request->input('position');
+            $banner->position = (int)$request->input('position');
             $banner->is_active = (int)$request->input('is_active');
 
             if ($banner->save()) {
@@ -151,7 +150,7 @@ class BannerController extends Controller
             'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
             'url' => 'nullable|url',
             'target' => 'required',
-            'position' =>  'nullable|integer|min:0',
+            'position' =>  'required|integer|min:0',
             'is_active' => 'integer|boolean',
         ], [
             'title.required' => 'Tên không được để trống',
@@ -160,7 +159,7 @@ class BannerController extends Controller
             'url.url' => 'Dữ liệu không đúng định dạng',
             'target.required' => 'Yêu cầu không được để trống',
             'position.integer' => 'Sai kiểu dữ liệu',
-            'position.min' => '',
+            'position.min' => 'Giá trị yêu cầu lớn hơn 0',
             'is_active.integer' => 'Sai kiểu dữ liệu',
             'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
 
@@ -171,9 +170,8 @@ class BannerController extends Controller
         if ( $validator->fails() ) {
             return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
-            $banner->name = $request->input('trueTitle');
+            $banner->title = $request->input('trueTitle');
             $banner->slug = $request->input('title');
-            $banner->category_id = $request->input('category_id');
 
             if ($request->hasFile('new_image')) {
                 // xóa file cũ
@@ -191,7 +189,7 @@ class BannerController extends Controller
 
             $banner->url = $request->input('url');
             $banner->target = $request->input('target');
-            $banner->is_active = (int)$request->input('position');
+            $banner->position = (int)$request->input('position');
             $banner->is_active = (int)$request->input('is_active');
 
             if ($banner->save()) {

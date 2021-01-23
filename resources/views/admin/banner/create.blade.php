@@ -4,7 +4,7 @@
 <section class="content-header">
     <h1>
         Thêm - Ảnh bìa
-        <small><a href="{{ route('admin.productImage.index') }}">Danh sách</a></small>
+        <small><a href="{{ route('admin.banner.index') }}">Danh sách</a></small>
     </h1>
 </section>
 
@@ -51,7 +51,7 @@
 
                         <div class="form-group" id="form-position">
                             <label for="position">Vị trí hiển thị</label>
-                            <input type="number" class="form-control" id="position" name="position" min="0" placeholder="Vị trí hiển thị">
+                            <input type="number" class="form-control" id="position" name="position" min="0" placeholder="Vị trí hiển thị" value="0">
                         </div>
 
                         <div class="checkbox form-group" id="form-is_active">
@@ -90,10 +90,10 @@
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
-            var model = '/admin/banner/';
+            var model = '/admin/banner';
             var data;
             data = new FormData();
-            data.appen('title', $('#title').val());
+            data.append('title', $('#title').val());
             data.append('image', $('#image')[0].files[0]);
             data.append('url', $('#url').val());
             data.append('target', $('#target').val());

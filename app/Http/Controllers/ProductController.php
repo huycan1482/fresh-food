@@ -51,13 +51,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request['trueName'] = $request->input('name');
         $request['name'] = Str::slug($request->input('name'));
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products,slug|max:255',
             'category_id' => 'required|exists:categories,id',
-            'vendor_id' => 'required|exists:vendor,id',
+            'vendor_id' => 'required|exists:vendors,id',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
             'number' => 'required|integer|min:0',
             'price' => 'required|integer|min:0',
@@ -206,14 +207,16 @@ class ProductController extends Controller
             return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
         }
 
+        // dd($request->all());
+
         $request['trueName'] = $request->input('name');
         $request['name'] = Str::slug($request->input('name'));
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255|unique:products,slug,'.$id,
             'category_id' => 'required|exists:categories,id',
-            'vendor_id' => 'required|exists:vendor,id',
-            'new_image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
+            'vendor_id' => 'required|exists:vendors,id',
+            'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
             'number' => 'required|integer|min:0',
             'price' => 'required|integer|min:0',
             'sale' => 'nullable|integer|min:0',
@@ -235,8 +238,6 @@ class ProductController extends Controller
             'category_id.exists' => 'Dữ liệu không tồn tại',
             'vendor_id.required' => 'Dữ liệu không được để trống',
             'vendor_id.exists' => 'Dữ liệu không tồn tại',
-            'new_image.required' => 'Ảnh không được để trống',
-            'new_image.image' => 'Ảnh không đúng định dạng',
             'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
             'number.required' => 'Dữ liệu không được để trống',
             'number.integer' => 'Sai kiểu dữ liệu',
@@ -271,7 +272,7 @@ class ProductController extends Controller
         $errs = $validator->errors();
 
         if ( $validator->fails() ) {
-            return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
+            return response()->json(['errors' => $errs, 'mess' => 'Sửa bản ghi lỗi'], 400);
         } else {
             $product->name = $request->input('trueName');
             $product->slug = $request->input('name');
@@ -310,10 +311,10 @@ class ProductController extends Controller
             if ($product->save()) {
                 // upload file
                 ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';  
-                return response()->json(['mess' => 'Thêm bản ghi thành công'], 200);
+                return response()->json(['mess' => 'Sửa bản ghi thành công'], 200);
 
             } else {
-                return response()->json(['mess' => 'Thêm bản ghi lỗi'], 500);
+                return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
             }
         }
     }

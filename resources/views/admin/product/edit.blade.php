@@ -142,7 +142,7 @@
 
                         <div class="checkbox form-group" id="form-is_hot">
                             <label>
-                                <input type="checkbox" name="is_hot" id="is_hot" {{ ($product->hot == 1) ? 'checked' : '' }}> Địa điểm Hot ?
+                                <input type="checkbox" name="is_hot" id="is_hot" {{ ($product->is_hot == 1) ? 'checked' : '' }}> Sản phẩm Hot ?
                             </label>
                         </div>
 
@@ -157,7 +157,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary edit-product">Add</a>
+                        <a class="btn btn-primary edit-product" data-id="{{ $product->id }}">Update</a>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
@@ -200,16 +200,17 @@
 
             // console.log($('#category_id').val());
 
-            var model = '/admin/category';
+            var model = '/admin/product/' + $(this).attr('data-id');
             var data;
             data = new FormData();
             data.append('_method', 'PUT');
             data.append('name', $('#name').val());
             data.append('category_id', $('#category_id').val());
-            data.append('vednor_id', $('#vendor_id').val());
+            data.append('vendor_id', $('#vendor_id').val());
             data.append('new_image', ($('#new_image').val()) ? $('#new_image')[0].files[0] : '');
             data.append('number', $('#number').val());
             data.append('price', $('#price').val());
+            data.append('unit', $('#unit').val());
             data.append('sale', $('#sale').val());
             data.append('sku', $('#sku').val());
             data.append('NSX', $('#NSX').val());

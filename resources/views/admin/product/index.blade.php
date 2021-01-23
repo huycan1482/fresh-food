@@ -67,7 +67,7 @@
                                 <td class="text-center">{{ number_format($product->price ,0,",",".") }}/{{ $product->unit }}</td>
                                 <td class="text-center"></td>
                                 <td class="text-center">
-                                    <span class="label label-{{ ($product->is_hot == 1) ? 'success' : 'danger' }}">{{ ($product->is_hot == 1) ? 'Hiển thị' : 'Ẩn' }}</span>
+                                    <span class="label label-{{ ($product->is_hot == 1) ? 'success' : 'danger' }}">{{ ($product->is_hot == 1) ? 'Có' : 'Không' }}</span>
                                 </td>
                                 <td class="text-center">
                                     <span class="label label-{{ ($product->is_active == 1) ? 'success' : 'danger' }}">{{ ($product->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</span>

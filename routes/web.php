@@ -19,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'ShopController@index')->name('shop.home');
 
+Route::get('chi-tiet-san-pham/{slug}', 'ShopController@productDetail')->name('shop.productDetail');
+
+Route::get('san-pham/{slug}', 'ShopController@listProducts')->name('shop.listProducts');
+
+Route::get('tim-kiem', 'ShopController@searchProducts')->name('shop.searchProducts');
 
 Route::group(['prefix'  => 'admin',  'as' => 'admin.'], function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

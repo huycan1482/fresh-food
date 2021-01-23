@@ -12,35 +12,13 @@
         <i class="fas fa-arrow-right" id="nextBtn"></i>
 
         <div class="carousel-slide">
-            <div style="background-image: url(../images/bg_1.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
-            <div style="background-image: url(../images/bg_2.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
-            <div style="background-image: url(../images/slide_survey.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
-            <div style="background-image: url(../images/vegetables-organic-469160227-Thinkstock.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
-            <div style="background-image: url(../images/FoodCo_HeroHeader.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
-            <div style="background-image: url(../images/mexfoodhero.jpg) ; " alt="">
-                <p>Lorem ipsum dolor sits.</p>
-            </div>
 
-            <!-- <div style="background-image: url(../images/bg_1.jpg) ; " alt=""><p>Lorem ipsum dolor sits.</p></div>
-            <div style="background-image: url(../images/bg_2.jpg) ; " alt=""><p>Lorem ipsum dolor sits.</p></div>
-            <div style="background-image: url(../images/d67923fd3a82b56925cc6162c80ca3cd.jpg) ; " alt=""><p>Lorem ipsum dolor sits.</p></div>
-            <div style="background-image: url(../images/226-2266853_healthy-food-wallpaper-for-android-data-src-healthy.jpg) ; " alt=""><p>Lorem ipsum dolor sits.</p></div>
-            <div style="background-image: url(../images/panorama-banner-healthy-pet-food-ingredients-chopped-raw-beef-liver-chicken-vegetables-rice-grains-individual-bowls-126864507.jpg) ; " alt=""><p>Lorem ipsum dolor sits.</p></div> -->
+            @foreach ($banners as $banner)
+            <div style="background-image: url({{$banner->image}}) ;" alt="">
+                <p>{{$banner->title}}</p>
+            </div>
+            @endforeach
 
-            <!-- <div style="background-image: url(../bai-10-slide-html-css/img/1.jpg) ; " alt=""></div>
-        <div style="background-image: url(../bai-10-slide-html-css/img/2.jpg) ; " alt=""></div>
-        <div style="background-image: url(../bai-10-slide-html-css/img/3.jpg) ; " alt=""></div>
-        <div style="background-image: url(../images/hinh-nen-dien-thoai-nhung-hon-da-346x580.jpg) ; " alt=""></div> -->
         </div>
     </div>
 
@@ -83,121 +61,39 @@
                 <h2 class="title">Sản phẩm hot</h2>
             </div>
             <div class="main-content col-lg-12">
+                @foreach ($hot_products as $hot_product)
                 <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="product move-up">
                         <div class="top-product ">
-                            <a href="" class="product-img zoom">
+                            <a href="{{ route('shop.productDetail', ['slug' => $hot_product->slug]) }}" class="product-img zoom">
                                 <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/foody-mobile-23031291_33381650708.jpg" alt="">
+                                <img src="{{$hot_product->image}}" alt="">
                             </a>
+                            @if ($hot_product->sale > 0)
                             <div class="on-sale">
-                                <!-- <i class="fas fa-tag sale-icon" ></i> -->
-                                <span>-9%</span>
+                                <span>-{{$hot_product->sale}}%</span>
                             </div>
+                            @endif
+                            
                         </div>
                         <div class="main-product">
                             <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
+                                <a href="{{ route('shop.productDetail', ['slug' => $hot_product->slug]) }}">{{$hot_product->name}} ({{$hot_product->unit}})</a>
                             </p>
                             <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
+                                @if ($hot_product->sale > 0)
+                                <span class="old-price">{{ number_format($hot_product->price ,0,",",".") }}</span>
+                                @endif
+                                <span class="new-price">{{ number_format( ( $hot_product->price - ($hot_product->sale * $hot_product->price)/100 ),0,",",".") }}Đ</span>
                             </div>
                             <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
+                                <a class="icon-detail" href="{{ route('shop.productDetail', ['slug' => $hot_product->slug]) }}"><i class="fas fa-eye"></i></a>
                                 <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/foody-mobile-23031291_33381650708.jpg" alt="">
-                            </a>
-                            <div class="on-sale">
-                                <!-- <i class="fas fa-tag sale-icon" ></i> -->
-                                <span>-9%</span>
-                            </div>
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/foody-mobile-23031291_33381650708.jpg" alt="">
-                            </a>
-                            <div class="on-sale">
-                                <!-- <i class="fas fa-tag sale-icon" ></i> -->
-                                <span>-9%</span>
-                            </div>
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/foody-mobile-23031291_33381650708.jpg" alt="">
-                            </a>
-                            <div class="on-sale">
-                                <!-- <i class="fas fa-tag sale-icon" ></i> -->
-                                <span>-9%</span>
-                            </div>
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
+                @endforeach
             </div>
             <div class="more-info col-lg-12">
                 <a href="" class="more-info-btn">Xem thêm</a>
@@ -259,107 +155,39 @@
                 <h2 class="title">Sản phẩm mới</h2>
             </div>
             <div class="main-content col-lg-12">
+                @foreach ($products as $product)
                 <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="product move-up">
                         <div class="top-product ">
-                            <a href="" class="product-img zoom">
+                            <a href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}" class="product-img zoom">
                                 <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/3b2c782ba4fb22786bc6618797d45438.jpg" alt="">
+                                <img src="{{$product->image}}" alt="">
                             </a>
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/3b2c782ba4fb22786bc6618797d45438.jpg" alt="">
-                            </a>
+                            @if ($product->sale > 0)
                             <div class="on-sale">
-                                <!-- <i class="fas fa-tag sale-icon" ></i> -->
-                                <span>-9%</span>
+                                <span>-{{$product->sale}}%</span>
                             </div>
+                            @endif
+                            
                         </div>
                         <div class="main-product">
                             <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
+                                <a href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}">{{$product->name}} ({{$product->unit}})</a>
                             </p>
                             <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
+                                @if ($product->sale > 0)
+                                <span class="old-price">{{ number_format($product->price ,0,",",".") }}</span>
+                                @endif
+                                <span class="new-price">{{ number_format( ( $product->price - ($product->sale * $product->price)/100 ),0,",",".") }}Đ</span>
                             </div>
                             <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
+                                <a class="icon-detail" href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}"><i class="fas fa-eye"></i></a>
                                 <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/3b2c782ba4fb22786bc6618797d45438.jpg" alt="">
-                            </a>
-
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="product move-up">
-                        <div class="top-product ">
-                            <a href="" class="product-img zoom">
-                                <!-- <img src="../images/bg_2.jpg" alt=""> -->
-                                <img src="../images/3b2c782ba4fb22786bc6618797d45438.jpg" alt="">
-                            </a>
-
-                        </div>
-                        <div class="main-product">
-                            <p class="product-name">
-                                <a href="">Vải Mỹ (quả)</a>
-                            </p>
-                            <div class="price">
-                                <span class="old-price">50.000đ</span>
-                                <span class="new-price">30.000đ</span>
-                            </div>
-                            <div class="add-to-card-btn">
-                                <a class="icon-detail" href=""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
 
             </div>
             <div class="more-info col-lg-12">
@@ -589,4 +417,8 @@
 
 </div>
 
+@endsection
+
+@section('script')
+<script language="javascript" src="frontend/js/slideShow.js"></script>   
 @endsection

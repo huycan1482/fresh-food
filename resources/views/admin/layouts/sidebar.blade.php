@@ -38,7 +38,7 @@
                     <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
                 </ul>
             </li> --}}
-          <li class="treeview">
+          <li class="">
               <a href="{{ route('admin.category.index') }}">
                   <i class="fa fa-files-o"></i>
                   <span>QL Danh mục (Categories)</span>
@@ -55,35 +55,35 @@
                 </ul> --}}
           </li>
 
-          <li class="treeview">
+          <li class="">
             <a href="{{ route('admin.vendor.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL NCC (Vendors)</span>
             </a>
           </li>
 
-          <li class="treeview">
+          <li class="">
             <a href="{{ route('admin.product.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Sản phẩm (Products)</span>
             </a>
           </li>
 
-          <li class="treeview">
+          <li class="">
             <a href="{{ route('admin.productImage.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Ảnh Sản phẩm (Images)</span>
             </a>
           </li>
 
-          <li class="treeview">
+          <li class="">
             <a href="{{ route('admin.article.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Bài viết (Articles)</span>
             </a>
           </li>
 
-          <li class="treeview">
+          <li class="">
             <a href="{{ route('admin.banner.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Ảnh bìa (Banners)</span>

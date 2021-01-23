@@ -138,7 +138,7 @@
 
                         <div class="checkbox form-group" id="form-is_hot">
                             <label>
-                                <input type="checkbox" name="is_hot" id="is_hot"> Địa điểm Hot ?
+                                <input type="checkbox" name="is_hot" id="is_hot"> Sản phẩm Hot ?
                             </label>
                         </div>
 
@@ -196,15 +196,16 @@
 
             // console.log($('#category_id').val());
 
-            var model = '/admin/category';
+            var model = '/admin/product';
             var data;
             data = new FormData();
             data.append('name', $('#name').val());
             data.append('category_id', $('#category_id').val());
-            data.append('vednor_id', $('#vendor_id').val());
+            data.append('vendor_id', $('#vendor_id').val());
             data.append('image', $('#image')[0].files[0]);
             data.append('number', $('#number').val());
             data.append('price', $('#price').val());
+            data.append('unit', $('#unit').val());
             data.append('sale', $('#sale').val());
             data.append('sku', $('#sku').val());
             data.append('NSX', $('#NSX').val());

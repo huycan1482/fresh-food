@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ</title>
+    <base href="{{ asset('') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="frontend/css/trangchu.css">
 
@@ -30,7 +32,6 @@
     @include('shop.layouts.footer')
 
     <script language="javascript" src="frontend/js/main.js"></script>
-    <script language="javascript" src="frontend/js/slideShow.js"></script>
 
     @yield('script')
 </body>

@@ -85,7 +85,7 @@
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
-            var model = '/admin/product';
+            var model = '/admin/category';
             var data;
             data = new FormData();
             data.append('name', $('#name').val());
