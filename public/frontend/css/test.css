@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    
+}
+
+header {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+nav {
+    height: calc(100%);
+    width: 100%;
+    margin: auto;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    background-color: grey;
+}
+
+.left-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu {
+    width: 70%;
+    height: 100%;
+}
+
+.menu ul {
+    height: 100%;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.menu li {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu li a{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #2ecc71;
+    z-index: 1;
+}
+
+.menu li a:hover {
+    background-color: #27ae60;
+}
+/* normal nav */
+
+.food {
+    position: relative;
+}
+
+.menu .dropdown-menu {
+    position: absolute;
+    width: 150%;
+    top: -900%;
+    left: 0%;
+    transition: all 2s ease;
+}
+
+.menu i {
+    margin: 3px;
+}
+
+.menu .dropdown-menu a {
+    display: flex;
+    padding: 0 10%;
+    justify-content: flex-start;
+}
+
+.drop-item {
+    height: 50px;
+}
+
+.drop-menu {
+    transition: all .9s ease !important;
+    top: 100% !important;
+}
+
+/* dropdown menu */
+
+.navbar-toggle {
+    display: none;
+    padding: .5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-toggle i {
+    font-size: 1.5rem;
+}
+
+
+
+@media only screen and (max-width: 769px ) {
+    nav {
+        /* padding: .5rem 1rem; */
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .menu ul {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .menu {
+        position: fixed;
+        width: 100%;
+        left: 100%;   
+        top: 50px;
+        transition: all .9s ease;
+    }
+
+    .menu li a {
+        height: 70px;
+        justify-content: flex-start;
+        padding: 0 5%;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .left-nav {
+        width: 80%;
+    }
+
+    .menu .dropdown-menu {
+        top: 100%;
+        display: none;
+    }
+
+    .drop-menu {
+        display: block !important;
+        position: static !important;
+    }
+
+    .menu li {
+        display: block;
+    }
+
+    .show {
+        transition: all .9s ease;
+        left: 0%;   
+    }
+
+    
+}

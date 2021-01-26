@@ -1,0 +1,132 @@
+.product {
+    margin: 20px 15px;
+    height: 350px;
+    overflow: hidden;
+    /* border: 2px solid #009432; */
+    /* border: 2px solid #be2edd; */
+    border-radius: 5%;
+    transition: .5s;
+    background-color: #fff;
+    box-shadow: 0 1px 3px -2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.product:hover {
+    /* box-shadow:  0 -3em 3em rgba(0,0,0,0.1), 
+     0 0 0 2px rgb(255,255,255),
+     0.3em 0.3em 1em rgba(0,0,0,0.3); */
+    box-shadow: 0em 0em 1.5em .1em #9980FA;
+    /* box-shadow:  0.3em 0.3em 2em .1em #78e08f; */
+    transition: .5s;
+}
+
+.top-product {
+    width: 100%;
+    height: 70%;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-img img {
+    height: 100%;
+}
+
+.on-sale {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background-color: #d35400;
+    color: #fff;
+}
+
+.main-product {
+    margin-top: 15px;
+}
+
+.zoom {
+    transition: transform 1s;
+}
+
+.zoom:hover {
+    transform: scale(1.1) rotate(1.5deg);
+}
+
+.top-product {
+    overflow: hidden;
+    position: relative;
+}
+
+.product-name {
+    text-align: center;
+    color: #5758BB;
+    font-size: 15px;
+}
+
+.product-name a {
+    text-decoration: none;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.new-price {
+    margin: 0 3px;
+    color: #EA2027;
+}
+
+.old-price {
+    margin: 0 3px;
+    text-decoration: line-through;
+    font-size: 14px;
+    color: #7f8fa6;
+}
+
+.sale-icon {
+    position: absolute;
+    color: #e74c3c;
+    font-size: 40px;
+}
+
+.on-sale span {
+    position: relative;
+}
+
+
+
+.add-to-card-btn {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-to-card-btn a {
+    margin: 0 3px;
+    padding: 5px;
+    border-radius: 100%;
+    color: #fff;
+    text-decoration: none;
+}
+
+.icon-detail{
+    background-color: #669933;
+}
+
+.icon-card {
+    background-color: #EE5A24;
+}
+

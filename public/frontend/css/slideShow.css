@@ -1,0 +1,73 @@
+.carousel-container {
+    width: 100%;
+    height: 680px;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-slide {
+    
+    height: 100%;
+}
+
+.carousel-slide div {
+    height: 100%;
+    /* width: 100%; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: opacity 1s ease-out;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.carousel-slide div p {
+    color: #fff;
+    font-size: 50px;
+    text-align: center;
+}
+
+#prevBtn {
+    position: absolute;
+    top: 35%;
+    z-index: 2;
+    left: 0%;
+    font-size: 30px;
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+/* #prevBtn i, #nextBtn i {
+    box-shadow: 0 8px 8px 0 rgba(103, 151, 255, .11), 0 12px 18px 0 rgba(103, 151, 255, .11);
+} */
+
+#nextBtn {
+    position: absolute;
+    top: 35%;
+    z-index: 2;
+    right: 0%;
+    font-size: 30px;
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+.carousel-slide div:not(:first-child) {
+    opacity: 0;
+}
+
+.carousel-container i {
+    padding: 50px 15px;
+    /* padding: 25% 15px; */
+    transition: .3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.2);
+} 
+
+.carousel-container i:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}

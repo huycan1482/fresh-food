@@ -1,0 +1,60 @@
+@font-face {
+    font-family: fredoka;
+    src: url('../font/Fredoka Fonts/FredokaOne-Regular.ttf');
+}
+
+/* @font-face {
+    font-family: robika;
+    src: url('../font/Robika/Robika.otf');
+} */
+
+@font-face {
+    font-family: bloomingElegant-sans;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Blooming Elegant/Blooming\ Elegant\ Sans1.otf');
+}
+
+@font-face {
+    font-family: cucho;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iciel.net] Cucho/Cucho.otf');
+}
+
+@font-face {
+    font-family: smoothy-sans;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Smoothy/Smoothy-Sans.ttf');
+}
+
+@font-face {
+    font-family: roboto-bold;
+    src: url('../font/Roboto/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: roboto-light;
+    src: url('../font/Roboto/Roboto-Light.ttf');
+}
+
+@font-face {
+    font-family: gotham-medium;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Gotham Free/Gotham-Medium.otf');
+}
+
+@font-face {
+    font-family: gotham-thin;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Gotham Free/Gotham-Thin.otf');
+}
+
+
+@font-face {
+    font-family: novecento-normal;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iciel.net] Novecento 2011/iCielNovecentosans-Normal.otf');
+}
+
+@font-face {
+    font-family: paton-light;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Panton Free/iCielPanton-Light.otf');
+}
+
+@font-face {
+    font-family: paton-black;
+    src: url('../font/100fontVietHoa/iCiel free fonts/iCiel free fonts/[iCiel.net] Panton Free/iCielPanton-Black.otf');
+}
