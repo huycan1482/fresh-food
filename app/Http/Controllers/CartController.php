@@ -15,9 +15,8 @@ class CartController extends HomeController
 
     public function index (Request $request)
     {
-        // dd(session('cart')->getTotalNumber() );
-      
-
+        // dd(session('cart') );
+        // $request->session()->flush();    
         // dd('true');
         return view ('shop.cart', [
             'menu' => $this->menu ,
@@ -50,7 +49,7 @@ class CartController extends HomeController
 
         $request->session()->put('cart', $cart);
 
-        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công'], 200);
+        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
         // dd(session()->get('cart'));
     }
 
@@ -75,7 +74,7 @@ class CartController extends HomeController
 
         $request->session()->put('cart', $cart);
 
-        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công'], 200);
+        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
 
     }
 
@@ -98,7 +97,7 @@ class CartController extends HomeController
 
         $request->session()->put('cart', $cart);
 
-        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công'], 200);
+        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
 
     }
 

@@ -104,7 +104,10 @@
             },
             dataType: "json",
             success: function (response) {
-                console.log(response.mess);
+                // console.log(response.mess);
+
+                $('.shopping-icon .num-cart').text( response.cart_total );
+
 
                 html = "<div class='messages-box' style='background-color: #49a010'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + response.mess + "</p></div>";
 

@@ -215,12 +215,17 @@
         var id = $(this).closest('tr').children('.number').children('input').attr('data-id');
 
         var new_price = 0;
+        
         $('.product-price').each( function (key, value) { 
             new_price += $(this).attr('data-value') * $(this).closest('tr').children('.number').children('input').val();
         });
 
         $('.price').text(formatNumber(new_price) + 'đ');
         $('.total-price').text(formatNumber(new_price) + 'đ');
+
+        // $('.shopping-icon .num-cart').text( $('.shopping-icon .num-cart').text() * 1 - 1 );
+        
+
 
         // console.log(id);
         $.ajax({
@@ -232,10 +237,11 @@
             dataType: 'json',
             success: function (response) {
                 // this.remove();
+                $('.shopping-icon .num-cart').text( response.cart_total );
             },
             error: function (e) { // lỗi nếu có
                 // messageResponse('danger', e.responseJSON.mess);
-                
+                $('.shopping-icon .num-cart').text( response.cart_total );
                 html = "<div class='messages-box' style='background-color: #c0392b'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + e.responseJSON.mess + "</p></div>";
 
                 $('.content').append(html);

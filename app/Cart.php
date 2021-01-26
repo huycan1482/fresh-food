@@ -49,17 +49,21 @@ class Cart extends Model
             // $_item = $this->products[$product->id];
             $this->totalPrice -= $this->products[$product->id]['number'] * $this->products[$product->id]['price'] ; 
 
-            $this->products[$product->id]['number'] = $number;
+            $this->products[$product->id]['number'] += $number;
 
-            $this->totalPrice += $number * $this->products[$product->id]['price'];
+            $this->totalPrice += $this->products[$product->id]['number'] * $this->products[$product->id]['price'];
+
+        } else {
+            $this->products[$product->id] = $_item;
+
+            $this->totalPrice += $number * ( $product->price - $product->sale * $product->price/100);
+
+            $this->totalNumber++;
         }
 
         // $_item['number']++;
         // $_item['price'] = $_item['number'] * $product->price;
-
-        $this->products[$product->id] = $_item;
-        $this->totalPrice += $number * ( $product->price - $product->sale * $product->price/100);
-        $this->totalNumber = $this->totalNumber++;
+        
     }
 
     public function edit ($id, $number)

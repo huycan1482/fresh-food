@@ -2,7 +2,7 @@
 
 @section('content')
     
-<div class="">
+<div class="content">
     <div class="fake-menu">
 
     </div>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="add-to-card-btn">
                                 <a class="icon-detail" href="{{ route('shop.productDetail', ['slug' => $hot_product->slug]) }}"><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
+                                <a class="icon-card" data-id="{{$hot_product->id}}" data-value="1" href=""><i class="fas fa-shopping-basket"></i></a>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="add-to-card-btn">
                                 <a class="icon-detail" href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}"><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
+                                <a class="icon-card" href="" data-id="{{$product->id}}" data-value="1"><i class="fas fa-shopping-basket"></i></a>
                             </div>
                         </div>
                     </div>
@@ -421,4 +421,56 @@
 
 @section('script')
 <script language="javascript" src="frontend/js/slideShow.js"></script>   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('.add-to-card-btn .icon-card').click(function (e) { 
+        e.preventDefault();
+        var pro_number = $(this).attr('data-value');
+        var pro_id = $(this).attr('data-id');
+        
+        $.ajax({
+            type: "POST",   
+            url: base_url + '/gio-hang',
+            data: {
+                number : pro_number,
+                id : pro_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                // console.log(response.mess);
+
+                $('.shopping-icon .num-cart').text( response.cart_total );
+
+                html = "<div class='messages-box' style='background-color: #49a010'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + response.mess + "</p></div>";
+
+                $('.content').append(html);
+
+                $('.messages-box').click(function (e) { 
+                    $(this).fadeOut();
+                    e.preventDefault();
+                });
+            },
+            error: function (e) { // lỗi nếu có
+                // messageResponse('danger', e.responseJSON.mess);
+                
+                html = "<div class='messages-box' style='background-color: #c0392b'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + e.responseJSON.mess + "</p></div>";
+
+                $('.content').append(html);
+
+                $('.messages-box').click(function (e) { 
+                    $(this).fadeOut();
+                    e.preventDefault();
+                });
+            }
+        });
+    });
+
+
+</script>
 @endsection
