@@ -31,6 +31,9 @@ Route::post('gio-hang', 'CartController@addToCart')->name('shop.addToCart');
 Route::post('gio-hang/update', 'CartController@updateToCart')->name('shop.updateToCart');
 Route::post('gio-hang/delete', 'CartController@removeToCart')->name('shop.removeToCart');
 
+//OrderCart
+Route::post('thanh-toan', 'CartController@postCheckout')->name('shop.postCheckout');
+
 // login
 Route::get('login', 'Auth\LoginController@login')->name('admin.login');
 Route::post('postLogin', 'Auth\LoginController@postLogin')->name('admin.postLogin');
@@ -46,4 +49,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
     Route::resource('productImage', 'ProductImageController');
     Route::resource('article', 'ArticleController');
     Route::resource('banner', 'BannerController');
+    Route::resource('order', 'OrderController');
 });

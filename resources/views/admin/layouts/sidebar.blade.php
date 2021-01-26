@@ -90,6 +90,13 @@
             </a>
           </li>
 
+          <li class="">
+            <a href="{{ route('admin.order.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>QL Đơn đặt hàng (Orders)</span>
+            </a>
+          </li>
+
         </ul>
     </section>
     <!-- /.sidebar -->

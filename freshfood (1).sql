@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 26, 2021 lúc 04:38 AM
+-- Thời gian đã tạo: Th1 26, 2021 lúc 05:15 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.6
 
@@ -164,15 +164,24 @@ CREATE TABLE `orders` (
   `address1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `discount` int(11) NOT NULL,
+  `discount` int(11) DEFAULT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `coupon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total` int(11) NOT NULL,
+  `coupon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_price` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `payment_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `code`, `fullname`, `mail`, `address1`, `address2`, `phone`, `discount`, `note`, `coupon`, `total_price`, `status_id`, `payment_id`, `created_at`, `updated_at`) VALUES
+(1, 'DH--26012021', 'test', 'test@gmail.com', 'Số 1 Hùng Vương, Quận Ba Đình, Hà Nội', 'Số 2 Bạch Đằng, Quận 1, TP.Hồ Chí Minh', '09456679321', NULL, 'ko có', NULL, 30000, 1, 1, '2021-01-26 04:23:22', '2021-01-26 04:23:22'),
+(2, 'DH--26012021', 'test 2', 'test2@gmail.com', 'Số 1 Hùng Vương, Quận Ba Đình, Hà Nội', 'Số 2 Bạch Đằng, Quận 1, TP.Hồ Chí Minh', '0957309854', NULL, 'ko có', NULL, 39000, 1, 1, '2021-01-26 04:24:19', '2021-01-26 04:24:19'),
+(3, 'DH--26012021', 'test', 'asdadas@ádhhjajh', 'Số 1 Hùng Vương, Quận Ba Đình, Hà Nội', 'Số 2 Bạch Đằng, Quận 1, TP.Hồ Chí Minh', '2137492379', NULL, 'ádsa', NULL, 40120, 1, 1, '2021-01-26 04:28:39', '2021-01-26 04:28:39');
 
 -- --------------------------------------------------------
 
@@ -184,14 +193,31 @@ CREATE TABLE `order_details` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `order_id` bigint(11) NOT NULL,
   `product_id` bigint(11) NOT NULL,
   `price` int(11) NOT NULL,
-  `number` int(11) NOT NULL,
+  `number` float NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_details`
+--
+
+INSERT INTO `order_details` (`id`, `name`, `image`, `sku`, `order_id`, `product_id`, `price`, `number`, `created_at`, `updated_at`) VALUES
+(1, 'Cần tây', 'uploads/product/1611375443_1607543055_rau-can-tay.jpg', NULL, 1, 4, 10000, 1, '2021-01-26 04:23:22', '2021-01-26 04:23:22'),
+(2, 'Cần tây', 'uploads/product/1611375443_1607543055_rau-can-tay.jpg', NULL, 2, 4, 10000, 1, '2021-01-26 04:24:19', '2021-01-26 04:24:19'),
+(3, 'Táo NewZeland', 'uploads/product/1611375661_1607593350_Tao_Newzealand.png', NULL, 2, 7, 10000, 1, '2021-01-26 04:24:19', '2021-01-26 04:24:19'),
+(4, 'Nấm đùi gà', 'uploads/product/1611375524_1607592439_Nam_dui_ga.jpg', NULL, 2, 5, 9000, 1, '2021-01-26 04:24:19', '2021-01-26 04:24:19'),
+(5, 'Thịt cá lóc', 'uploads/product/1611375761_phan-biet-ca-loc-viet-nam-va-trung-quoc-201909041507591318.jpg', NULL, 2, 10, 10000, 1, '2021-01-26 04:24:19', '2021-01-26 04:24:19'),
+(6, 'Cần tây', 'uploads/product/1611375443_1607543055_rau-can-tay.jpg', NULL, 1, 4, 10000, 1, '2021-01-26 04:26:37', '2021-01-26 04:26:37'),
+(7, 'Táo NewZeland', 'uploads/product/1611375661_1607593350_Tao_Newzealand.png', NULL, 1, 7, 10000, 1, '2021-01-26 04:27:23', '2021-01-26 04:27:23'),
+(8, 'Táo NewZeland', 'uploads/product/1611375661_1607593350_Tao_Newzealand.png', NULL, 3, 7, 10000, 1.05, '2021-01-26 04:28:39', '2021-01-26 04:28:39'),
+(9, 'Thịt cá lóc', 'uploads/product/1611375761_phan-biet-ca-loc-viet-nam-va-trung-quoc-201909041507591318.jpg', NULL, 3, 10, 10000, 1.04, '2021-01-26 04:28:39', '2021-01-26 04:28:39'),
+(10, 'Xoài ngọt', 'uploads/product/1611375716_1607592985_qua_xoai.png', NULL, 3, 8, 10000, 0.95, '2021-01-26 04:28:39', '2021-01-26 04:28:39'),
+(11, 'Nấm đùi gà', 'uploads/product/1611375524_1607592439_Nam_dui_ga.jpg', NULL, 3, 5, 9000, 1.08, '2021-01-26 04:28:39', '2021-01-26 04:28:39');
 
 -- --------------------------------------------------------
 
@@ -203,6 +229,16 @@ CREATE TABLE `order_status` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_status`
+--
+
+INSERT INTO `order_status` (`id`, `name`) VALUES
+(1, 'Mới'),
+(2, 'Đang xử lí'),
+(3, 'Hoàn thành'),
+(4, 'Hủy');
 
 -- --------------------------------------------------------
 
@@ -525,7 +561,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `avatar`, `is_active`) VALUES
-(1, 'huy', 'huycan1482@gmail.com', '$2y$10$vKOOHwddSGAqn9bJPCgrRebI.DrZH1lhvOtolaxFz7l3TBeUQaJBq', NULL, '2020-12-02 01:54:39', '2020-12-19 01:14:49', NULL, b'1'),
+(1, 'huy', 'huycan1482@gmail.com', '$2y$10$vKOOHwddSGAqn9bJPCgrRebI.DrZH1lhvOtolaxFz7l3TBeUQaJBq', 'h4iW1l8NrXbbUyWFez8XSQQAJiZ7ze0XrKs5IAvOOzkYkziMlWtJOqutmf8D', '2020-12-02 01:54:39', '2020-12-19 01:14:49', NULL, b'1'),
 (2, 'test', 'test@gmail.com', '$2y$10$5ucPg7n1apnXWdkEXFJlYOKVIf1ne0PJu6WZJIZB2Z9gmMGn2FmQK', NULL, '2020-12-02 02:59:51', '2020-12-18 20:00:30', NULL, b'0'),
 (3, 'user', 'user@gmail.com', '$2y$10$j3rZzInhq6guqqfSJydM0OnuyvRJwJ.4/FtxC76LyikAbcQhIGLx6', NULL, '2020-12-13 21:46:21', '2020-12-18 19:50:30', NULL, b'1'),
 (4, 'manager', 'manager@gmail.com', '$2y$10$PUlhrjB9N8fOAU2D9r1qFukqSFmTziN8oQvGL9ppI/1.gis2hADEO', NULL, '2020-12-15 20:32:08', '2020-12-18 20:01:32', NULL, b'1');
@@ -640,6 +676,12 @@ ALTER TABLE `order_details`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_orderDetails_orders` (`order_id`),
   ADD KEY `fk_orderDetails_products` (`product_id`);
+
+--
+-- Chỉ mục cho bảng `order_status`
+--
+ALTER TABLE `order_status`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `password_resets`
@@ -760,13 +802,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT cho bảng `order_status`
+--
+ALTER TABLE `order_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `permissions`

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Order;
+use App\OrderDetail;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -98,6 +100,60 @@ class CartController extends HomeController
         $request->session()->put('cart', $cart);
 
         return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
+
+    }
+
+    public function postCheckout(Request $request) 
+    {
+        // dd($request->all());
+
+        $request->validate([
+            'fullname' => 'required',
+            'mail' => 'required|mail',
+            'address' => 'required',
+            'address2' => 'required',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+        ], [
+
+        ]);
+
+        $_cart = session('cart') ? session('cart') : '' ; 
+            
+        $order = new Order;
+        dd($order->id);
+        $order->code = 'DH-'.$order->id.'-'.date('d').date('m').date('Y');
+        $order->fullname = $request->input('name');
+        $order->mail = $request->input('mail');
+        $order->address1 = $request->input('address');
+        $order->address2 = $request->input('address2');
+        $order->phone = $request->input('phone');
+        // $order->discount = ;
+        $order->note = $request->input('note');
+        // $order->coupon = ;
+        $order->status_id = 1;
+        $order->payment_id = 1;
+        $order->total_price = session('cart')->getTotalPrice();
+        if ($order->save()) {
+            foreach ( $_cart->getProducts() as $item ) {
+                $order_detail = new OrderDetail;
+                $order_detail->name = $item['name'];
+                $order_detail->image = $item['image'];
+                $order_detail->order_id = $order->id;
+                // $order_detail->sku
+                $order_detail->product_id = $item['id'];
+                $order_detail->price = $item['price'];
+                $order_detail->number = $item['number'];
+                $order_detail->save();
+            }
+
+            $request->session()->forget('cart');
+        }
+
+        return redirect()->back()->with('msg', "Gửi yêu cầu thành công mã đơn hàng $order->code"); 
+
+        // if ($order->save()) {
+
+        // }
 
     }
 

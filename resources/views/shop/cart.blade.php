@@ -95,24 +95,25 @@
             <div class="shopping-form-title">
                 <h2>Phiếu nhập thông tin mua hàng</h2>
             </div>
-            <form class="col-lg-9 col-sm-12" action="">
+            <form class="col-lg-9 col-sm-12" action="{{route('shop.postCheckout')}}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col col-lg-4">
                         <div class="form-group">
                             <label for="">Họ và tên *</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" name="name" value="{{old('name')}}">
                         </div>
                     </div>
                     <div class="col col-lg-4">
                         <div class="form-group">
                             <label for="">Mail *</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" name="mail" value="{{old('mail')}}">
                         </div>
                     </div>
                     <div class="col col-lg-4">
                         <div class="form-group">
                             <label for="">Số điện thoại *</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" name="phone" value="{{old('phone')}}">
                         </div>
                     </div>
                 </div>
@@ -121,20 +122,20 @@
                     <div class="col col-lg-6">
                         <div class="form-group">
                             <label for="">Địa chỉ *</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" name="address" value="{{old('address')}}">
                         </div>
                     </div>
                     <div class="col col-lg-6">
                         <div class="form-group">
                             <label for="">Địa chỉ nhận hàng *</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" name="address2"  value="{{old('address2')}}">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="">Ghi chú *</label>
-                    <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
+                    <textarea class="form-control" name="note" id="" cols="30" rows="10" name="note">{{old('note')}}</textarea>
                 </div>
 
                 <div class="form-btn">
