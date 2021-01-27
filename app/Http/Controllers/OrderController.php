@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNotify;
 use App\Order;
 use App\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -80,7 +82,22 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        $order = Order::findOrFail($id);
+        
+        $order->address2 = $request->input('address2');
+        $order->note = $request->input('note');
+        $order->status_id = $request->input('status_id');
+        // dd($order);
+        if ($order->status_id == 3) {
+            // dd('true');
+            // dd($order->mail);
+            Mail::to($order->mail)->send(new MailNotify($order, 'shopping'));
+        }
+        
+        $order->save();
+
+        return redirect()->route('admin.order.index');
     }
 
     /**

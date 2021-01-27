@@ -90,7 +90,7 @@
                                     </td>
                                     <td><label>Trạng thái ĐH</label></td>
                                     <td style="color: red">
-                                        <select class="form-control " name="order_status_id" style="max-width: 150px;display: inline-block;">
+                                        <select class="form-control " name="status_id" style="max-width: 150px;display: inline-block;">
                                             <option value="0">-- chọn --</option>
                                             @foreach($order_status as $status)
                                                 <option {{ ($order->status_id == $status->id ? 'selected':'') }} value="{{ $status->id }}">{{ $status->name }}</option>

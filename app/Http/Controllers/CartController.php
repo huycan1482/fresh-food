@@ -107,21 +107,21 @@ class CartController extends HomeController
     {
         // dd($request->all());
 
-        $request->validate([
-            'fullname' => 'required',
-            'mail' => 'required|mail',
-            'address' => 'required',
-            'address2' => 'required',
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-        ], [
+        // $request->validate([
+        //     'fullname' => 'required',
+        //     'mail' => 'required|email',
+        //     'address' => 'required',
+        //     'address2' => 'required',
+        //     'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+        // ], [
 
-        ]);
+        // ]);
 
         $_cart = session('cart') ? session('cart') : '' ; 
             
         $order = new Order;
-        dd($order->id);
-        $order->code = 'DH-'.$order->id.'-'.date('d').date('m').date('Y');
+        // dd($order->id);
+        $order->code = 'DH-'.date('d').date('m').date('Y').'-'.time();
         $order->fullname = $request->input('name');
         $order->mail = $request->input('mail');
         $order->address1 = $request->input('address');
@@ -133,7 +133,11 @@ class CartController extends HomeController
         $order->status_id = 1;
         $order->payment_id = 1;
         $order->total_price = session('cart')->getTotalPrice();
+        // dd($order->id);
         if ($order->save()) {
+            // dd($order->id);
+            // $order->code = 'DH-'.$order->id.'-'.date('d').date('m').date('Y');
+            // $order->save();
             foreach ( $_cart->getProducts() as $item ) {
                 $order_detail = new OrderDetail;
                 $order_detail->name = $item['name'];
