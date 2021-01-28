@@ -68,7 +68,7 @@
                         <!-- /.box-body -->
     
                     <div class="box-footer">
-                        <a class="btn btn-primary update-banner" data-id="{{ $banner->id }}>Update</a>
+                        <a class="btn btn-primary update-banner" data-id="{{ $banner->id }}">Update</a>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>

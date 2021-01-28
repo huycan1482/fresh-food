@@ -53,4 +53,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
     Route::resource('article', 'ArticleController');
     Route::resource('banner', 'BannerController');
     Route::resource('order', 'OrderController');
+    Route::resource('user', 'UserController');
 });
