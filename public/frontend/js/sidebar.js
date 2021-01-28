@@ -16,7 +16,7 @@ sort_btn.addEventListener('click', () => {
     if (shop_side_bar.style.display == 'none') {
         shop_side_bar.style.display = 'block';
     } else {
-        shop_side_bar.style.display = 'none';
+        shop_side_bar.style.display = 'none'; 
     }
 });
 

@@ -17,11 +17,10 @@
             <div class="right-page-title col-lg-7 col-md-12">
                 <p class="">Hiển thị {{$products->total()}} trong {{count($products)}} kết quả</p>
                 <form class="" action="">
-                    <select name="" id="">
+                    <select name="" class="sort-product">
                         <option value="">Thứ tự mặc định</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
+                        <option value="gia-tang-dan">Tăng dần</option>
+                        <option value="gia-giam-dan">Giảm dần</option>
                     </select>
                 </form>
             </div>
@@ -80,7 +79,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="product move-up">
                         <div class="top-product ">
-                            <a href="" class="product-img zoom">
+                            <a href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}" class="product-img zoom">
                                 <!-- <img src="../images/bg_2.jpg" alt=""> -->
                                 <img src="{{$product->image}}" alt="">
                             </a>
@@ -117,14 +116,6 @@
 
     <div class="pagination">
         {{$products->links()}}
-        {{-- <ul class="pages col-lg-11">
-            <li><a href="">&laquo;</a></li>
-            <li><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href="">&raquo;</a></li>
-        </ul> --}}
     </div>
 
 </div>
@@ -132,6 +123,80 @@
 
 @section('script')
 <script language="javascript" src="frontend/js/sidebar.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    var pathname = window.location.pathname;
+    var urlParams = new URLSearchParams(window.location.search);
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+    }
+
+    // $.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     }
+    // });
+
+    // const myRange = document.getElementById('myRange');
+
+    $('#myRange').change(function (e) { 
+        e.preventDefault();
+
+        console.log($(this).val());
+        
+    });
+
+    $('.sort-product').change(function (e) {
+        e.preventDefault();
+
+        var sort_price = $(this).val();
+
+        console.log(urlParams, pathname);
+
+        $.ajax({
+            url: base_url + pathname + '/sap-xep',
+            type: "GET",
+            data: {
+                sort_price : sort_price,
+            },
+            dataType: "json",
+            success: function (response) {
+
+                var products = response.products;
+                var products_val = response.products.data;
+
+                var html = ''; 
+                // console.log(products);
+                // console.log(products_val)
+                products_val.forEach(element => {
+                    var html_sale1 = '', html_sale2 = '';
+                    // console.log(formatNumber(element.truePrice));
+                    if (element.sale > 0) {
+                        html_sale1 += "<div class='on-sale'><span>-" + element.sale + "%</span></div>";
+                        html_sale2 += "<span class='old-price'>"+ formatNumber(element.price) +"Đ</span>"; 
+                    }
+                        
+                    html_sale2 += "<span class='new-price'>" + formatNumber(element.truePrice) + "Đ</span>";
+
+                    html += "<div class='col-lg-4 col-md-6 col-sm-12'><div class='product move-up'><div class='top-product'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "' class='product-img zoom'><img src='" + element.image + "' alt=''></a>" + html_sale1 + "</div><div class='main-product'><p class='product-name'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'>"+ element.name +" ("+ element.unit +")</a></p><div class='price'>" + html_sale1 + html_sale2 + "</div><div class='add-to-card-btn'><a class='icon-detail' href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'><i class='fas fa-eye'></i></a><a class='icon-card' href=''><i class='fas fa-shopping-basket'></i></a></div></div></div></div>";
+                });
+
+                $('.main-content').html(html);
+
+            }
+        });
+    });
+
+    // myRange.oninput = function () {
+    //     console.log(this.value);
+    // }
+
+</script>
+
 @endsection
 
 

@@ -25,6 +25,9 @@ Route::get('san-pham/{slug}', 'ShopController@listProducts')->name('shop.listPro
 
 Route::get('tim-kiem', 'ShopController@searchProducts')->name('shop.searchProducts');
 
+//SortProduct
+Route::get('san-pham/{slug}/sap-xep', 'ShopController@sortProducts');
+
 //Cart
 Route::get('gio-hang', 'CartController@index')->name('shop.cart');
 Route::post('gio-hang', 'CartController@addToCart')->name('shop.addToCart');

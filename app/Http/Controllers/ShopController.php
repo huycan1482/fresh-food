@@ -7,6 +7,7 @@ use App\Category;
 use App\Product;
 use App\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ShopController extends HomeController
@@ -96,6 +97,40 @@ class ShopController extends HomeController
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
 
         ]);
+    }
+
+    public function sortProducts (Request $request, $slug)
+    {
+        // dd($request->query('sort_price'));        
+        // DB::table('categories')->select('name', 'email as user_email')->get();
+
+        $category = DB::table('categories')->where([['is_active', '=' , 1], ['slug', '=', $slug]])->get();
+        // dd($category);
+
+        if ($category->isEmpty()) {
+            dd('ko thấy category');
+        }
+        // dd($category->isEmpty());
+        $sort_price = $request->query('sort_price');
+
+        $query = DB::table('products')
+        ->select(DB::raw( "( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "))
+        ->where('category_id', '=', $category->first()->id);
+        
+        if (!empty($sort_price) ) {
+
+            if($sort_price == 'gia-tang-dan') {
+                $query->orderBy('truePrice', 'asc');
+            }
+
+            if ($sort_price == 'gia-giam-dan') {
+                $query->orderBy('truePrice', 'desc');
+            }
+        }
+
+        $products = $query->paginate(12);
+
+        return response()->json(['products' => $products], 200);
     }
 
 }
