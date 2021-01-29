@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Banner;
 use App\Category;
+use App\Contact;
 use App\Product;
 use App\ProductImage;
 use Illuminate\Http\Request;
@@ -144,6 +145,47 @@ class ShopController extends HomeController
 
 
         return response()->json(['products' => $products], 200);
+    }
+
+    public function contactUs ()
+    {
+        // dd('here');
+        return view ('shop.contact', [
+            'menu' => $this->menu,
+            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+        ]);
+    }
+
+    public function postContactUs (Request $request)
+    {
+        // dd($request->all());
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'mail' => 'required|email',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'content' => 'required',
+        ], [
+            'name.required' => 'Yêu cầu không để trống',
+            'name.max' => 'Giới hạn 255 kí tự',
+            'mail.required' => 'Yêu cầu không để trống',
+            'mail.email' => 'Không đúng định dạng',
+            'phone.required' => 'Yêu cầu không để trống',
+            'phone.regex' => 'Không đúng định dạng',
+            'content.required' => 'Yêu cầu không để trống',
+        ]);
+
+        $contact = new Contact;
+        $contact->name = $request->input('name');
+        $contact->email = $request->input('mail');
+        $contact->phone = $request->input('phone');
+        $contact->content = $request->input('content');
+        $contact->save();
+        // dd($contact);
+
+        return redirect()->back()->with('msg', "Gửi yêu cầu thành công, cảm ơn bạn đã liên hệ"); 
+        
+        
     }
 
 }

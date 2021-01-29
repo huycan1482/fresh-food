@@ -97,6 +97,13 @@
             </a>
           </li>
 
+          <li class="">
+            <a href="{{ route('admin.contact.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>QL Liên hệ (Contacts)</span>
+            </a>
+          </li>
+
 
         </ul>
     </section>

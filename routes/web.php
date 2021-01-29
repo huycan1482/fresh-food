@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\ShopController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -27,6 +29,10 @@ Route::get('tim-kiem', 'ShopController@searchProducts')->name('shop.searchProduc
 
 //SortProduct
 Route::get('san-pham/{slug}/sap-xep', 'ShopController@sortProducts');
+
+//Contact
+Route::get('lien-he', 'ShopController@contactUs')->name('shop.contact');
+Route::post('lien-he', 'ShopController@postContactUs')->name('shop.postContact');
 
 //Cart
 Route::get('gio-hang', 'CartController@index')->name('shop.cart');
@@ -54,4 +60,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
     Route::resource('banner', 'BannerController');
     Route::resource('order', 'OrderController');
     Route::resource('user', 'UserController');
+    Route::resource('contact', 'ContactController');
 });
