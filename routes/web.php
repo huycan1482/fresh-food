@@ -39,6 +39,7 @@ Route::get('gio-hang', 'CartController@index')->name('shop.cart');
 Route::post('gio-hang', 'CartController@addToCart')->name('shop.addToCart');
 Route::post('gio-hang/update', 'CartController@updateToCart')->name('shop.updateToCart');
 Route::post('gio-hang/delete', 'CartController@removeToCart')->name('shop.removeToCart');
+Route::post('gio-hang/destroy', 'CartController@destroyCart')->name('shop.destroyCart');
 
 //OrderCart
 Route::post('thanh-toan', 'CartController@postCheckout')->name('shop.postCheckout');

@@ -50,10 +50,16 @@
                         </tbody>
                     </table>
                 </form>
-
-                <div class="see-more-product">
-                    <a href=""><i class="fas fa-long-arrow-alt-left"></i> Tiếp tục xem sản phẩm </a>
+                
+                <div class="shop-footer">
+                    <div class="see-more-product">
+                        <a href=""><i class="fas fa-long-arrow-alt-left"></i> Tiếp tục xem sản phẩm </a>
+                    </div>  
+                    <div class="destroy-cart">
+                        <a href="" class="btn-destroy">Xóa giỏ hàng</a>
+                    </div>
                 </div>
+                
             </div>
             <div class="col-lg-5 col-md-12 cart-total">
                 <div class="cart-total-discount">
@@ -154,6 +160,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -239,6 +246,7 @@
             success: function (response) {
                 // this.remove();
                 $('.shopping-icon .num-cart').text( response.cart_total );
+
             },
             error: function (e) { // lỗi nếu có
                 // messageResponse('danger', e.responseJSON.mess);
@@ -252,6 +260,38 @@
                     e.preventDefault();
                 });
             }
+        });
+    });
+
+    $('.btn-destroy').click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: base_url + '/gio-hang/destroy',
+            data: {
+        
+            },
+            dataType: 'json',
+            success: function (response) {
+                // $(this).jqCloset
+
+                $(location).attr('href', base_url);
+                
+            },
+            error: function (e) { // lỗi nếu có
+                // messageResponse('danger', e.responseJSON.mess);
+                
+                html = "<div class='messages-box' style='background-color: #c0392b'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + e.responseJSON.mess + "</p></div>";
+
+                $('.content').append(html);
+
+                $('.messages-box').click(function (e) { 
+                    $(this).fadeOut();
+                    e.preventDefault();
+                });
+            }
+
         });
     });
 </script>

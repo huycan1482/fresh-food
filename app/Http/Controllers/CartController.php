@@ -99,13 +99,12 @@ class CartController extends HomeController
 
         $request->session()->put('cart', $cart);
 
-        return response()->json(['mess' => 'Thêm sản phẩm vào giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
+        return response()->json(['mess' => 'Xóa sản phẩm khỏi giỏ hàng thành công', 'cart_total' => session('cart')->getTotalNumber()], 200);
 
     }
 
     public function postCheckout(Request $request) 
     {
-        // dd($request->all());
 
         // $request->validate([
         //     'fullname' => 'required',
@@ -116,7 +115,6 @@ class CartController extends HomeController
         // ], [
 
         // ]);
-
         $_cart = session('cart') ? session('cart') : '' ; 
             
         $order = new Order;
@@ -159,6 +157,15 @@ class CartController extends HomeController
 
         // }
 
+    }
+
+    public function destroyCart (Request $request)
+    {
+        $request->session()->forget('cart');
+
+        // return redirect('/');
+
+        return response()->json(['mess' => 'Xóa giỏ hàng thành công'], 200);
     }
 
 
