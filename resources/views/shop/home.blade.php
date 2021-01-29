@@ -199,7 +199,7 @@
     <div class="section col-lg-12 about-us">
         <div class="container col-lg-10">
             <div class="about-us-banner col-lg-6 col-md-12">
-                <img src="../images/left_image_ad.webp" alt="">
+                <img src="frontend/images/left_image_ad.webp" alt="">
             </div>
             <div class="about-us-info col-lg-6 col-md-12">
                 <div class="title-about-us">

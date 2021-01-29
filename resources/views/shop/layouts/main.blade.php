@@ -8,6 +8,7 @@
     <base href="{{ asset('') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <link rel="stylesheet" href="frontend/css/trangchu.css">
 
     <link rel="stylesheet" href="frontend/css/product.css">
@@ -21,7 +22,8 @@
     <link rel="stylesheet" href="frontend/css/font.css">
 
     @yield('css')
-
+{{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> --}}
+    
     <script type="text/javascript">
         var base_url = '{{ url('/') }}';
     </script>
@@ -38,6 +40,8 @@
     <script language="javascript" src="frontend/js/main.js"></script>
 
     @yield('script')
+
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 </body>
 
 </html>

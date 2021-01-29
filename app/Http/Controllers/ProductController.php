@@ -7,6 +7,7 @@ use App\Product;
 use App\Vendor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -151,6 +152,8 @@ class ProductController extends Controller
             $product->position = (int)$request->input('position');
             $product->is_active = (int)$request->input('is_active');
             $product->is_hot = (int)$request->input('is_hot');
+
+            $product->user_id = Auth::user()->id;
 
             if ($product->save()) {
                 // upload file
@@ -307,6 +310,8 @@ class ProductController extends Controller
             $product->position = (int)$request->input('position');
             $product->is_active = (int)$request->input('is_active');
             $product->is_hot = (int)$request->input('is_hot');
+
+            $product->user_id = Auth::user()->id;
 
             if ($product->save()) {
                 // upload file

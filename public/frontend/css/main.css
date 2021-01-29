@@ -11,6 +11,8 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    /* margin-top: 60px;
+    margin-bottom: 60px; */
     padding-top: 60px;
     padding-bottom: 50px;
 }
@@ -95,6 +97,7 @@ h3 {
     padding-left: 0;
     list-style: none;
     border-radius: .25rem;
+    cursor: pointer;
 }
 
 .pages li:last-child a {
@@ -154,3 +157,4 @@ h3 {
 .messages-header .fa-times {
     cursor: pointer;
 }
+

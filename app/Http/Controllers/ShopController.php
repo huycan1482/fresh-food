@@ -23,7 +23,7 @@ class ShopController extends HomeController
         // dd($this->menu);
         $banners = Banner::where(['is_active' => 1])->get();
         $products = Product::where([['is_active', '=', 1]])->orderBy('id', 'desc')->limit(4)->get(); 
-        $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(4)->get();
+        $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->orderBy('id', 'desc')->limit(4)->get();
         return view ('shop.home', [
             'menu' => $this->menu,
             'banners' => $banners,
@@ -55,8 +55,9 @@ class ShopController extends HomeController
         ]);
     }
 
-    public function listProducts ($slug) 
-    {
+    public function listProducts (Request $request, $slug) 
+    {   
+        
         $checkCategory = Category::where([['slug', '=', $slug], ['is_active', '=', 1]])->get();
 
         if (empty($checkCategory->first())) {
@@ -66,8 +67,11 @@ class ShopController extends HomeController
         $category = $checkCategory->first();
 
         $products = Product::where([['is_active', '=', 1], ['category_id', '=', $category->id]])->orderBy('id', 'desc')->paginate(12);
+        // dd($products);
 
         $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(8)->get();
+
+        // dd($products->lastPage());
 
         return view ('shop.listProducts', [
             'menu' => $this->menu,
@@ -101,24 +105,23 @@ class ShopController extends HomeController
 
     public function sortProducts (Request $request, $slug)
     {
-        // dd($request->query('sort_price'));        
-        // DB::table('categories')->select('name', 'email as user_email')->get();
 
         $category = DB::table('categories')->where([['is_active', '=' , 1], ['slug', '=', $slug]])->get();
-        // dd($category);
 
         if ($category->isEmpty()) {
             dd('ko thấy category');
         }
         // dd($category->isEmpty());
         $sort_price = $request->query('sort_price');
+        $range_price = $request->query('range_price');
+
+        // dd($range_price);
 
         $query = DB::table('products')
         ->select(DB::raw( "( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "))
         ->where('category_id', '=', $category->first()->id);
-        
-        if (!empty($sort_price) ) {
-
+  
+        if ( !empty($sort_price) ) {
             if($sort_price == 'gia-tang-dan') {
                 $query->orderBy('truePrice', 'asc');
             }
@@ -126,9 +129,19 @@ class ShopController extends HomeController
             if ($sort_price == 'gia-giam-dan') {
                 $query->orderBy('truePrice', 'desc');
             }
+        } 
+        
+        if ( !empty($range_price) ) {
+            $query->whereRaw("(products.price - products.sale/100 * products.price ) between 0 and $range_price");
+        } 
+
+        if (empty($range_price) && empty($sort_price)) {
+            $query->orderBy('id', 'desc');
         }
 
+
         $products = $query->paginate(12);
+
 
         return response()->json(['products' => $products], 200);
     }

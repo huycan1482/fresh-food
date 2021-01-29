@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div>
+<div class="content">
     <div class="fake-menu">
 
     </div>
@@ -19,8 +19,8 @@
                 <form class="" action="">
                     <select name="" class="sort-product">
                         <option value="">Thứ tự mặc định</option>
-                        <option value="gia-tang-dan">Tăng dần</option>
-                        <option value="gia-giam-dan">Giảm dần</option>
+                        <option value="gia-tang-dan">Giá tăng dần</option>
+                        <option value="gia-giam-dan">Giá giảm dần</option>
                     </select>
                 </form>
             </div>
@@ -48,10 +48,10 @@
                 </div>
                 <div class="side-bar-price">
                     <h3 class="header-side-bar">Lọc theo giá<i class="fas fa-list" id="close-price"></i></h3>
-                    <form action="" class="price-range">
+                    <form action="" class="price-range" id="price-range">
                         <input type="range" min="0" max="100000" value="0" class="slider" id="myRange">
                         <div>
-                            <button>Lọc</button>
+                            <button id="btn-range">Lọc</button>
                             <p>Giá: Từ 0 Đ đến <span id="demo"></span> Đ</p>
                         </div>
                     </form>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="add-to-card-btn">
                                 <a class="icon-detail" href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}""><i class="fas fa-eye"></i></a>
-                                <a class="icon-card" href=""><i class="fas fa-shopping-basket"></i></a>
+                                <a class="icon-card" href="" data-id="{{$product->id}}" data-value="1"><i class="fas fa-shopping-basket"></i></a>
                             </div>
                         </div>
                     </div>
@@ -114,9 +114,28 @@
         </div>
     </div>
 
-    <div class="pagination">
-        {{$products->links()}}
+    @if ($products->lastPage() > 1)
+    <div class="pagination" style="z-index: 1">
+        <ul class="pages col-lg-11">
+            <li id="pre"><a >&laquo;</a></li>
+            @for ($i = 1; $i <= $products->lastPage(); $i++)
+            <li id="{{$i}}"><a >{{$i}}</a></li>  
+            @endfor
+            {{-- <li><a href="">1</a></li>
+            <li><a href="">2</a></li>
+            <li><a href="">3</a></li>
+            <li><a href="">4</a></li> --}}
+            <li id="next"><a >&raquo;</a></li>
+        </ul>
     </div>
+    @endif
+
+
+    {{-- <div class="pagination" style="display: flex; justify-content: flex-end; margin: 0 30px;">
+
+
+        {{$products->links()}}
+    </div> --}}
 
 </div>
 @endsection
@@ -128,40 +147,80 @@
 
 <script>
 
-    var pathname = window.location.pathname;
-    var urlParams = new URLSearchParams(window.location.search);
+    let pathname = window.location.pathname;
+    let urlParams = new URLSearchParams(window.location.search);
+
+    let sort_price = '';
+    let range_price = '';
+    let page = 1;
+    let curent_page = 1;
 
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
     }
 
-    // $.ajaxSetup({
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    // });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     // const myRange = document.getElementById('myRange');
 
     $('#myRange').change(function (e) { 
         e.preventDefault();
 
-        console.log($(this).val());
-        
+        console.log($(this).val());  
+    });
+
+    $('#price-range').submit(function (e) { 
+        e.preventDefault();
+
+        range_price = $('#myRange').val();
+
+        send('', sort_price, range_price);
+    });
+
+    $(document).on('click', '.pages li', function (e) {
+        var page_val = $(this).attr('id');
+
+        if (page_val == 'pre') {
+            if (page > 1) {
+                curent_page--;
+                page = curent_page;   
+            }
+        } else if (page_val == 'next') {
+            if ( $('.pages #' + curent_page).next().attr('id') != 'next') {
+                curent_page++;
+                page = curent_page;
+            } 
+        } else {
+            curent_page = page_val;
+            page = curent_page;
+        }
+
+        send(page, sort_price, range_price);
     });
 
     $('.sort-product').change(function (e) {
         e.preventDefault();
 
-        var sort_price = $(this).val();
+        sort_price = $(this).val();
 
-        console.log(urlParams, pathname);
+        send('', sort_price, range_price);
 
+        // console.log(urlParams, pathname);
+
+    });
+
+    function send (page, sort_price, range_price) {
         $.ajax({
             url: base_url + pathname + '/sap-xep',
             type: "GET",
             data: {
+                page : page,
                 sort_price : sort_price,
+                range_price : range_price,
             },
             dataType: "json",
             success: function (response) {
@@ -170,7 +229,7 @@
                 var products_val = response.products.data;
 
                 var html = ''; 
-                // console.log(products);
+                console.log(products);
                 // console.log(products_val)
                 products_val.forEach(element => {
                     var html_sale1 = '', html_sale2 = '';
@@ -182,14 +241,100 @@
                         
                     html_sale2 += "<span class='new-price'>" + formatNumber(element.truePrice) + "Đ</span>";
 
-                    html += "<div class='col-lg-4 col-md-6 col-sm-12'><div class='product move-up'><div class='top-product'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "' class='product-img zoom'><img src='" + element.image + "' alt=''></a>" + html_sale1 + "</div><div class='main-product'><p class='product-name'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'>"+ element.name +" ("+ element.unit +")</a></p><div class='price'>" + html_sale1 + html_sale2 + "</div><div class='add-to-card-btn'><a class='icon-detail' href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'><i class='fas fa-eye'></i></a><a class='icon-card' href=''><i class='fas fa-shopping-basket'></i></a></div></div></div></div>";
+                    html += "<div class='col-lg-4 col-md-6 col-sm-12'><div class='product move-up'><div class='top-product'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "' class='product-img zoom'><img src='" + element.image + "' alt=''></a>" + html_sale1 + "</div><div class='main-product'><p class='product-name'><a href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'>"+ element.name +" ("+ element.unit +")</a></p><div class='price'>" + html_sale2 + "</div><div class='add-to-card-btn'><a class='icon-detail' href='" + base_url  + '/chi-tiet-san-pham/' + element.slug + "'><i class='fas fa-eye'></i></a><a class='icon-card' href='' data-id=" + element.id + " data-value='1'><i class='fas fa-shopping-basket'></i></a></div></div></div></div>";
                 });
 
                 $('.main-content').html(html);
+        
+                $('.add-to-card-btn .icon-card').click(function (e) { 
+                    e.preventDefault();
+                    var pro_number = $(this).attr('data-value');
+                    var pro_id = $(this).attr('data-id');
+                    
+                    $.ajax({
+                        type: "POST",   
+                        url: base_url + '/gio-hang',
+                        data: {
+                            number : pro_number,
+                            id : pro_id,
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            // console.log(response.mess);
 
+                            $('.shopping-icon .num-cart').text( response.cart_total );
+
+                            html = "<div class='messages-box' style='background-color: #49a010'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + response.mess + "</p></div>";
+
+                            $('.content').append(html);
+
+                            $('.messages-box').click(function (e) { 
+                                $(this).fadeOut();
+                                e.preventDefault();
+                            });
+                        },
+                        error: function (e) { // lỗi nếu có
+                            // messageResponse('danger', e.responseJSON.mess);
+                            
+                            html = "<div class='messages-box' style='background-color: #c0392b'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + e.responseJSON.mess + "</p></div>";
+
+                            $('.content').append(html);
+
+                            $('.messages-box').click(function (e) { 
+                                $(this).fadeOut();
+                                e.preventDefault();
+                            });
+                        }
+                    });
+                });
+            
+            }
+        });
+    }
+
+    $('.add-to-card-btn .icon-card').click(function (e) { 
+        e.preventDefault();
+        var pro_number = $(this).attr('data-value');
+        var pro_id = $(this).attr('data-id');
+        
+        $.ajax({
+            type: "POST",   
+            url: base_url + '/gio-hang',
+            data: {
+                number : pro_number,
+                id : pro_id,
+            },
+            dataType: "json",
+            success: function (response) {
+                // console.log(response.mess);
+
+                $('.shopping-icon .num-cart').text( response.cart_total );
+
+                html = "<div class='messages-box' style='background-color: #49a010'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + response.mess + "</p></div>";
+
+                $('.content').append(html);
+
+                $('.messages-box').click(function (e) { 
+                    $(this).fadeOut();
+                    e.preventDefault();
+                });
+            },
+            error: function (e) { // lỗi nếu có
+                // messageResponse('danger', e.responseJSON.mess);
+                
+                html = "<div class='messages-box' style='background-color: #c0392b'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + e.responseJSON.mess + "</p></div>";
+
+                $('.content').append(html);
+
+                $('.messages-box').click(function (e) { 
+                    $(this).fadeOut();
+                    e.preventDefault();
+                });
             }
         });
     });
+
+    
 
     // myRange.oninput = function () {
     //     console.log(this.value);
