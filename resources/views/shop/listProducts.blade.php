@@ -12,10 +12,10 @@
     <div class="shop-page-title col-lg-12">
         <div class="page-title col-lg-10">
             <div class="left-page-title col-lg-5 col-md-12">
-                <a href="">Trang chủ / </a><span>Sản phẩm / </span><span>{{$category->name}}</span>
+                <a href="">Trang chủ / </a><span>Sản phẩm / </span><span>{{ (!empty($category->name)) ? $category->name : $category}}</span>
             </div>
             <div class="right-page-title col-lg-7 col-md-12">
-                <p class="">Hiển thị {{$products->total()}} trong {{count($products)}} kết quả</p>
+                <p class="">Hiển thị {{count($products)}} trong {{$products->total()}} kết quả</p>
                 <form class="" action="">
                     <select name="" class="sort-product">
                         <option value="">Thứ tự mặc định</option>

@@ -96,7 +96,7 @@
                 @endforeach
             </div>
             <div class="more-info col-lg-12">
-                <a href="" class="more-info-btn">Xem thêm</a>
+                <a href="{{ route('shop.listProducts', ['slug' => 'san-pham-hot']) }}" class="more-info-btn">Xem thêm</a>
             </div>
         </div>
     </div>
@@ -191,7 +191,7 @@
 
             </div>
             <div class="more-info col-lg-12">
-                <a href="" class="more-info-btn">Xem thêm</a>
+                <a href="{{ route('shop.listProducts', ['slug' => 'san-pham-moi']) }}" class="more-info-btn">Xem thêm</a>
             </div>
         </div>
     </div>

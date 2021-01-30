@@ -56,6 +56,11 @@
                             <input type="file" id="image" >
                         </div>
 
+                        <div class="form-group" id="">
+                            <label for="exampleInputFile">Ảnh chi tiết sản phẩm</label>
+                            <a href="{{ route('admin.productImage.create') }}" style="margin-left: 10px"><span for=""class="label label-success">Thêm ảnh chi tiết</span></a><br>
+                        </div>
+
                         <div class="form-group" id="form-number">
                             <label for="number">Số lượng</label>
                             <input type="number" min="0" class="form-control" id="number" name="number" placeholder="Số lượng">

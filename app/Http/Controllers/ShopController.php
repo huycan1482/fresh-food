@@ -61,9 +61,39 @@ class ShopController extends HomeController
         
         $checkCategory = Category::where([['slug', '=', $slug], ['is_active', '=', 1]])->get();
 
+        if ($slug == 'san-pham-hot') {
+            $products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->orderBy('id', 'desc')->paginate(12);
+
+            $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(8)->get();
+
+            return view ('shop.listProducts', [
+                'menu' => $this->menu,
+                'products' => $products,
+                'hot_products' => $hot_products,
+                'category' => 'Sản phẩm hot',
+                'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+    
+            ]);
+        }
+
+        if ($slug == 'san-pham-moi') {
+            $products = Product::where([['is_active', '=', 1]])->orderBy('id', 'desc')->paginate(12);
+
+            $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(8)->get();
+
+            return view ('shop.listProducts', [
+                'menu' => $this->menu,
+                'products' => $products,
+                'hot_products' => $hot_products,
+                'category' => 'Sản phẩm mới',
+                'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+    
+            ]);
+        }
+
         if (empty($checkCategory->first())) {
             return view ('shop.notFound');
-        }
+        } 
 
         $category = $checkCategory->first();
 
@@ -84,43 +114,25 @@ class ShopController extends HomeController
         ]);
     }
 
-    public function searchProducts (Request $request) 
-    {
-        $keyword = $request->input('tu-khoa');
-    
-        $slug = Str::slug($keyword);
-
-        $products = Product::where([['slug', 'like', '%' . $slug . '%'], ['is_active', '=', 1]])->paginate(12);
-
-        $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(8)->get();
-
-        return view ('shop.searchProducts', [
-            'menu' => $this->menu,
-            'products' => $products,
-            'hot_products' => $hot_products,
-            'keyword' => $keyword,
-            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
-
-        ]);
-    }
-
     public function sortProducts (Request $request, $slug)
     {
-
         $category = DB::table('categories')->where([['is_active', '=' , 1], ['slug', '=', $slug]])->get();
 
-        if ($category->isEmpty()) {
+        if ($category->isEmpty() && $slug != 'san-pham-hot' && $slug != 'san-pham-moi') {
             dd('ko thấy category');
         }
-        // dd($category->isEmpty());
+
         $sort_price = $request->query('sort_price');
         $range_price = $request->query('range_price');
 
-        // dd($range_price);
-
-        $query = DB::table('products')
-        ->select(DB::raw( "( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "))
-        ->where('category_id', '=', $category->first()->id);
+        if (!$category->isEmpty()) {
+            $query = DB::table('products')
+            ->select(DB::raw( "( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "))
+            ->where('category_id', '=', $category->first()->id);
+        } else {
+            $query = DB::table('products')
+            ->select(DB::raw("( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "));
+        }
   
         if ( !empty($sort_price) ) {
             if($sort_price == 'gia-tang-dan') {
@@ -136,16 +148,74 @@ class ShopController extends HomeController
             $query->whereRaw("(products.price - products.sale/100 * products.price ) between 0 and $range_price");
         } 
 
+        if ($slug == 'san-pham-hot') {
+            $query->where([['is_hot', '=', 1]])->orderBy('id', 'desc');
+        }
+
         if (empty($range_price) && empty($sort_price)) {
             $query->orderBy('id', 'desc');
         }
 
-
         $products = $query->paginate(12);
-
 
         return response()->json(['products' => $products], 200);
     }
+
+    public function searchProducts (Request $request) 
+    {
+        $keyword = $request->input('tu-khoa');
+
+        $slug = Str::slug($keyword);
+        // dd($request->all());    
+
+        $sort_price = $request->query('sort_price');
+
+        $range_price = $request->query('range_price');
+
+        $query = DB::table('products')
+        ->select(DB::raw("( CAST( products.price - products.sale/100 * products.price as int ) ) as truePrice, products.* "))
+        ->where([['slug', 'like', '%' . $slug . '%'], ['is_active', '=', 1]]);
+
+        if (!empty($sort_price)) {
+            if($sort_price == 'gia-tang-dan') {
+                $query->orderBy('truePrice', 'asc');
+            }
+
+            if ($sort_price == 'gia-giam-dan') {
+                $query->orderBy('truePrice', 'desc');
+            }
+        }
+
+        if ( !empty($range_price) ) {
+            $query->whereRaw("(products.price - products.sale/100 * products.price ) between 0 and $range_price");
+        } 
+
+        $products = $query->paginate(12);
+
+        $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->limit(8)->get();
+
+        if (!empty($sort_price) || !empty($range_price)) {
+            return response()->json(['products' => $products], 200);
+        }
+
+        // dd('false');
+
+        return view ('shop.searchProducts', [
+            'menu' => $this->menu,
+            'products' => $products,
+            'hot_products' => $hot_products,
+            'keyword' => $keyword,
+            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+
+        ]);
+    }
+
+    public function sortSearchProducts (Request $request, $slug)
+    {
+        dd($slug, $request->all());
+    }
+
+    
 
     public function contactUs ()
     {
@@ -184,7 +254,6 @@ class ShopController extends HomeController
         // dd($contact);
 
         return redirect()->back()->with('msg', "Gửi yêu cầu thành công, cảm ơn bạn đã liên hệ"); 
-        
         
     }
 
