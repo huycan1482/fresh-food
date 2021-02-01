@@ -48,10 +48,10 @@
                 </div>
                 <div class="side-bar-price">
                     <h3 class="header-side-bar">Lọc theo giá<i class="fas fa-list" id="close-price"></i></h3>
-                    <form action="" class="price-range">
+                    <form action="" class="price-range" id="price-range">
                         <input type="range" min="0" max="100000" value="0" class="slider" id="myRange">
                         <div>
-                            <button>Lọc</button>
+                            <button id="btn-range">Lọc</button>
                             <p>Giá: Từ 0 Đ đến <span id="demo"></span> Đ</p>
                         </div>
                     </form>
@@ -114,24 +114,23 @@
         </div>
     </div>
 
-    <div class="pagination">
-        {{$products->links()}}
-        {{-- <ul class="pages col-lg-11">
-            <li><a href="">&laquo;</a></li>
-            <li><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href="">&raquo;</a></li>
-        </ul> --}}
+    @if ($products->lastPage() > 1)
+    <div class="pagination" style="z-index: 1">
+        <ul class="pages col-lg-11">
+            <li id="pre"><a >&laquo;</a></li>
+            @for ($i = 1; $i <= $products->lastPage(); $i++)
+            <li id="{{$i}}"><a >{{$i}}</a></li>  
+            @endfor
+            <li id="next"><a >&raquo;</a></li>
+        </ul>
     </div>
+    @endif
 
 </div>
 @endsection
 
 @section('script')
 <script language="javascript" src="frontend/js/sidebar.js"></script>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -244,7 +243,7 @@
                     
                     $.ajax({
                         type: "POST",   
-                        url: base_url + '/gio-hang',
+                        url: base_url + '/gio-hang/add',
                         data: {
                             number : pro_number,
                             id : pro_id,

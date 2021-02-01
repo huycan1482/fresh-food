@@ -25,19 +25,21 @@ class ShopController extends HomeController
         $banners = Banner::where(['is_active' => 1])->get();
         $products = Product::where([['is_active', '=', 1]])->orderBy('id', 'desc')->limit(4)->get(); 
         $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->orderBy('id', 'desc')->limit(4)->get();
+        $popular_categories1 = Category::where([['is_active', '=', 1], ['position', '=', 1]])->orderBy('id', 'desc')->limit(1)->get();
+        $popular_categories2 = Category::where([['is_active', '=', 1], ['position', '=', 2]])->orderBy('id', 'desc')->limit(2)->get(); 
         return view ('shop.home', [
             'menu' => $this->menu,
             'banners' => $banners,
             'products' => $products,
             'hot_products' => $hot_products, 
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
-
+            'popular_categories1' => $popular_categories1,
+            'popular_categories2' => $popular_categories2,
         ]);
     }
 
     public function productDetail ($slug)
     {
-
         $checkProduct = Product::where([['slug', '=', $slug], ['is_active', '=', 1]])->get();
 
         if (empty($checkProduct->first())) {
@@ -166,7 +168,6 @@ class ShopController extends HomeController
         $keyword = $request->input('tu-khoa');
 
         $slug = Str::slug($keyword);
-        // dd($request->all());    
 
         $sort_price = $request->query('sort_price');
 

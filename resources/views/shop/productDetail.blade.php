@@ -53,7 +53,7 @@
                     {!! $product->summary !!}
                 </div>
                 <div class="form-cart">
-                    <form action="" method="">
+                    <form class="form-addTocart">
                         <input type="number" min="0" value="1" step="0.01" id="product-number" data-id="{{$product->id}}"> 
                         <button class="btn-addToCart">Đưa vào giỏ hàng</button>
                     </form>
@@ -89,7 +89,7 @@
         }
     });
 
-    $('form').submit(function(e){
+    $('.form-addTocart').submit(function(e){
         e.preventDefault();
         
         var number = $('#product-number').val();
@@ -97,17 +97,15 @@
 
         $.ajax({
             type: "POST",   
-            url: base_url + '/gio-hang',
+            url: base_url + '/gio-hang/add',
             data: {
                 number : number,
                 id : id,
             },
             dataType: "json",
             success: function (response) {
-                // console.log(response.mess);
 
                 $('.shopping-icon .num-cart').text( response.cart_total );
-
 
                 html = "<div class='messages-box' style='background-color: #49a010'><div class='messages-header'><h2>Thông báo</h2><i class='fas fa-times'></i></div><p>" + response.mess + "</p></div>";
 
@@ -133,9 +131,9 @@
         });
     });
 
-
     // $('btn-addToCart').click(function (e) {
     //     e.preventDefault();
     // });
+
 </script>
 @endsection

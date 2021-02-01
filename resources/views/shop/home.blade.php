@@ -29,27 +29,23 @@
                 <h2 class="title">Loại thực phẩm phổ biến</h2>
             </div>
             <div class="box col-lg-6 col-md-12">
-                <div class="left-banner banner-img">
+                <div class="left-banner banner-img" style="background-image: url({{$popular_categories1->first()->image}})">
                     <div class="box-banner">
-                        <p>Rau củ</p>
-                        <a href="">Xem thêm</a>
+                        <p>{{$popular_categories1->first()->name}}</p>
+                        <a href="{{ route('shop.listProducts', ['slug' => $popular_categories1->first()->slug]) }}">Xem thêm</a>
                     </div>
                 </div>
             </div>
             <div class="box col-lg-6 col-md-12">
                 <div class="right-banner ">
-                    <div class="right-banner-top banner-img">
+                    @foreach ($popular_categories2 as $key => $item)
+                    <div class="right-banner-{{ ($key == 0) ? 'top' : 'bottom' }} banner-img" style="url({{$item->image}})">
                         <div class="box-banner">
-                            <p>Hải sản</p>
-                            <a href="">Xem thêm</a>
+                            <p>{{ $item->name }}</p>
+                            <a href="{{ route('shop.listProducts', ['slug' => $item->slug]) }}">Xem thêm</a>
                         </div>
-                    </div>
-                    <div class="right-banner-bottom banner-img">
-                        <div class="box-banner">
-                            <p>Thịt</p>
-                            <a href="">Xem thêm</a>
-                        </div>
-                    </div>
+                    </div>    
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -436,7 +432,7 @@
         
         $.ajax({
             type: "POST",   
-            url: base_url + '/gio-hang',
+            url: base_url + '/gio-hang/add',
             data: {
                 number : pro_number,
                 id : pro_id,

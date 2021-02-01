@@ -253,7 +253,7 @@
                     
                     $.ajax({
                         type: "POST",   
-                        url: base_url + '/gio-hang',
+                        url: base_url + '/gio-hang/add',
                         data: {
                             number : pro_number,
                             id : pro_id,

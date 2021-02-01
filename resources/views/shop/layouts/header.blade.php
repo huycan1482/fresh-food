@@ -30,14 +30,14 @@
             <ul class="right-menu">
                 <form action="{{route('shop.searchProducts')}}" class="search-nav">
                     <input type="text" value="{{ isset($keyword) ? $keyword : '' }}" placeholder="Nhập sản phẩm..." name="tu-khoa" >
-                    <button><i class="fas fa-search"></i></button>
+                    <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <li class="shopping-icon">
                     <a href="{{route('shop.cart')}}"><i class="fas fa-shopping-cart"></i></a>
                     <span class="num-cart">{{$cart_total}}</span>
                 </li>
 
-                <li><a href="#"><i class="fas fa-user"></i></a></li>
+                <li><a href="{{route('admin.dashboard')}}"><i class="fas fa-user"></i></a></li>
 
             </ul>
         </div>

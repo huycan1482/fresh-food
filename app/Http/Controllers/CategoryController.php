@@ -151,7 +151,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255|unique:categories,slug,'.$id,
             'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-            'position' => 'integer|boolean', 
+            'position' => 'integer|min:0', 
             'is_active' => 'integer|boolean',
             'is_hot' => 'integer|boolean',
         ], [
@@ -165,7 +165,7 @@ class CategoryController extends Controller
             'is_hot.integer' => 'Sai kiểu dữ liệu',
             'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
             'position.integer' => 'Sai kiểu dữ liệu',
-            'position.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+            'position.min' => 'Dữ liệu phải lớn hơn 0',
         ]); 
 
         $errs = $validator->errors();
