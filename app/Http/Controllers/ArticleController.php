@@ -201,7 +201,7 @@ class ArticleController extends Controller
                 $article->image = $path_upload.$filename;
             }
             
-             $article->summary = $request->input('summary');
+            $article->summary = $request->input('summary');
             $article->description = $request->input('description');
             $article->is_active = (int)$request->input('is_active');
 

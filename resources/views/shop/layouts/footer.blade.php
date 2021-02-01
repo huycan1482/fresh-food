@@ -23,16 +23,17 @@
         <div class="col-lg-4 col-md-12">
             <div class="box-footer">
                 <h3>Thông tin</h3>
-                <p>99 Đào Duy Anh, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh </p>
-                <a href="">028.6686.3434</a><br>
-                <a href="">info@kadimedia.vn</a>
+                <p>{{ $setting->address }}</p>
+                <a href="">{{ $setting->phone }}</a><br>
+                <a href="">{{ $setting->email }}</a><br>
+                <a href="">{{ $setting->facebook }}</a>
             </div>
         </div>
 
         <div class="col-lg-4 col-md-12">
             <div class="box-footer">
                 <h3>Liên hệ với chúng tôi</h3>
-                <p>Hotline: 123.456.789</p>
+                <p>Hotline: {{$setting->hotline}}</p>
             </div>
         </div>
 

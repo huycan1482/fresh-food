@@ -22,6 +22,7 @@ class CartController extends HomeController
         // dd('true');
         return view ('shop.cart', [
             'menu' => $this->menu ,
+            'setting' => $this->setting,
             'cart' => session('cart') ? session('cart') : '',
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
         ]);

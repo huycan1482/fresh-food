@@ -62,4 +62,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
     Route::resource('order', 'OrderController');
     Route::resource('user', 'UserController');
     Route::resource('contact', 'ContactController');
+    Route::resource('setting', 'SettingController');
 });

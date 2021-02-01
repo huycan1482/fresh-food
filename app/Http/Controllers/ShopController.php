@@ -29,6 +29,7 @@ class ShopController extends HomeController
         $popular_categories2 = Category::where([['is_active', '=', 1], ['position', '=', 2]])->orderBy('id', 'desc')->limit(2)->get(); 
         return view ('shop.home', [
             'menu' => $this->menu,
+            'setting' => $this->setting,
             'banners' => $banners,
             'products' => $products,
             'hot_products' => $hot_products, 
@@ -51,6 +52,7 @@ class ShopController extends HomeController
 
         return view ('shop.productDetail', [
             'menu' => $this->menu,
+            'setting' => $this->setting,
             'product' => $product,
             'productImages' => $product_images,
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
@@ -70,6 +72,7 @@ class ShopController extends HomeController
 
             return view ('shop.listProducts', [
                 'menu' => $this->menu,
+                'setting' => $this->setting,
                 'products' => $products,
                 'hot_products' => $hot_products,
                 'category' => 'Sản phẩm hot',
@@ -85,6 +88,7 @@ class ShopController extends HomeController
 
             return view ('shop.listProducts', [
                 'menu' => $this->menu,
+                'setting' => $this->setting,
                 'products' => $products,
                 'hot_products' => $hot_products,
                 'category' => 'Sản phẩm mới',
@@ -108,6 +112,7 @@ class ShopController extends HomeController
 
         return view ('shop.listProducts', [
             'menu' => $this->menu,
+            'setting' => $this->setting,
             'products' => $products,
             'hot_products' => $hot_products,
             'category' => $category,
@@ -203,6 +208,7 @@ class ShopController extends HomeController
 
         return view ('shop.searchProducts', [
             'menu' => $this->menu,
+            'setting' => $this->setting,
             'products' => $products,
             'hot_products' => $hot_products,
             'keyword' => $keyword,
@@ -223,6 +229,7 @@ class ShopController extends HomeController
         // dd('here');
         return view ('shop.contact', [
             'menu' => $this->menu,
+            'setting' => $this->setting,
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
         ]);
     }

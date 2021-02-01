@@ -105,6 +105,14 @@
           </li>
 
 
+          <li class="">
+            <a href="{{ route('admin.setting.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>Settings Website (Settings)</span>
+            </a>
+          </li>
+
+
         </ul>
     </section>
     <!-- /.sidebar -->
