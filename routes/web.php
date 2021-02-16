@@ -30,6 +30,9 @@ Route::get('tim-kiem', 'ShopController@searchProducts')->name('shop.searchProduc
 //SortProduct
 Route::get('san-pham/{slug}/sap-xep', 'ShopController@sortProducts');
 
+//Articles
+Route::get('bai-viet/{slug}', 'ShopController@listArticles')->name('shop.listArticles');
+
 //Contact
 Route::get('lien-he', 'ShopController@contactUs')->name('shop.contact');
 Route::post('lien-he', 'ShopController@postContactUs')->name('shop.postContact');

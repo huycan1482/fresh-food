@@ -6,6 +6,7 @@ use App\Article;
 use App\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -79,7 +80,7 @@ class ArticleController extends Controller
             return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
         } else {
             $article = new Article;
-            $article->name = $request->input('trueTitle');
+            $article->title = $request->input('trueTitle');
             $article->slug = $request->input('title');
             $article->category_id = $request->input('category_id');
 
@@ -98,6 +99,7 @@ class ArticleController extends Controller
             $article->summary = $request->input('summary');
             $article->description = $request->input('description');
             $article->is_active = (int)$request->input('is_active');
+            $article->user_id = Auth::user()->id;
 
             if ($article->save()) {
                 // upload file
@@ -183,7 +185,7 @@ class ArticleController extends Controller
         if ( $validator->fails() ) {
             return response()->json(['errors' => $errs, 'mess' => 'Sửa bản ghi lỗi'], 400);
         } else {
-            $article->name = $request->input('trueTitle');
+            $article->title = $request->input('trueTitle');
             $article->slug = $request->input('title');
             $article->category_id = $request->input('category_id');
 
@@ -204,6 +206,7 @@ class ArticleController extends Controller
             $article->summary = $request->input('summary');
             $article->description = $request->input('description');
             $article->is_active = (int)$request->input('is_active');
+            $article->user_id = Auth::user()->id;
 
             if ($article->save()) {
                 // upload file

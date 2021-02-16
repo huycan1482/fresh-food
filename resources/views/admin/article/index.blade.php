@@ -33,7 +33,6 @@
                                 <th class="text-center">Tiêu đề</th>
                                 <th class="text-center">Danh mục</th>
                                 <th class="text-center">Hình ảnh</th>
-                                <th class="text-center">Tóm tắt</th>
                                 <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Người tạo</th>
                                 <th class="text-center">Hành động</th>
@@ -55,11 +54,12 @@
                                     <img src="{{ asset($article->image) }}" width="50" height="50">
                                     @endif
                                 </td>
-                                
-                                <td class="text-center">{{ $article->position }}</td>
                                 <td class="text-center">
                                     <span
                                         class="label label-{{ ($article->is_active == 1) ? 'success' : 'danger' }}">{{ ($article->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</span>
+                                </td>
+                                <td class="text-center">
+                                    {{ $article->user->name }}
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ route('admin.article.edit', ['id'=> $article->id]) }}" class="btn  btn-primary">

@@ -24,7 +24,7 @@
                 </li>
                 <li><a href="">Giới thiệu</a></li>
                 <li><a href="{{ route('shop.contact') }}">Liên hệ</a></li>
-                <li><a href="">Cẩm nang</a></li>
+                <li><a href="{{ route('shop.listArticles', ['slug' => 'tat-ca']) }}">Cẩm nang</a></li>
             </ul>
 
             <ul class="right-menu">

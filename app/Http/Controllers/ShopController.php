@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Banner;
 use App\Category;
 use App\Contact;
@@ -26,7 +27,11 @@ class ShopController extends HomeController
         $products = Product::where([['is_active', '=', 1]])->orderBy('id', 'desc')->limit(4)->get(); 
         $hot_products = Product::where([['is_active', '=', 1], ['is_hot', '=', 1]])->orderBy('id', 'desc')->limit(4)->get();
         $popular_categories1 = Category::where([['is_active', '=', 1], ['position', '=', 1]])->orderBy('id', 'desc')->limit(1)->get();
-        $popular_categories2 = Category::where([['is_active', '=', 1], ['position', '=', 2]])->orderBy('id', 'desc')->limit(2)->get(); 
+        $popular_categories2 = Category::where([['is_active', '=', 1], ['position', '=', 2]])->orderBy('id', 'desc')->limit(2)->get();
+
+        $new_articles = Article::where([['is_active', '=' , 1]])->orderBy('id', 'desc')->limit(3);
+        // $articles
+
         return view ('shop.home', [
             'menu' => $this->menu,
             'setting' => $this->setting,
@@ -263,6 +268,45 @@ class ShopController extends HomeController
 
         return redirect()->back()->with('msg', "Gửi yêu cầu thành công, cảm ơn bạn đã liên hệ"); 
         
+    }
+
+    public function listArticles ($slug)
+    {
+        // dd('here');
+        // $articles = Article::where();
+        $query = Article::where([['is_active', '=', 1]]);
+
+        if ($slug == 'tat-ca') {
+            $slug = 'tất cả';
+            // $query->orderBy('id', 'desc')->paginate(12);
+        }
+
+        $categories = Category::where([['is_active', '=', 1]])->get();
+
+        foreach ($categories as $category) {
+            if ($category->slug == $slug) {
+                $query->where([['category_id', '=', $category->id]]);
+                $slug = $category->name;
+            }
+        }
+
+        $articles = $query->orderBy('id', 'desc')->paginate(5);
+
+        $hot_articles = Article::where(['is_active' => 1], ['is_hot' => 1])->limit(5)->get();
+
+        return view ('shop.listArticles', [
+            'menu' => $this->menu,
+            'setting' => $this->setting,
+            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+            'slug' => $slug,
+            'articles' => $articles,
+            'hot_articles' => $hot_articles,
+        ]);
+    }
+
+    public function searchArticles (Request $request) 
+    {
+        dd($request);
     }
 
 }

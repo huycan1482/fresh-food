@@ -16,6 +16,7 @@ class HomeController extends Controller
     {
         $this->menu = Category::where(['is_active' => 1])->get();
         $this->setting = Setting::first();
+        // dd($this->menu, $this->setting);
     }
 
 }

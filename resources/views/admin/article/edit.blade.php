@@ -106,11 +106,11 @@
             var data;
             data = new FormData();
             data.append('_method', 'PUT');
-            data.appen('title', $('#title').val());
+            data.append('title', $('#title').val());
+            data.append('category_id', $('#category_id').val());
             data.append('new_image', ($('#new_image').val()) ? $('#new_image')[0].files[0] : '');
-            data.append('url', $('#url').val());
-            data.append('target', $('#target').val());
-            data.append('position', $('#position').val());
+            data.append('summary', CKEDITOR.instances.summary.getData());
+            data.append('description', CKEDITOR.instances.description.getData());
             data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
 
             updateModel(model, data);
