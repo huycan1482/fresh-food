@@ -45,18 +45,18 @@
                             <label for="new_image">Ảnh</label>
                             <input type="file" id="new_image" name="new_image">
                             @if ($article->image)
-                                <img src="{{ asset($article->image) }}" width="200" alt="">
+                                <img src="{{ asset($article->image) }}" width="500" alt="">
                             @endif
                         </div>
 
-                        <div class="form-group" id="form-summary">
+                        <div class="form-group" id="form-summary" >
                             <label for="summary">Tóm tắt</label>
-                            <textarea id="summary" name="summary" class="form-group">{{$article->summary}}</textarea>
+                            <textarea id="summary" name="summary" class="form-group" >{{$article->summary}}</textarea>
                         </div>
 
                         <div class="form-group" id="form-description">
                             <label for="description">Mô tả</label>
-                            <textarea id="description" name="description" class="form-group rows=" 10" >{{$article->description}}</textarea>
+                            <textarea id="description" name="description" class="form-group rows=" >{{$article->description}}</textarea>
                         </div>
 
                         <div class="checkbox form-group" id="form-is_active">
@@ -87,8 +87,15 @@
 
 @section('ck_editor')
 <script>
-    CKEDITOR.replace('summary');
-    CKEDITOR.replace('description');
+    // CKEDITOR.replace('summary');
+    CKEDITOR.replace('description', {
+        height: '500px'          
+    });
+    CKEDITOR.replace( 'summary' , {
+        // toolbar: [  ['Font'], ['Bold' ]  ],
+        // width: '80px',
+        height: '500px'          
+    });   
 </script> 
 @endsection
 
@@ -97,6 +104,8 @@
 
 
     <script>
+         
+
         $('.edit-article').click(function (e) {
             // disabled the submit button
             // $("#btnSubmit").prop("disabled", true);

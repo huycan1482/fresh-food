@@ -12,7 +12,7 @@
     </div>
 
     <div class="article-header">
-        <a href="">Trang chủ / </a><a href="{{ route('shop.listArticles', ['slug' => 'tat-ca']) }}">Cẩm nang / </a><span>{{$slug}}</span>
+        <a href="">Trang chủ / </a><a href="{{ route('shop.listArticles', ['slug' => 'tat-ca']) }}">Cẩm nang / </a><span> {{$article->title}} </span>
     </div>
 
     <div class="main-article section">
@@ -37,16 +37,16 @@
                 </form>
             </div>
             <div class="other-products col-lg-12">
-                <h3 class="header-side-bar">Bài viết nổi bật<i class="fas fa-list" id="close-product"></i>
+                <h3 class="header-side-bar">Bài viết liên quan<i class="fas fa-list" id="close-product"></i>
                 </h3>
                 <div class="other-list-items">
-                    @foreach ($hot_articles as $hot_article)
+                    @foreach ($relate_articles as $relate_article)
                     <div class="other-pro-items">
                         <a href="" class="col-lg-3 other-pro-img">
-                            <img src="{{ $hot_article->image }}" alt="">
+                            <img src="{{ $relate_article->image }}" alt="">
                         </a>
                         <div class="col-lg-9 other-pro-content">
-                            <a href="">{!! $hot_article->title !!}</a>
+                            <a href="">{!! $relate_article->title !!}</a>
                         </div>
                     </div>
                     @endforeach
@@ -56,36 +56,12 @@
         
         </div>
         <div class="container article-content col-lg-6 col-md-12">
-            @foreach ($articles as $article)
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="overflow: overlay" >
                 <!-- <div class=""> -->
-                    <div class="news move-up">
-                        <div class="top-new col-lg-4">
-                            <a href="{{ route('shop.articleDetail', ['slug' => $article->slug]) }}" class="product-img zoom">
-                                <img src="{{ asset($article->image) }}" alt="">
-                            </a>
-                        </div>
-                        <div class="main-new col-lg-8">
-                            <div class="title-new">
-                                <a href="#">
-                                    {{ $article->title }}
-                                </a>
-                                <div class="title-time">
-                                    <i class="far fa-calendar-alt"></i>
-                                    <span>
-                                        {{ date('d/m/Y', strtotime($article->updated_at)) }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="summary-new">
-                                {!! $article->summary !!}
-                            </div>
-                        </div>
-                    </div>
+                {!! $article->description !!}
                 <!-- </div> -->
                 
             </div> 
-            @endforeach
             
         </div>
         

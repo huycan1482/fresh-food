@@ -32,7 +32,7 @@
                 </h3>
                 <form class="search-article-form" action="{{ route('shop.searchArticles') }}">
                     @csrf
-                    <input type="text" value="" placeholder="Nhập bài viết..." name="tu-khoa" >
+                    <input type="text" value="{{ isset($keyword) ? $keyword : '' }}" placeholder="Nhập bài viết..." name="tu-khoa" >
                     <button>Tìm kiếm <i class="fas fa-search"></i></button>
                 </form>
             </div>

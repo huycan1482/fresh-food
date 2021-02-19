@@ -31,7 +31,9 @@ Route::get('tim-kiem', 'ShopController@searchProducts')->name('shop.searchProduc
 Route::get('san-pham/{slug}/sap-xep', 'ShopController@sortProducts');
 
 //Articles
+Route::get('bai-viet/tim-kiem', 'ShopController@searchArticles')->name('shop.searchArticles');
 Route::get('bai-viet/{slug}', 'ShopController@listArticles')->name('shop.listArticles');
+Route::get('bai-viet/chi-tiet-bai-viet/{slug}', 'ShopController@articleDetail')->name('shop.articleDetail');
 
 //Contact
 Route::get('lien-he', 'ShopController@contactUs')->name('shop.contact');

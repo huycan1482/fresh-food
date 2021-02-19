@@ -304,9 +304,50 @@ class ShopController extends HomeController
         ]);
     }
 
+    public function articleDetail($slug) 
+    {
+        // dd($slug);
+
+        $checkArticle = Article::where([['slug', '=', $slug], ['is_active', '=', 1]])->get();
+
+        if (empty($checkArticle->first())) {
+            return view ('shop.notFound');
+        }
+
+        $article = $checkArticle->first();
+
+        $relate_articles = Article::where([['is_active', '=', 1], ['category_id', '=', 1]])->get();
+        // dd($article->category_id, $relate_articles);
+        return view ('shop.articleDetail', [
+            'menu' => $this->menu,
+            'setting' => $this->setting,
+            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+            'article' => $article,
+            'relate_articles' => $relate_articles,
+
+        ]);
+    }
+
     public function searchArticles (Request $request) 
     {
-        dd($request);
+        $keyword = $request->input('tu-khoa');
+
+        $slug = Str::slug($keyword);
+        // dd($slug);
+
+        $articles = Article::where([['slug', 'like', '%' . $slug . '%'], ['is_active', '=', 1]])->get();
+
+        $hot_articles = Article::where(['is_active' => 1], ['is_hot' => 1])->limit(5)->get();
+
+        return view ('shop.searchArticles', [
+            'menu' => $this->menu,
+            'setting' => $this->setting,
+            'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
+            'slug' => $keyword,
+            'articles' => $articles,
+            'hot_articles' => $hot_articles,
+            'keyword' => $keyword,
+        ]);
     }
 
 }
