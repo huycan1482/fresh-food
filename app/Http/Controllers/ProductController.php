@@ -223,7 +223,7 @@ class ProductController extends Controller
             'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
             'number' => 'required|integer|min:0',
             'price' => 'required|integer|min:0',
-            'sale' => 'nullable|integer|min:0',
+            'sale' => 'required|integer|min:0',
             'unit' => 'required',
             // 'sku' => 'nullable',
             'NSX' => 'date_format:"d-m-Y"|required',
@@ -313,6 +313,8 @@ class ProductController extends Controller
             $product->is_hot = (int)$request->input('is_hot');
 
             $product->user_id = Auth::user()->id;
+
+            // dd($product);
 
             if ($product->save()) {
                 // upload file

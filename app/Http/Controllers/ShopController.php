@@ -160,6 +160,8 @@ class ShopController extends HomeController
             $query->whereRaw("(products.price - products.sale/100 * products.price ) between 0 and $range_price");
         } 
 
+        // dd($query->get());
+
         if ($slug == 'san-pham-hot') {
             $query->where([['is_hot', '=', 1]])->orderBy('id', 'desc');
         }
@@ -169,6 +171,8 @@ class ShopController extends HomeController
         }
 
         $products = $query->paginate(12);
+
+        // dd($products);
 
         return response()->json(['products' => $products], 200);
     }
@@ -222,16 +226,13 @@ class ShopController extends HomeController
         ]);
     }
 
-    public function sortSearchProducts (Request $request, $slug)
-    {
-        dd($slug, $request->all());
-    }
-
-    
+    // public function sortSearchProducts (Request $request, $slug)
+    // {
+    //     dd($slug, $request->all());
+    // }
 
     public function contactUs ()
     {
-        // dd('here');
         return view ('shop.contact', [
             'menu' => $this->menu,
             'setting' => $this->setting,
@@ -241,7 +242,6 @@ class ShopController extends HomeController
 
     public function postContactUs (Request $request)
     {
-        // dd($request->all());
 
         $request->validate([
             'name' => 'required|max:255',
@@ -264,7 +264,6 @@ class ShopController extends HomeController
         $contact->phone = $request->input('phone');
         $contact->content = $request->input('content');
         $contact->save();
-        // dd($contact);
 
         return redirect()->back()->with('msg', "Gửi yêu cầu thành công, cảm ơn bạn đã liên hệ"); 
         
@@ -272,8 +271,6 @@ class ShopController extends HomeController
 
     public function listArticles ($slug)
     {
-        // dd('here');
-        // $articles = Article::where();
         $query = Article::where([['is_active', '=', 1]]);
 
         if ($slug == 'tat-ca') {
@@ -306,8 +303,6 @@ class ShopController extends HomeController
 
     public function articleDetail($slug) 
     {
-        // dd($slug);
-
         $checkArticle = Article::where([['slug', '=', $slug], ['is_active', '=', 1]])->get();
 
         if (empty($checkArticle->first())) {
@@ -317,7 +312,9 @@ class ShopController extends HomeController
         $article = $checkArticle->first();
 
         $relate_articles = Article::where([['is_active', '=', 1], ['category_id', '=', 1]])->get();
+        
         // dd($article->category_id, $relate_articles);
+        
         return view ('shop.articleDetail', [
             'menu' => $this->menu,
             'setting' => $this->setting,
@@ -333,7 +330,6 @@ class ShopController extends HomeController
         $keyword = $request->input('tu-khoa');
 
         $slug = Str::slug($keyword);
-        // dd($slug);
 
         $articles = Article::where([['slug', 'like', '%' . $slug . '%'], ['is_active', '=', 1]])->get();
 

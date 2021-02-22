@@ -50,6 +50,11 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6'
+        ], [
+            'email.required' => 'Yêu cầu không để trống',
+            'email.email' => 'Không đúng định dạng email',
+            'password.required' => 'Yêu cầu không để trống',
+            'password.min' => 'Độ dài mật khảu phải lớn hơn 6 kí tự'
         ]);
 
         $data = [
@@ -57,12 +62,13 @@ class LoginController extends Controller
             'password' => $request->input('password')
         ];
 
+
         // check success
-        if (Auth::attempt($data, $request->has('remember'))) {
+        if (Auth::attempt($data, $request->input('remember'))) {
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->back()->with('msg', 'Email hoặc Password không chính xác');;
+        return redirect()->back()->with('msg', 'Email hoặc Password không chính xác');
     }
 
     public function logout()

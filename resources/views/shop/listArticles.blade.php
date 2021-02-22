@@ -22,6 +22,7 @@
                 </h3>
                 <!-- <i class="fas fa-times" id="close-category"></i> -->
                 <ul class="main-category-side-bar">
+                    <li class=""> <a href="{{ route('shop.listArticles', ['slug' => 'tat-ca']) }}"> Tất cả </a></li>
                     @foreach ($menu as $item)
                     <li class=""> <a href="{{ route('shop.listArticles', ['slug' => $item->slug]) }}"> {{$item->name}} </a></li>
                      @endforeach

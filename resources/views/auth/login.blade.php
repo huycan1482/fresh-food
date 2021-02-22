@@ -167,11 +167,13 @@
                 @csrf
                 <div class="form-group">
                     <label for="">Email</label>
-                    <input type="email" class="form-control" name="email">
+                    <input type="email" class="form-control" name="email" value="{{old('email')}}">
+                    <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('email')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Password</label>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" class="form-control" name="password" value="{{old('password')}}">
+                    <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('password')}}</span>
                 </div>
                 <div class="form-footer">
                     <div class="form-group">
