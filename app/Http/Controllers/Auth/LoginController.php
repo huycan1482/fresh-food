@@ -57,14 +57,20 @@ class LoginController extends Controller
             'password.min' => 'Độ dài mật khảu phải lớn hơn 6 kí tự'
         ]);
 
-        $data = [
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
-        ];
+        // $data = [
+        //     'email' => $request->input('email'),
+        //     'password' => $request->input('password')
+        // ];
 
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        // dd($request->input('remember'));
+
+        $remember = $request->input('remember');
 
         // check success
-        if (Auth::attempt($data, $request->input('remember'))) {
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             return redirect()->route('admin.dashboard');
         }
 
