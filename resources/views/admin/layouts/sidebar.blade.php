@@ -115,7 +115,7 @@
           <li class="">
             <a href="{{ route('admin.role.index') }}">
                 <i class="fa fa-files-o"></i>
-                <span>QL Quyền (Roles)</span>
+                <span>QL Vai trò (Roles)</span>
             </a>
           </li>
 

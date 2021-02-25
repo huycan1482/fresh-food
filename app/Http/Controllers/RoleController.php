@@ -110,7 +110,37 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        // dd($request->all(), $request->input('1'));
+
+        // $user_tables = [];
+
+        foreach ($request->all() as $key => $item) {
+            $user_tables [] = $key;
+            // dd($item);
+        }
+
+        $tables = Table::all();
+        $permissions = Permission::all();
+
+        foreach ($tables as $table) {
+            $user_roles = DB::table('permissions')
+                ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
+                ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
+                ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
+                ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
+                ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
+                ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
+                ->join('users', 'users.id', '=', 'users_roles.user_id')
+                ->where([['users.id', '=', $id], ['tables.id', '=', $table->id]])
+                ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
+                ->get();  
+
+            foreach ($user_roles as $key => $item) {
+                $user_permissions [$item->table_id][$item->id] = $item->id;
+            }   
+        }
+
+        dd($request->all(), $user_permissions);
     }
 
     /**

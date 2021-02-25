@@ -2,7 +2,7 @@
 @section('content')
 <section class="content-header">
     <h1>
-        Danh sách Quyền
+        Danh sách Vai trò
         <small><a href="{{ route('admin.role.create') }}">Thêm mới</a></small>
     </h1>
 </section>

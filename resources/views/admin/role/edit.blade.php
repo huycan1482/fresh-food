@@ -50,7 +50,7 @@
 
                         </div>
                         <div class="box-footer">
-                            <a class="btn btn-primary edit-permission" >Update</a>
+                            <a class="btn btn-primary edit-permission" data-id="{{ $role->id }}">Update</a>
                             <button type="reset" class="btn btn-danger">Reset</button>
                         </div>
                         <!-- /.box-body -->
@@ -77,14 +77,15 @@
                 <!-- /.box-header -->
                 <!-- form start -->
                 <div class="box-body">
-                    <form role="form" class="permission">
+                    {{-- <form class="table1" id="form-{{ $table->id }}"> --}}
+                    <form class="table" id="{{ $table->id }}">
                         <div class="form-group">
                             <label for="">Chọn quyền cho bảng</label>
                             @foreach ($permissions as $permission)
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" {{ (isset($user_permissions[$table->id][$permission->id]) == $permission->id) 
-                                            ? 'checked' : '' }}>
+                                    <input type="checkbox" value="{{ $permission->id }}" {{ (isset($user_permissions[$table->id][$permission->id]) == $permission->id) 
+                                            ? 'checked' : '' }} name="{{$table->id}}">
                                     {{$permission->name}}
                                 </label>
                             </div>
@@ -129,7 +130,35 @@
     });
 
     $('.edit-permission').click(function (e) {
-        console.log($('.permission input'));
+        var url = '/admin/role/' + $(this).attr('data-id');
+        // console.log($('.permission input'));
+        var val = new Object();
+        $(".table").each(function($key, $value){
+            var arr = [];
+            // var formdata = $(this).serializeArray();
+            $( $(this).serializeArray() ).each(function(index, obj){
+                arr.push(obj.value);
+            });
+
+            // console.log($(this).attr('id'));
+
+            val[$(this).attr('id')] = arr;            
+        });
+
+        // console.log(val, JSON.stringify(val));
+        console.log(val);
+
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: val,
+            dataType: "json",
+            success: function (response) {
+                
+            }
+        });
+
+
     });
 
 </script>
