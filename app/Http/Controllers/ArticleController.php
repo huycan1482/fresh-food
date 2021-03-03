@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -18,12 +20,17 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
-        $categories = Category::all();
-        return view ('admin.article.index', [
-            'articles' => $articles,
-            'categories' => $categories,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('viewAny', Article::class)) {
+            $articles = Article::latest()->paginate(10);
+            $categories = Category::all();
+            return view ('admin.article.index', [
+                'articles' => $articles,
+                'categories' => $categories,
+            ]);
+        }
+
+        return view ('errors.404');
     }
 
     /**
@@ -33,10 +40,17 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view ('admin.article.create', [
-            'categories' => $categories,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('viewAny', Article::class)) {
+            $categories = Category::all();
+            return view ('admin.article.create', [
+                'categories' => $categories,
+            ]);
+            
+        }
+        
+        return view ('errors.404');
+        
     }
 
     /**
@@ -134,6 +148,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $categories = Category::all();
+
         return view ('admin.article.edit', [
             'article' => $article,
             'categories' => $categories,

@@ -8,6 +8,12 @@ class PermissionsTables extends Model
 {
     protected $table = 'permissions_tables';
 
+    public function permissionsTables () 
+    {
+        return $this->belongsToMany('App\Role', 'roles_permissions', 'permissionTable_id', 'role_id')
+            ->withPivot('permissionTable_id', 'role_id');
+    }
+
     public function tables ()
     {
         return $this->belongsTo('App\Table', 'table_id');

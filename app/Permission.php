@@ -8,6 +8,6 @@ class Permission extends Model
 {
     public function tables () 
     {
-        return $this->belongsToMany('App\Table', 'permissions_tables', 'table_id', 'permission_id');
+        return $this->belongsToMany('App\Table', 'permissions_tables', 'permission_id', 'table_id');
     }
 }
