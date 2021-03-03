@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVendorsTable extends Migration
+class CreateOrderStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateVendorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('vendor', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('order_status', function (Blueprint $table) {
+            $table->integerIncrements('id');
+            $table->string('name', 255);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateVendorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendor');
+        Schema::dropIfExists('order_status');
     }
 }

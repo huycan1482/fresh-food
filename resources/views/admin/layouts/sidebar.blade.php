@@ -119,6 +119,20 @@
             </a>
           </li>
 
+          <li class="">
+            <a href="{{ route('admin.table.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>QL Bảng (Tables)</span>
+            </a>
+          </li>
+
+          <li class="">
+            <a href="{{ route('admin.permission.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>QL Quyền (Permissions)</span>
+            </a>
+          </li>
+
 
         </ul>
     </section>

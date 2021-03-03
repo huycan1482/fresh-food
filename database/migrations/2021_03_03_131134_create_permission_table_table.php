@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderStatusTable extends Migration
+class CreatePermissionTableTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreateOrderStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_status', function (Blueprint $table) {
+        Schema::create('permission_table', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('permission_id');
+            $table->bigInteger('table_id');
+            $table->string('action_code', 255);
+            $table->binary('is_active')->default(1);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateOrderStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_status');
+        Schema::dropIfExists('permission_table');
     }
 }
