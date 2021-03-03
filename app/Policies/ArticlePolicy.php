@@ -65,7 +65,17 @@ class ArticlePolicy
      */
     public function create(User $user)
     {
-        //
+        $table = 'articles';
+        $permission = 'create';
+        $users_id = $this->checkUser($table, $permission);;
+
+        foreach ($users_id as $item) {
+            if ($item->id == $user->id ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -75,9 +85,19 @@ class ArticlePolicy
      * @param  \App\Article  $article
      * @return mixed
      */
-    public function update(User $user, Article $article)
+    public function update(User $user)
     {
-        //
+        $table = 'articles';
+        $permission = 'update';
+        $users_id = $this->checkUser($table, $permission);;
+
+        foreach ($users_id as $item) {
+            if ($item->id == $user->id ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -87,9 +107,19 @@ class ArticlePolicy
      * @param  \App\Article  $article
      * @return mixed
      */
-    public function delete(User $user, Article $article)
+    public function delete(User $user)
     {
-        //
+        $table = 'articles';
+        $permission = 'delete';
+        $users_id = $this->checkUser($table, $permission);;
+
+        foreach ($users_id as $item) {
+            if ($item->id == $user->id ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
