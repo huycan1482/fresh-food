@@ -181,6 +181,9 @@
                     </div>
                     <button class="">Sign In</button>
                 </div>
+                <div style="margin-top: 100px; text-align: center">
+                    <a href="#" style="font-family: roboto-light; font-weight: 600; color: #fff">Lấy lại mật khẩu</a>
+                </div>
             </form>
         </div>
     </div>

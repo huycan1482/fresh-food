@@ -46,7 +46,7 @@ class LoginController extends Controller
 
     public function postLogin (Request $request)
     {
-
+        // dd(Auth::viaRemember());
         $request->validate([
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6'

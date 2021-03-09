@@ -84,7 +84,7 @@ class RoleController extends Controller
                 ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
                 ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
                 ->join('users', 'users.id', '=', 'users_roles.user_id')
-                ->where([['users.id', '=', $id], ['tables.id', '=', $table->id]])
+                ->where([['roles.id', '=', $id], ['tables.id', '=', $table->id]])
                 ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
                 ->get();  
 

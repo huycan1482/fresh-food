@@ -113,6 +113,13 @@
           </li>
 
           <li class="">
+            <a href="{{ route('admin.user.index') }}">
+                <i class="fa fa-files-o"></i>
+                <span>QL Người dùng (Users)</span>
+            </a>
+          </li>
+
+          <li class="">
             <a href="{{ route('admin.role.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Vai trò (Roles)</span>
