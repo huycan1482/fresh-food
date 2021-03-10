@@ -3,11 +3,11 @@
 namespace App\Policies;
 
 use App\User;
-use App\Banner;
+use App\Table;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\DB;
 
-class BannerPolicy
+class TablePolicy
 {
     use HandlesAuthorization;
 
@@ -25,16 +25,17 @@ class BannerPolicy
     }
     
     /**
-     * Determine whether the user can view any banners.
+     * Determine whether the user can view any tables.
      *
      * @param  \App\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
     {
-        $table = 'banners';
+        $table = 'tables';
         $permission = 'view';
-        $users_id = $this->checkUser($table, $permission);;
+
+        $users_id = $this->checkUser($table, $permission);
 
         foreach ($users_id as $item) {
             if ($item->id == $user->id ) {
@@ -46,28 +47,29 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can view the banner.
+     * Determine whether the user can view the table.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Table  $table
      * @return mixed
      */
-    public function view(User $user, Banner $banner)
+    public function view(User $user, Table $table)
     {
         //
     }
 
     /**
-     * Determine whether the user can create banners.
+     * Determine whether the user can create tables.
      *
      * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        $table = 'banners';
+        $table = 'tables';
         $permission = 'create';
-        $users_id = $this->checkUser($table, $permission);;
+
+        $users_id = $this->checkUser($table, $permission);
 
         foreach ($users_id as $item) {
             if ($item->id == $user->id ) {
@@ -79,17 +81,18 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can update the banner.
+     * Determine whether the user can update the table.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Table  $table
      * @return mixed
      */
     public function update(User $user)
     {
-        $table = 'banners';
+        $table = 'tables';
         $permission = 'update';
-        $users_id = $this->checkUser($table, $permission);;
+
+        $users_id = $this->checkUser($table, $permission);
 
         foreach ($users_id as $item) {
             if ($item->id == $user->id ) {
@@ -101,17 +104,18 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can delete the banner.
+     * Determine whether the user can delete the table.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Table  $table
      * @return mixed
      */
     public function delete(User $user)
     {
-        $table = 'banners';
+        $table = 'tables';
         $permission = 'delete';
-        $users_id = $this->checkUser($table, $permission);;
+
+        $users_id = $this->checkUser($table, $permission);
 
         foreach ($users_id as $item) {
             if ($item->id == $user->id ) {
@@ -123,25 +127,25 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can restore the banner.
+     * Determine whether the user can restore the table.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Table  $table
      * @return mixed
      */
-    public function restore(User $user, Banner $banner)
+    public function restore(User $user, Table $table)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the banner.
+     * Determine whether the user can permanently delete the table.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Table  $table
      * @return mixed
      */
-    public function forceDelete(User $user, Banner $banner)
+    public function forceDelete(User $user, Table $table)
     {
         //
     }

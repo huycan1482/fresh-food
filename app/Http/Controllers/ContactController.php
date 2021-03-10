@@ -19,12 +19,19 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::latest()->paginate(10);
-        $users = User::all();
-        return view ('admin.contact.index', [
-            'contacts' => $contacts,
-            'users' => $users,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('viewAny', Contact::class)) {
+            $contacts = Contact::latest()->paginate(10);
+            $users = User::all();
+            return view ('admin.contact.index', [
+                'contacts' => $contacts,
+                'users' => $users,
+            ]);
+        } else {
+            return view ('errors.404'); 
+        }
+
+        
     }
 
     /**
@@ -67,12 +74,18 @@ class ContactController extends Controller
      */
     public function edit($id)
     {
-        $contact = Contact::findOrFail($id);
-        $order_status = OrderStatus::all();
-        return view ('admin.contact.edit', [
-            'contact' => $contact,
-            'order_status' => $order_status,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('update', Contact::class)) {
+            $contact = Contact::findOrFail($id);
+            $order_status = OrderStatus::all();
+            return view ('admin.contact.edit', [
+                'contact' => $contact,
+                'order_status' => $order_status,
+            ]);
+        } else {
+            return view ('errors.404'); 
+        }
+        
     }
 
     /**
@@ -84,20 +97,24 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $contact = Contact::findOrFail($id);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('update', Contact::class)) {
+            $contact = Contact::findOrFail($id);
 
-        // dd($request->all());
+            $request->validate([
+                'status' => 'required|exists:order_status,id',
+            ]);
 
-        $request->validate([
-            'status' => 'required|exists:order_status,id',
-        ]);
+            $contact->status = $request->input('status');
+            $contact->user_id = Auth::user()->id;
 
-        $contact->status = $request->input('status');
-        $contact->user_id = Auth::user()->id;
+            $contact->save();
 
-        $contact->save();
-
-        return redirect()->route('admin.contact.index');
+            return redirect()->route('admin.contact.index');
+        } else {
+            return view ('errors.auth'); 
+        }
+        
     }
 
     /**

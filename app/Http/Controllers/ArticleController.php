@@ -46,7 +46,6 @@ class ArticleController extends Controller
             return view ('admin.article.create', [
                 'categories' => $categories,
             ]);
-            
         }
         
         return view ('errors.404');
@@ -249,7 +248,7 @@ class ArticleController extends Controller
             }
         }
         
-         return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+        return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
         
     }
 
@@ -261,10 +260,9 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->can('update', Article::class)) {
+        if ($user->can('delete', Article::class)) {
 
             $article = Article::find($id);
             if ( empty($article) ) {

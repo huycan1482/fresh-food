@@ -23,10 +23,16 @@ class UserController extends Controller
     public function index()
     {
         // dd(Auth::viaRemember());
-        $users = User::latest()->paginate(10);
-        return view ('admin.user.index', [
-            'users' => $users,
-        ]);
+        $currentUser = User::findOrFail(Auth()->user()->id);
+        if ( $currentUser->can('viewAny', User::class) ) {
+            $users = User::latest()->paginate(10);
+            return view ('admin.user.index', [
+                'users' => $users,
+            ]);
+        } else {
+            return view ('admin.errors.auth');
+        }
+        
     }
 
     /**
@@ -36,7 +42,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view ('admin.user.create');
+        $currentUser = User::findOrFail(Auth()->user()->id);
+        if ( $currentUser->can('viewAny', User::class) ) {
+            return view ('admin.user.create');
+        } else {
+            return view ('admin.errors.auth');
+        }
     }
 
     /**
@@ -98,6 +109,9 @@ class UserController extends Controller
                 return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
             }
 
+        } else {
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+
         }
     }
 
@@ -121,7 +135,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $currentUser = User::find(Auth()->user()->id);
-        if ($currentUser->can('update', Article::class)) {
+        if ($currentUser->can('update', User::class)) {
             $user = User::findOrFail($id);
     
             $roles = Role::all();
@@ -165,7 +179,8 @@ class UserController extends Controller
                 'user_permissions' => $user_permissions,
             ]);
         } else {
-            return view ('errors.404');
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+
         }
     }
 
@@ -178,99 +193,103 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
         $currentUser = User::find(Auth::user()->id);
 
-        if ( empty($user) ) {
-            return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
-        } 
-        
-        if ( $currentUser->can('updateProfile', $user) ) {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'email' => 'required|email',
-                'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-                'new_password' => 'nullable',
-                'repassword' =>'nullable|same:new_password',
-                // 'is_active' => 'integer|boolean',
-            ], [
-                'name.required' => 'Tên không được để trống',
-                'email.required' => 'Yêu cầu không được để trống',
-                'email.email' => 'Không đúng định dạng mail',
-                'new_image.image' => 'Ảnh không đúng định dạng',
-                'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
-                'repassword.same' => 'Mật khẩu nhập lại phải giống mật khẩu mới',
-                // 'is_active.integer' => 'Sai kiểu dữ liệu',
-                // 'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-            ]); 
+        if ($currentUser->can('update', User::class)) {
+            $user = User::find($id);
+    
+            if ( empty($user) ) {
+                return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
+            } 
             
-            $errs = $validator->errors();
-    
-            if ( $validator->fails() ) {
-                return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
-            } else {
-                $user->name = $request->input('name');
-                $user->email = $request->input('email');
-                if ($request->hasFile('new_image')) {
-                    // xóa file cũ
-                    @unlink(public_path($user->image));
-                    // get file mới
-                    $file = $request->file('new_image');
-                    // get tên
-                    $filename = time().'_'.$file->getClientOriginalName();
-                    // duong dan upload
-                    $path_upload = 'uploads/user/';
-                    // upload file
-    
-                    $user->avatar = $path_upload.$filename;
-                }
-    
-                if (!empty($request->input('new_password'))) {
-                    $user->password = Hash::make($request->input('new_password'));
-                }
-                    
-                if ($user->save()) {
-                    ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
-                    return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+            if ( $currentUser->can('updateProfile', $user) ) {
+                $validator = Validator::make($request->all(), [
+                    'name' => 'required|max:255',
+                    'email' => 'required|email',
+                    'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
+                    'new_password' => 'nullable',
+                    'repassword' =>'nullable|same:new_password',
+                    // 'is_active' => 'integer|boolean',
+                ], [
+                    'name.required' => 'Tên không được để trống',
+                    'email.required' => 'Yêu cầu không được để trống',
+                    'email.email' => 'Không đúng định dạng mail',
+                    'new_image.image' => 'Ảnh không đúng định dạng',
+                    'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
+                    'repassword.same' => 'Mật khẩu nhập lại phải giống mật khẩu mới',
+                    // 'is_active.integer' => 'Sai kiểu dữ liệu',
+                    // 'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+                ]); 
+                
+                $errs = $validator->errors();
+        
+                if ( $validator->fails() ) {
+                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
                 } else {
-                    return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                    $user->name = $request->input('name');
+                    $user->email = $request->input('email');
+                    if ($request->hasFile('new_image')) {
+                        // xóa file cũ
+                        @unlink(public_path($user->image));
+                        // get file mới
+                        $file = $request->file('new_image');
+                        // get tên
+                        $filename = time().'_'.$file->getClientOriginalName();
+                        // duong dan upload
+                        $path_upload = 'uploads/user/';
+                        // upload file
+        
+                        $user->avatar = $path_upload.$filename;
+                    }
+        
+                    if (!empty($request->input('new_password'))) {
+                        $user->password = Hash::make($request->input('new_password'));
+                    }
+                        
+                    if ($user->save()) {
+                        ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
+                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                    } else {
+                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                    }
                 }
-            }
 
-        } else if ( $currentUser->can('update', User::class) ) {
-            $validator = Validator::make($request->all(), [
-                'is_active' => 'integer|boolean',
-            ], [
-                'is_active.integer' => 'Sai kiểu dữ liệu',
-                'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-            ]); 
+            } else if ( $currentUser->can('update', User::class) ) {
+                $validator = Validator::make($request->all(), [
+                    'is_active' => 'integer|boolean',
+                ], [
+                    'is_active.integer' => 'Sai kiểu dữ liệu',
+                    'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+                ]); 
 
-            $errs = $validator->errors();
-    
-            if ( $validator->fails() ) {
-                return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
-            } else {
-
-                $arr_role = $request->input('arr_role');
-
-                if (!empty($arr_role)) {
-                $user->roles()->sync($arr_role);
-                }
-
-                $user->is_active = (int)$request->input('is_active');
-
-                if ($user->save()) {
-                    return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                $errs = $validator->errors();
+        
+                if ( $validator->fails() ) {
+                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
                 } else {
-                    return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
-                }
-            }
 
+                    $arr_role = $request->input('arr_role');
+
+                    if (!empty($arr_role)) {
+                    $user->roles()->sync($arr_role);
+                    }
+
+                    $user->is_active = (int)$request->input('is_active');
+
+                    if ($user->save()) {
+                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                    } else {
+                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                    }
+                }
+
+            } else {
+                return response()->json(['mess' => 'Sửa bản ghi lỗi'], 400);
+            }
         } else {
-            return response()->json(['mess' => 'Sửa bản ghi lỗi'], 400);
-        }
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
 
-        // dd($request->all());
+        }
         
     }
 
@@ -282,6 +301,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $currentUser = User::findOrFail(Auth::user()->id);
+
+        if ($currentUser->can('destroy', User::class)) {
+
+            $user = User::find($id);
+            if ( empty($article) ) {
+                return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
+            }
+    
+            if( User::destroy($id) != 0 ) {
+                return response()->json(['mess' => 'Xóa bản ghi thành công'], 200);
+            } else {
+                return response()->json(['mess' => 'Xóa bản không thành công'], 400);
+            }
+        } else {
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+        }
     }
 }

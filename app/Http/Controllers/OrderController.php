@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Mail\MailNotify;
 use App\Order;
 use App\OrderStatus;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
@@ -17,12 +19,15 @@ class OrderController extends Controller
      */
     public function index()
     {
-        // $test = Order::find(3);
-        // dd($test->orderDetails);
-        $orders = Order::latest()->paginate(10);
-        return view ('admin.order.index', [
-            'orders' => $orders,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('viewAny', Order::class)) {
+            $orders = Order::latest()->paginate(10);
+            return view ('admin.order.index', [
+                'orders' => $orders,
+            ]);
+        } else {
+            return view ('errors.404'); 
+        }
     }
 
     /**
@@ -65,12 +70,18 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order = Order::findOrFail($id);
-        $order_status = OrderStatus::all();
-        return view ('admin.order.edit', [
-            'order' => $order,
-            'order_status' => $order_status,
-        ]);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('update', Order::class)) {
+            $order = Order::findOrFail($id);
+            $order_status = OrderStatus::all();
+            return view ('admin.order.edit', [
+                'order' => $order,
+                'order_status' => $order_status,
+            ]);
+        } else {
+            return view ('errors.404'); 
+        }
+        
     }
 
     /**
@@ -82,22 +93,24 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        $order = Order::findOrFail($id);
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->can('update', Order::class)) {
+            $order = Order::findOrFail($id);
         
-        $order->address2 = $request->input('address2');
-        $order->note = $request->input('note');
-        $order->status_id = $request->input('status_id');
-        // dd($order);
-        if ($order->status_id == 3) {
-            // dd('true');
-            // dd($order->mail);
-            Mail::to($order->mail)->send(new MailNotify($order, 'shopping'));
+            $order->address2 = $request->input('address2');
+            $order->note = $request->input('note');
+            $order->status_id = $request->input('status_id');
+            if ($order->status_id == 3) {
+                Mail::to($order->mail)->send(new MailNotify($order, 'shopping'));
+            }
+            
+            $order->save();
+
+            return redirect()->route('admin.order.index');
+        } else {
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
         }
         
-        $order->save();
-
-        return redirect()->route('admin.order.index');
     }
 
     /**

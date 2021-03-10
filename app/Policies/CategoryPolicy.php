@@ -3,11 +3,11 @@
 namespace App\Policies;
 
 use App\User;
-use App\Banner;
+use App\Category;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\DB;
 
-class BannerPolicy
+class CategoryPolicy
 {
     use HandlesAuthorization;
 
@@ -25,14 +25,14 @@ class BannerPolicy
     }
     
     /**
-     * Determine whether the user can view any banners.
+     * Determine whether the user can view any categories.
      *
      * @param  \App\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
     {
-        $table = 'banners';
+        $table = 'categories';
         $permission = 'view';
         $users_id = $this->checkUser($table, $permission);;
 
@@ -46,26 +46,26 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can view the banner.
+     * Determine whether the user can view the category.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Category  $category
      * @return mixed
      */
-    public function view(User $user, Banner $banner)
+    public function view(User $user, Category $category)
     {
         //
     }
 
     /**
-     * Determine whether the user can create banners.
+     * Determine whether the user can create categories.
      *
      * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        $table = 'banners';
+        $table = 'categories';
         $permission = 'create';
         $users_id = $this->checkUser($table, $permission);;
 
@@ -79,15 +79,15 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can update the banner.
+     * Determine whether the user can update the category.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Category  $category
      * @return mixed
      */
     public function update(User $user)
     {
-        $table = 'banners';
+        $table = 'categories';
         $permission = 'update';
         $users_id = $this->checkUser($table, $permission);;
 
@@ -101,15 +101,15 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can delete the banner.
+     * Determine whether the user can delete the category.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Category  $category
      * @return mixed
      */
     public function delete(User $user)
     {
-        $table = 'banners';
+        $table = 'categories';
         $permission = 'delete';
         $users_id = $this->checkUser($table, $permission);;
 
@@ -123,25 +123,25 @@ class BannerPolicy
     }
 
     /**
-     * Determine whether the user can restore the banner.
+     * Determine whether the user can restore the category.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Category  $category
      * @return mixed
      */
-    public function restore(User $user, Banner $banner)
+    public function restore(User $user, Category $category)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the banner.
+     * Determine whether the user can permanently delete the category.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Category  $category
      * @return mixed
      */
-    public function forceDelete(User $user, Banner $banner)
+    public function forceDelete(User $user, Category $category)
     {
         //
     }

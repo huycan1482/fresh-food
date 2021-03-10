@@ -20,12 +20,15 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::latest()->paginate(10);
-
-
-        return view ('admin.role.index', [
-            'roles' => $roles,
-        ]);
+        $currentUser = User::findOrFail(Auth()->user()->id);
+        if ( $currentUser->can('viewAny', Role::class) ) {
+            $roles = Role::latest()->paginate(10);
+            return view ('admin.role.index', [
+                'roles' => $roles,
+            ]);
+        } else {
+            return view ('admin.errors.auth');
+        }
     }
 
     /**
@@ -69,38 +72,42 @@ class RoleController extends Controller
     public function edit($id)
     {
         // dd( $table->permissions()->where([['permissions.id', '=', 1]])->get() );
+        $currentUser = User::findOrFail(Auth()->user()->id);
+        if ( $currentUser->can('update', Role::class) ) {
+            $role = Role::findOrFail($id);
 
-        $role = Role::findOrFail($id);
+            $tables = Table::all();
+            $permissions = Permission::all();
 
-        $tables = Table::all();
-        $permissions = Permission::all();
+            foreach ($tables as $table) {
+                $user_roles = DB::table('permissions')
+                    ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
+                    ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
+                    ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
+                    ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
+                    ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
+                    ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
+                    ->join('users', 'users.id', '=', 'users_roles.user_id')
+                    ->where([['roles.id', '=', $id], ['tables.id', '=', $table->id]])
+                    ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
+                    ->get();  
 
-        foreach ($tables as $table) {
-            $user_roles = DB::table('permissions')
-                ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
-                ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
-                ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
-                ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
-                ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
-                ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-                ->join('users', 'users.id', '=', 'users_roles.user_id')
-                ->where([['roles.id', '=', $id], ['tables.id', '=', $table->id]])
-                ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
-                ->get();  
+                foreach ($user_roles as $key => $item) {
+                    $user_permissions [$item->table_id][$item->id] = $item->id;
+                }   
+            }
 
-            foreach ($user_roles as $key => $item) {
-                $user_permissions [$item->table_id][$item->id] = $item->id;
-            }   
+
+            return view ('admin.role.edit', [
+                'role' => $role,
+                'tables' => $tables,
+                'permissions' => $permissions,
+                'user_permissions' => $user_permissions,
+            ]);
+        } else {
+            return view ('admin.errors.auth');
         }
-
-        // dd($user_roles, $user_permissions);
-
-        return view ('admin.role.edit', [
-            'role' => $role,
-            'tables' => $tables,
-            'permissions' => $permissions,
-            'user_permissions' => $user_permissions,
-        ]);
+        
     }
 
     /**
@@ -112,52 +119,33 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all(), $request->input('1'));
-
-        // $user_tables = [];
-
-        foreach ($request->all() as $key => $item) {
-            $user_tables [] = $key;
-            // dd($item);
-        }
-
-        $tables = Table::all();
-        $permissions = Permission::all();
-
-        // foreach ($tables as $table) {
-        //     $user_roles = DB::table('permissions')
-        //         ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
-        //         ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
-        //         ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
-        //         ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
-        //         ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
-        //         ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-        //         ->join('users', 'users.id', '=', 'users_roles.user_id')
-        //         ->where([['users.id', '=', $id], ['tables.id', '=', $table->id]])
-        //         ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
-        //         ->get();  
-
-        //     foreach ($user_roles as $key => $item) {
-        //         $user_permissions [$item->table_id][$key] = $item->id;
-        //     }   
-        // }
-
-        $role = Role::find($id);
-
-        foreach ($request->all() as $key => $item) {
-            $change_ids = DB::table('permissions_tables')->select('id')
-                ->where([['table_id', '=', $key]])
-                ->whereIn('permission_id', $item)
-                ->get();
-
-            foreach ($change_ids as $val) {
-                $arr[] = $val->id;
+        $currentUser = User::findOrFail(Auth()->user()->id);
+        if ( $currentUser->can('update', Role::class) ) {
+            foreach ($request->all() as $key => $item) {
+                $user_tables [] = $key;
             }
-
-            $role->permissionsTables()->sync($arr);
+    
+            $tables = Table::all();
+            $permissions = Permission::all();
+    
+            $role = Role::find($id);
+    
+            foreach ($request->all() as $key => $item) {
+                $change_ids = DB::table('permissions_tables')->select('id')
+                    ->where([['table_id', '=', $key]])
+                    ->whereIn('permission_id', $item)
+                    ->get();
+    
+                foreach ($change_ids as $val) {
+                    $arr[] = $val->id;
+                }
+    
+                $role->permissionsTables()->sync($arr);
+            }
+        } else {
+            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
         }
 
-        // dd($detach_id, $attach_id, $request->all());
     }
 
     /**

@@ -1,5 +1,5 @@
 @extends('admin.layout.main')
 
 @section('content')
-<h2>Trang bạn tìm không tồn tại</h2>
+<h2>Bạn không có quyền truy cập</h2>
 @endsection
