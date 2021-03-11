@@ -53,6 +53,10 @@ Route::post('thanh-toan', 'CartController@postCheckout')->name('shop.postCheckou
 Route::get('login', 'Auth\LoginController@login')->name('admin.login');
 Route::post('postLogin', 'Auth\LoginController@postLogin')->name('admin.postLogin');
 
+//Register
+Route::get('register', 'Auth\RegisterController@register')->name('admin.register');
+Route::post('postRegister', 'Auth\RegisterController@postRegister')->name('admin.postRegister');
+
 // logout
 Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 

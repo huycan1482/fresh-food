@@ -163,8 +163,13 @@
                     <a href="{{route('admin.register')}}">Sign Up</a>
                 </div>
             </div>
-            <form class="login-content" action="{{route('admin.postLogin')}}" method="POST">
+            <form class="login-content" action="{{route('admin.postRegister')}}" method="POST">
                 @csrf
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                    <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('name')}}</span>
+                </div>
                 <div class="form-group">
                     <label for="">Email</label>
                     <input type="email" class="form-control" name="email" value="{{old('email')}}">
@@ -176,14 +181,14 @@
                     <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('password')}}</span>
                 </div>
                 <div class="form-footer">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Keep me logged in<input type="checkbox" class="" id="remember" name="remember"></label>
-                    </div>
-                    <button class="">Sign In</button>
+                    </div> --}}
+                    <button class="">Sign up</button>
                 </div>
-                <div style="margin-top: 100px; text-align: center">
+                {{-- <div style="margin-top: 100px; text-align: center">
                     <a href="#" style="font-family: roboto-light; font-weight: 600; color: #fff">Lấy lại mật khẩu</a>
-                </div>
+                </div> --}}
             </form>
         </div>
     </div>
