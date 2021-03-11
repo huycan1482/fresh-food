@@ -46,7 +46,7 @@
 
                         <div class="checkbox form-group" id="form-is_hot">
                             <label>
-                                <input type="checkbox" value="1" name="is_hot" id="is_hot" {{ ($category->is_hot == 1) ? 'checked' : '' }}> Địa điểm Hot ?
+                                <input type="checkbox" value="1" name="is_hot" id="is_hot" {{ ($category->is_hot == 1) ? 'checked' : '' }}> Danh mục Hot ?
                             </label>
                         </div>
 

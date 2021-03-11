@@ -23,7 +23,7 @@ class CreateVendorsTable extends Migration
             $table->string('website')->nullable();
             $table->string('address');
             $table->integer('position');
-            $table->binary('is_active')->default(1);
+            $table->smallInteger('is_active')->default(1);
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use App\Product;
 use App\ProductImage;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProductImageController extends Controller
@@ -26,7 +27,7 @@ class ProductImageController extends Controller
                 'products' => $products,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
         
     }
@@ -40,12 +41,12 @@ class ProductImageController extends Controller
     {
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('create', ProductImage::class) ) {
-            $products = Product::all();
+            $products = Product::latest()->get();
             return view ('admin.productImage.create', [
                 'products' => $products,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -98,6 +99,7 @@ class ProductImageController extends Controller
                 $productImage->url = $request->input('url'); 
                 $productImage->position = (int)$request->input('position');
                 $productImage->is_active = (int)$request->input('is_active');
+                $productImage->user_id = Auth::user()->id;
     
                 if ($productImage->save()) {
                     // upload file
@@ -138,13 +140,13 @@ class ProductImageController extends Controller
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('update', ProductImage::class) ) {
             $productImage = ProductImage::findOrFail($id);
-            $products = Product::all();
+            $products = Product::latest()->get();
             return view ('admin.productImage.edit', [
                 'productImage' => $productImage,
                 'products' => $products,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -204,6 +206,7 @@ class ProductImageController extends Controller
                 $productImage->url = $request->input('url'); 
                 $productImage->position = (int)$request->input('position');
                 $productImage->is_active = (int)$request->input('is_active');
+                $productImage->user_id = Auth::user()->id;
 
                 if ($productImage->save()) {
                     // upload file

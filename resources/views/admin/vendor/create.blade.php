@@ -58,7 +58,7 @@
 
                         <div class="form-group" id="form-position">
                             <label for="">Vị trí hiển thị</label>
-                            <input type="number" class="form-control" id="position" name="position" min="0">
+                            <input type="number" class="form-control" id="position" name="position" value="0" min="0">
                         </div>
 
                         <div class="checkbox form-group" id="form-is_active">

@@ -6,6 +6,7 @@ use App\Banner;
 use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class BannerController extends Controller
@@ -24,7 +25,7 @@ class BannerController extends Controller
                 'banners' => $banners,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -39,7 +40,7 @@ class BannerController extends Controller
         if ( $currentUser->can('viewAny', Banner::class) ) {
             return view ('admin.banner.create');
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -102,6 +103,7 @@ class BannerController extends Controller
                 $banner->target = $request->input('target');
                 $banner->position = (int)$request->input('position');
                 $banner->is_active = (int)$request->input('is_active');
+                $banner->user_id = Auth::user()->id;
 
                 if ($banner->save()) {
                     // upload file
@@ -145,7 +147,7 @@ class BannerController extends Controller
                 'banner' => $banner,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }  
     }
 
@@ -215,6 +217,7 @@ class BannerController extends Controller
                 $banner->target = $request->input('target');
                 $banner->position = (int)$request->input('position');
                 $banner->is_active = (int)$request->input('is_active');
+                $banner->user_id = Auth::user()->id;
 
                 if ($banner->save()) {
                     // upload file

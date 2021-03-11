@@ -8,7 +8,7 @@ class Role extends Model
 {
     public function permissionsTables () 
     {
-        return $this->belongsToMany('App\PermissionsTables', 'roles_permissions', 'role_id', 'permissionTable_id')
+        return $this->belongsToMany('App\PermissionsTables', 'role_permission', 'role_id', 'permissionTable_id')
             ->withPivot('role_id', 'permissionTable_id');
     }
 }

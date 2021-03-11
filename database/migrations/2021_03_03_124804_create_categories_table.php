@@ -19,8 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->string('slug', 255);
             $table->string('image', 255);
             $table->integer('position');
-            $table->binary('is_active')->default(1);
-            $table->binary('is_hot')->default(1);
+            $table->smallInteger('is_active')->default(1);
+            $table->smallInteger('is_hot')->default(1);
             $table->bigInteger('user_id');
             $table->timestamps();
         });

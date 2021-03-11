@@ -42,12 +42,12 @@
                         </div>
                         
                         <div class="form-group" id="form-new_password">
-                            <label for="new_password">Mật khẩu mới **</label>
+                            <label for="new_password">Mật khẩu **</label>
                             <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Nhập mật khẩu" value="">
                         </div> 
 
                         <div class="form-group" id="form-repassword">
-                            <label for="repassword">Nhập lại mật khẩu mới **</label>
+                            <label for="repassword">Nhập lại mật khẩu **</label>
                             <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Nhập lại mật khẩu" value="">
                         </div>
 
@@ -86,7 +86,7 @@
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
 
-            var model = '/admin/user/';
+            var model = '/admin/user';
             var data;
             data = new FormData();
             data.append('name', $('#name').val());

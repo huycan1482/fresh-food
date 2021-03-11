@@ -24,7 +24,7 @@ class SettingController extends Controller
                 'setting' => $setting,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -110,7 +110,7 @@ class SettingController extends Controller
                 'setting' => $setting,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -124,7 +124,7 @@ class SettingController extends Controller
     public function update(Request $request, $id)
     {
         $currentUser = User::findOrFail(Auth()->user()->id);
-        if ( $currentUser->can('update', Table::class) ) {
+        if ( $currentUser->can('update', Setting::class) ) {
             $setting = Setting::find($id);
 
             if (empty($setting)) {

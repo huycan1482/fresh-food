@@ -27,7 +27,7 @@ class TableController extends Controller
                 'tables' => $tables
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -42,7 +42,7 @@ class TableController extends Controller
         if ( $currentUser->can('create', Table::class) ) {
             return view ('admin.table.create');
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -134,7 +134,7 @@ class TableController extends Controller
                 'table' => $table,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 

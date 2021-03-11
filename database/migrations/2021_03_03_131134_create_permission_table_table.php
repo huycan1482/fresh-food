@@ -18,7 +18,7 @@ class CreatePermissionTableTable extends Migration
             $table->bigInteger('permission_id');
             $table->bigInteger('table_id');
             $table->string('action_code', 255);
-            $table->binary('is_active')->default(1);
+            $table->smallInteger('is_active')->default(1);
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class CreateUserRoleTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->bigInteger('role_id');
-            $table->binary('is_active')->default(1);
+            $table->smallInteger('is_active')->default(1);
             $table->timestamps();
         });
     }

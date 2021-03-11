@@ -76,7 +76,7 @@ class RegisterController extends Controller
         $user = new User;
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->input('password'));
         $user->save();
         return redirect()->route('admin.login');
     }

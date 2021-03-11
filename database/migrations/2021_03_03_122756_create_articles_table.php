@@ -21,8 +21,8 @@ class CreateArticlesTable extends Migration
             $table->string('image', 255);
             $table->text('summary');
             $table->text('description');
-            $table->binary('is_active')->default(1);
-            $table->binary('is_hot')->default(1);
+            $table->smallInteger('is_active')->default(1);
+            $table->smallInteger('is_hot')->default(1);
             $table->bigInteger('user_id');
             $table->timestamps();
         });

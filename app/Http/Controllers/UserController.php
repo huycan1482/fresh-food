@@ -104,14 +104,13 @@ class UserController extends Controller
 
             if ($user->save()) {
                 ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
-                return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                return response()->json(['mess' => 'Thêm ghi thành công'], 200);
             } else {
-                return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                return response()->json(['mess' => 'Thêm bản ghi lỗi'], 500);
             }
 
         } else {
-            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
-
+            return view ('admin.errors.auth');
         }
     }
 
@@ -136,16 +135,21 @@ class UserController extends Controller
     {
         $currentUser = User::find(Auth()->user()->id);
         if ($currentUser->can('update', User::class)) {
+
             $user = User::findOrFail($id);
     
             $roles = Role::all();
-
+            // dd($user->roles);
+            $user_roles = [];
             foreach ($user->roles as $item) {
+                // dd($item);
                 $user_roles [] = [
                     'id' => $item->id,
                     'name' => $item->name,
                 ];
             }
+
+            // dd($user_roles);
             // dd($user_roles, $roles);
             // dd($user_roles[1]['id']);
 
@@ -155,12 +159,12 @@ class UserController extends Controller
             foreach ($tables as $table) {
                 $test = DB::table('permissions')
                     ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
-                    ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
-                    ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
-                    ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
-                    ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
-                    ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-                    ->join('users', 'users.id', '=', 'users_roles.user_id')
+                    ->join('permission_table', 'permissions.id', '=', 'permission_table.permission_id')
+                    ->join('tables', 'tables.id', '=', 'permission_table.table_id')
+                    ->join('role_permission', 'permission_table.id', '=', 'role_permission.permissionTable_id')
+                    ->join('roles', 'role_permission.role_id', '=', 'roles.id')
+                    ->join('user_role', 'user_role.role_id', '=', 'roles.id')
+                    ->join('users', 'users.id', '=', 'user_role.user_id')
                     ->where([['users.id', '=', $id], ['tables.id', '=', $table->id]])
                     ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
                     ->get();  
@@ -169,6 +173,7 @@ class UserController extends Controller
                     $user_permissions [$item->table_id][$item->id] = $item->id;
                 }   
             }
+            // dd($user_roles);
 
             return view ('admin.user.edit', [
                 'user' => $user,
@@ -176,7 +181,7 @@ class UserController extends Controller
                 'roles' => $roles,
                 'tables' => $tables,
                 'permissions' => $permissions,
-                'user_permissions' => $user_permissions,
+                'user_permissions' => ( isset($user_permissions) ) ? $user_permissions : '',
             ]);
         } else {
             return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
@@ -202,7 +207,40 @@ class UserController extends Controller
                 return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
             } 
             
-            if ( $currentUser->can('updateProfile', $user) ) {
+            if ( $currentUser->can('update', User::class) ) {
+
+                $validator = Validator::make($request->all(), [
+                    'is_active' => 'integer|boolean',
+                ], [
+                    'is_active.integer' => 'Sai kiểu dữ liệu',
+                    'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+                ]); 
+
+                $errs = $validator->errors();
+        
+                if ( $validator->fails() ) {
+                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
+                } else {
+
+                    $arr_role = $request->input('arr_role');
+
+                    // dd('here');
+
+                    if (!empty($arr_role)) {
+                        $user->roles()->sync($arr_role);
+                    }
+
+                    $user->is_active = (int)$request->input('is_active');
+
+                    if ($user->save()) {
+                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                    } else {
+                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                    }
+                }
+
+            } else if ( $currentUser->can('updateProfile', $user)  ) {
+                
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:255',
                     'email' => 'required|email',
@@ -253,36 +291,6 @@ class UserController extends Controller
                         return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
                     }
                 }
-
-            } else if ( $currentUser->can('update', User::class) ) {
-                $validator = Validator::make($request->all(), [
-                    'is_active' => 'integer|boolean',
-                ], [
-                    'is_active.integer' => 'Sai kiểu dữ liệu',
-                    'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-                ]); 
-
-                $errs = $validator->errors();
-        
-                if ( $validator->fails() ) {
-                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
-                } else {
-
-                    $arr_role = $request->input('arr_role');
-
-                    if (!empty($arr_role)) {
-                    $user->roles()->sync($arr_role);
-                    }
-
-                    $user->is_active = (int)$request->input('is_active');
-
-                    if ($user->save()) {
-                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
-                    } else {
-                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
-                    }
-                }
-
             } else {
                 return response()->json(['mess' => 'Sửa bản ghi lỗi'], 400);
             }

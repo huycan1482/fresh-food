@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PermissionsTables extends Model
 {
-    protected $table = 'permissions_tables';
+    protected $table = 'permission_table';
 
     public function permissionsTables () 
     {
-        return $this->belongsToMany('App\Role', 'roles_permissions', 'permissionTable_id', 'role_id')
+        return $this->belongsToMany('App\Role', 'role_permission', 'permissionTable_id', 'role_id')
             ->withPivot('permissionTable_id', 'role_id');
     }
 

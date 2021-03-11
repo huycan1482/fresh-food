@@ -23,8 +23,8 @@ class CreateProductsTable extends Migration
             $table->string('sku', 255)->nullable();
             $table->integer('sale')->nullable();
             $table->integer('position');
-            $table->binary('is_active')->default(1);
-            $table->binary('is_hot')->default(1);
+            $table->smallInteger('is_active')->default(1);
+            $table->smallInteger('is_hot')->default(1);
             $table->bigInteger('category_id');
             $table->bigInteger('vendor_id');
             $table->text('summary');

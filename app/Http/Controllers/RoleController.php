@@ -7,9 +7,13 @@ use App\Role;
 use App\PermissionsTables;
 use App\Table;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
@@ -27,7 +31,7 @@ class RoleController extends Controller
                 'roles' => $roles,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -38,7 +42,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view ('admin.role.create');
     }
 
     /**
@@ -49,7 +53,45 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->can('create', Role::class)) {
+            $request['trueName'] = $request->input('name');
+            $request['name'] = Str::slug($request->input('name'));
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|unique:articles,slug|max:255',
+                'is_active' => 'integer|boolean',
+            ], [
+                'name.required' => 'Tên không được để trống',
+                'name.unique' => 'Tên bị trùng',
+                'is_active.integer' => 'Sai kiểu dữ liệu',
+                'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+
+            ]);
+
+            $errs = $validator->errors();
+
+            if ( $validator->fails() ) {
+                return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
+            } else {
+                $role = new Role;
+                $role->name = $request->input('trueName');
+
+                $role->is_active = (int)$request->input('is_active');
+                $role->user_id = Auth::user()->id;
+
+                if ($role->save()) {
+    
+                    return response()->json(['mess' => 'Thêm bản ghi thành công'], 201);
+
+                } else {
+                    return response()->json(['mess' => 'Thêm bản ghi lỗi'], 500);
+                }
+            }
+            
+        }
+        return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
     }
 
     /**
@@ -78,16 +120,16 @@ class RoleController extends Controller
 
             $tables = Table::all();
             $permissions = Permission::all();
-
+            // $user_permissions = [][];
             foreach ($tables as $table) {
                 $user_roles = DB::table('permissions')
                     ->select('permissions.id', 'permissions.name', 'tables.name as table', 'tables.id as table_id')
-                    ->join('permissions_tables', 'permissions.id', '=', 'permissions_tables.permission_id')
-                    ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
-                    ->join('roles_permissions', 'permissions_tables.id', '=', 'roles_permissions.permissionTable_id')
-                    ->join('roles', 'roles_permissions.role_id', '=', 'roles.id')
-                    ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-                    ->join('users', 'users.id', '=', 'users_roles.user_id')
+                    ->join('permission_table', 'permissions.id', '=', 'permission_table.permission_id')
+                    ->join('tables', 'tables.id', '=', 'permission_table.table_id')
+                    ->join('role_permission', 'permission_table.id', '=', 'role_permission.permissionTable_id')
+                    ->join('roles', 'role_permission.role_id', '=', 'roles.id')
+                    ->join('user_role', 'user_role.role_id', '=', 'roles.id')
+                    ->join('users', 'users.id', '=', 'user_role.user_id')
                     ->where([['roles.id', '=', $id], ['tables.id', '=', $table->id]])
                     ->groupBy('permissions.id', 'permissions.name', 'tables.name', 'tables.id')
                     ->get();  
@@ -102,10 +144,10 @@ class RoleController extends Controller
                 'role' => $role,
                 'tables' => $tables,
                 'permissions' => $permissions,
-                'user_permissions' => $user_permissions,
+                'user_permissions' => (isset($user_permissions)) ? $user_permissions : '',
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
         
     }
@@ -123,29 +165,35 @@ class RoleController extends Controller
         if ( $currentUser->can('update', Role::class) ) {
             foreach ($request->all() as $key => $item) {
                 $user_tables [] = $key;
-            }
-    
-            $tables = Table::all();
-            $permissions = Permission::all();
-    
+            }    
+            // $tables = Table::all();
+            // $permissions = Permission::all();
             $role = Role::find($id);
-    
+            $arr = [];
             foreach ($request->all() as $key => $item) {
-                $change_ids = DB::table('permissions_tables')->select('id')
+                
+                $change_ids = DB::table('permission_table')->select('id')
                     ->where([['table_id', '=', $key]])
                     ->whereIn('permission_id', $item)
                     ->get();
-    
+                
                 foreach ($change_ids as $val) {
-                    $arr[] = $val->id;
+                    $arr[] = [
+                        'permissionTable_id' => $val->id,
+                        'user_id' => Auth::user()->id,
+                        'is_active' => 1,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
                 }
-    
-                $role->permissionsTables()->sync($arr);
             }
+
+            $role->permissionsTables()->sync($arr);
+
+            return response()->json(['mess' => 'Sửa bản ghi thành công'], 200);
         } else {
             return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
         }
-
     }
 
     /**

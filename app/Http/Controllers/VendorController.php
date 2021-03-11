@@ -101,7 +101,7 @@ class VendorController extends Controller
             $vendor->address = $request->input('address');
             $vendor->position = (int)$request->input('position');
             $vendor->is_active = (int)$request->input('is_active');
-            $vendor->is_hot = (int)$request->input('is_hot');
+            // $vendor->is_hot = (int)$request->input('is_hot');
 
             if ($vendor->save()) {
                 // upload file

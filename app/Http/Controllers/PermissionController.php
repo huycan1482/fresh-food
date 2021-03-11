@@ -26,7 +26,7 @@ class PermissionController extends Controller
                 'permissions' => $permissions,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -41,7 +41,7 @@ class PermissionController extends Controller
         if ( $currentUser->can('create', Permission::class) ) {
             return view ('admin.permission.create');
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -126,7 +126,7 @@ class PermissionController extends Controller
                 'permission' => $permission,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 

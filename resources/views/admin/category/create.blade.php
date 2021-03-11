@@ -45,7 +45,7 @@
 
                         <div class="checkbox form-group" id="form-is_hot">
                             <label>
-                                <input type="checkbox" name="is_hot" id="is_hot"> Địa điểm Hot ?
+                                <input type="checkbox" name="is_hot" id="is_hot"> Danh mục Hot ?
                             </label>
                         </div>
 

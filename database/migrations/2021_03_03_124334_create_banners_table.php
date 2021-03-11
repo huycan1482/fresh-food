@@ -18,10 +18,10 @@ class CreateBannersTable extends Migration
             $table->string('title', 255);
             $table->string('slug', 255);
             $table->string('image', 255);
-            $table->string('url', 255);
+            $table->string('url', 255)->nullable();
             $table->string('target', 255);
             $table->integer('position');
-            $table->binary('is_active')->default(1);
+            $table->smallInteger('is_active')->default(1);
             $table->bigInteger('user_id');
             $table->timestamps();
         });

@@ -14,12 +14,12 @@ class ProductImagePolicy
     public function checkUser($table, $permission) 
     {
         return DB::table('users')->select('users.id')
-            ->join('users_roles', 'users_roles.user_id', '=', 'users.id')
-            ->join('roles', 'roles.id', '=', 'users_roles.role_id')
-            ->join('roles_permissions', 'roles_permissions.role_id', '=', 'roles.id')
-            ->join('permissions_tables', 'permissions_tables.id', '=' ,'roles_permissions.permissionTable_id')
-            ->join('tables', 'tables.id', '=', 'permissions_tables.table_id')
-            ->join('permissions', 'permissions.id', '=', 'permissions_tables.permission_id')
+            ->join('user_role', 'user_role.user_id', '=', 'users.id')
+            ->join('roles', 'roles.id', '=', 'user_role.role_id')
+            ->join('role_permission', 'role_permission.role_id', '=', 'roles.id')
+            ->join('permission_table', 'permission_table.id', '=' ,'role_permission.permissionTable_id')
+            ->join('tables', 'tables.id', '=', 'permission_table.table_id')
+            ->join('permissions', 'permissions.id', '=', 'permission_table.permission_id')
             ->where([['tables.name', '=', $table], ['permissions.name', '=', $permission]])
             ->groupBy('users.id')->get();
     }
@@ -32,7 +32,7 @@ class ProductImagePolicy
      */
     public function viewAny(User $user)
     {
-        $table = 'product_images';
+        $table = 'images';
         $permission = 'view';
 
         $users_id = $this->checkUser($table, $permission);
@@ -66,7 +66,7 @@ class ProductImagePolicy
      */
     public function create(User $user)
     {
-        $table = 'product_images';
+        $table = 'images';
         $permission = 'create';
 
         $users_id = $this->checkUser($table, $permission);
@@ -89,7 +89,7 @@ class ProductImagePolicy
      */
     public function update(User $user)
     {
-        $table = 'product_images';
+        $table = 'images';
         $permission = 'update';
 
         $users_id = $this->checkUser($table, $permission);
@@ -112,7 +112,7 @@ class ProductImagePolicy
      */
     public function delete(User $user)
     {
-        $table = 'product_images';
+        $table = 'images';
         $permission = 'delete';
 
         $users_id = $this->checkUser($table, $permission);

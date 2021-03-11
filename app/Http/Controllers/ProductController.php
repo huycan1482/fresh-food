@@ -31,7 +31,7 @@ class ProductController extends Controller
                 'categories' => $categories,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -51,7 +51,7 @@ class ProductController extends Controller
                 'vendors' => $vendors,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
         
     }
@@ -212,7 +212,7 @@ class ProductController extends Controller
                 'categories' => $categories,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -243,7 +243,7 @@ class ProductController extends Controller
                 'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
                 'number' => 'required|integer|min:0',
                 'price' => 'required|integer|min:0',
-                'sale' => 'required|integer|min:0',
+                'sale' => 'nullable|integer|min:0',
                 'unit' => 'required',
                 // 'sku' => 'nullable',
                 'NSX' => 'date_format:"d-m-Y"|required',
@@ -269,7 +269,7 @@ class ProductController extends Controller
                 'price.required' => 'Dữ liệu không được để trống',
                 'price.integer' => 'Sai kiểu dữ liệu',
                 'price.min' => 'Giá trị phải lớn hơn 0',
-                'sale.required' => 'Dữ liệu không được để trống',
+                // 'sale.required' => 'Dữ liệu không được để trống',
                 'sale.integer' => 'Sai kiểu dữ liệu',
                 'sale.min' => 'Giá trị phải lớn hơn 0',
                 'unit.required' => 'Dữ liệu không được để trống',

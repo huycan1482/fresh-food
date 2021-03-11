@@ -108,7 +108,6 @@
                         <div class="form-group" id="form-user_roles">
                             <label for="">Chọn vai trò cho người dùng</label>
                             @foreach ($roles as $role)
-                            {{-- {{dd($role['name'])}} --}}
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="{{ $role->id }}" 
@@ -125,7 +124,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <a class="btn btn-primary edit-permission" data-id="{{ $role->id }}">Update</a>
+                    {{-- <a class="btn btn-primary edit-permission" data-id="{{ $role->id }}">Update</a> --}}
                     {{-- <button type="reset" class="btn btn-danger">Reset</button> --}}
                 </div>
                  

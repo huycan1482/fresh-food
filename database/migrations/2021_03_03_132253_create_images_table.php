@@ -17,9 +17,9 @@ class CreateImagesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('product_id');
             $table->string('image', 255);
-            $table->string('url', 255);
+            $table->string('url', 255)->nullable();
             $table->integer('position');
-            $table->binary('is_active')->default(1);
+            $table->smallInteger('is_active')->default(1);
             $table->bigInteger('user_id');
             $table->timestamps();
         });

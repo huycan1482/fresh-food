@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,7 @@ class CategoryController extends Controller
                 'categories' => $categories,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }
     }
 
@@ -39,7 +40,7 @@ class CategoryController extends Controller
         if ( $currentUser->can('create', Category::class) ) {
             return view ('admin.category.create');
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }   
     }
 
@@ -100,6 +101,7 @@ class CategoryController extends Controller
                 $category->position = (int)$request->input('position');
                 $category->is_active = (int)$request->input('is_active');
                 $category->is_hot = (int)$request->input('is_hot');
+                $category->user_id = Auth::user()->id;
 
                 if ($category->save()) {
                     // upload file
@@ -146,7 +148,7 @@ class CategoryController extends Controller
                 'category' => $category,
             ]);
         } else {
-            return view ('admin.errors.auth');
+            return view ('errors.auth');
         }  
     }
 
@@ -215,6 +217,7 @@ class CategoryController extends Controller
                 $category->position = (int)$request->input('position');
                 $category->is_active = (int)$request->input('is_active');
                 $category->is_hot = (int)$request->input('is_hot');
+                $category->user_id = Auth::user()->id;
 
                 if ($category->save()) {
                     ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
@@ -249,7 +252,6 @@ class CategoryController extends Controller
                 return response()->json(['mess' => 'Xóa bản ghi thành công'], 200);
             } else {
                 return response()->json(['mess' => 'Xóa bản không thành công'], 400);
-
             }
         } else {
             return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
