@@ -316,8 +316,11 @@ class ShopController extends HomeController
         }
 
         $article = $checkArticle->first();
+        // dd($article->category_id);
 
-        $relate_articles = Article::where([['is_active', '=', 1], ['category_id', '=', 1]])->get();
+        $relate_articles = Article::where([['is_active', '=', 1], 
+            ['category_id', '=', $article->category_id],
+            ['id', '<>', $article->id]])->get();
         
         // dd($article->category_id, $relate_articles);
         
@@ -327,7 +330,6 @@ class ShopController extends HomeController
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
             'article' => $article,
             'relate_articles' => $relate_articles,
-
         ]);
     }
 

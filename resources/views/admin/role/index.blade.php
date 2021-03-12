@@ -53,9 +53,12 @@
                                     <a href="{{ route('admin.role.edit', ['id'=> $role->id]) }}" class="btn  btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
+
+                                    @can ('delete', App\Role::class)
                                     <a href="javascript:void(0)" class="btn btn-danger"
                                         onclick="destroyModel('role', '{{ $role->id }}' )"><i class="fa fa-trash"></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

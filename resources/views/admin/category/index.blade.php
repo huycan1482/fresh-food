@@ -60,9 +60,12 @@
                                     <a href="{{ route('admin.category.edit', ['id'=> $category->id]) }}" class="btn  btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
+
+                                    @can ('delete', App\Category::class)
                                     <a href="javascript:void(0)" class="btn btn-danger"
                                         onclick="destroyModel('category', '{{ $category->id }}' )"><i class="fa fa-trash"></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

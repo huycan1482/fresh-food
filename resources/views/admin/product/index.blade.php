@@ -76,9 +76,12 @@
                                     <a href="{{ route('admin.product.edit', ['id'=> $product->id]) }}" class="btn  btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
+
+                                    @can ('delete', App\Product::class)
                                     <a href="javascript:void(0)" class="btn btn-danger"
                                         onclick="destroyModel('product', '{{ $product->id }}' )"><i class="fa fa-trash"></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

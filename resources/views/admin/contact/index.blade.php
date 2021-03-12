@@ -66,9 +66,12 @@
                                     <a href="{{ route('admin.contact.edit', ['id'=> $contact->id]) }}" class="btn  btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
+
+                                    @can ('delete', App\Contact::class)
                                     <a href="javascript:void(0)" class="btn btn-danger"
                                         onclick="destroyModel('contact', '{{ $contact->id }}' )"><i class="fa fa-trash"></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

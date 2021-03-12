@@ -17,9 +17,9 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ $new_orders }}</h3>
 
-                    <p>New Orders</p>
+                    <p>Đơn đặt hàng trong ngày</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -32,9 +32,10 @@
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    {{-- <h3>53<sup style="font-size: 20px">%</sup></h3> --}}
+                    <h3>{{ $new_contacts }}</h3>
 
-                    <p>Contacts</p>
+                    <p>Liên hệ trong ngày</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-phone"></i>
@@ -47,14 +48,14 @@
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>{{ $products }}</h3>
 
-                    <p>Products</p>
+                    <p>Tổng số sản phẩm</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.product.index') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -62,13 +63,13 @@
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>44</h3>
-                    <p>Articles</p>
+                    <h3>{{ $articles }}</h3>
+                    <p>Tổng bài viết</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-picture-o"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.article.index') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -98,20 +99,22 @@
     function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-        ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
-        ['2004/05',  165,      938,         522,             998,           450,      614.6],
-        ['2005/06',  135,      1120,        599,             1268,          288,      682],
-        ['2006/07',  157,      1167,        587,             807,           397,      623],
-        ['2007/08',  139,      1110,        615,             968,           215,      609.4],
-        ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+        // ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+        // ['2004/05',  165,      938,         522,             998,           450,      614.6],
+        // ['2005/06',  135,      1120,        599,             1268,          288,      682],
+        // ['2006/07',  157,      1167,        587,             807,           397,      623],
+        // ['2007/08',  139,      1110,        615,             968,           215,      609.4],
+        // ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+        {!! $chart_1_1 !!}
+        {!! $chart_1_2 !!}
         ]);
 
         var options = {
-        title : 'Monthly Coffee Production by Country',
+        title : 'Số lượng sản phẩm bán trong ngày dựa theo danh mục',
         vAxis: {title: 'Cups'},
-        hAxis: {title: 'Month'},
+        hAxis: {title: 'Today'},
         seriesType: 'bars',
-        series: {5: {type: 'line'}}
+        // series: {5: {type: 'line'}}
         };
 
         var chart = new google.visualization.ComboChart(document.getElementById('chart_div1'));
@@ -125,15 +128,16 @@
 
         var data = google.visualization.arrayToDataTable([
             ['Task', 'Hours per Day'],
-            ['Work',     11],
-            ['Eat',      2],
-            ['Commute',  2],
-            ['Watch TV', 2],
-            ['Sleep',    7]
+            // ['Work',     11],
+            // ['Eat',      2],
+            // ['Commute',  2],
+            // ['Watch TV', 2],
+            // ['Sleep',    7]
+            {!! $chart_2_1 !!}
         ]);
 
         var options = {
-            title: 'My Daily Activities'
+            title: 'Số lượng sản phẩm dựa theo danh mục'
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));

@@ -118,7 +118,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user)
     {
         $table = 'users';
         $permission = 'delete';

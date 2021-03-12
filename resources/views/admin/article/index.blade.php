@@ -65,9 +65,12 @@
                                     <a href="{{ route('admin.article.edit', ['id'=> $article->id]) }}" class="btn  btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
+
+                                    @can ('delete', App\Article::class)
                                     <a href="javascript:void(0)" class="btn btn-danger"
                                         onclick="destroyModel('article', '{{ $article->id }}' )"><i class="fa fa-trash"></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach
