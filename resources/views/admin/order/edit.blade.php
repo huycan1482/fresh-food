@@ -1,4 +1,9 @@
 @extends('admin.layouts.main')
+
+{{-- @if (session('msg'))
+{{session('msg')}}
+@endif --}}
+
 @section('content')
     {{-- <style>
         #thongbao {
@@ -23,12 +28,22 @@
     </section>
 
     </section>
-    @if (session('msg'))
-        <div class="pad margin no-print">
+    @if (session('errs_msg'))
+        <div class="pad margin no-print col-lg-4" style="position: fixed;top: 80px;right: 0;z-index: 100;">
+            <div class="alert alert-danger alert-dismissible" style="" id="thongbao">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-exclamation"></i> Thông báo !</h4>
+                {{ session('errs_msg') }}
+            </div>
+        </div>
+    @endif
+
+    @if (session('suc_msg'))
+        <div class="pad margin no-print col-lg-4" style="position: fixed;top: 80px;right: 0;z-index: 100;">
             <div class="alert alert-success alert-dismissible" style="" id="thongbao">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-check"></i> Thông báo !</h4>
-                {{ session('msg') }}
+                <h4><i class="icon fa fa-chevron-down"></i> Thông báo !</h4>
+                {{ session('suc_msg') }}
             </div>
         </div>
     @endif
@@ -90,7 +105,8 @@
                                     </td>
                                     <td><label>Trạng thái ĐH</label></td>
                                     <td style="color: red">
-                                        <select class="form-control " name="status_id" style="max-width: 150px;display: inline-block;">
+                                        <select class="form-control " name="status_id" {{ ($order->status_id == 3 || $order->status_id == 4) ? 'disabled' : '' }}
+                                         style="max-width: 150px;display: inline-block;" >
                                             <option value="0">-- chọn --</option>
                                             @foreach($order_status as $status)
                                                 <option {{ ($order->status_id == $status->id ? 'selected':'') }} value="{{ $status->id }}">{{ $status->name }}</option>

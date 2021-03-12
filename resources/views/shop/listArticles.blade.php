@@ -25,7 +25,7 @@
                     <li class=""> <a href="{{ route('shop.listArticles', ['slug' => 'tat-ca']) }}"> Tất cả </a></li>
                     @foreach ($menu as $item)
                     <li class=""> <a href="{{ route('shop.listArticles', ['slug' => $item->slug]) }}"> {{$item->name}} </a></li>
-                     @endforeach
+                    @endforeach
                 </ul>
             </div>
             <div class="search-article col-lg-12">

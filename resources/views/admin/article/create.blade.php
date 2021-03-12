@@ -61,6 +61,12 @@
                                 <input type="checkbox" name="is_active" id="is_active"> Trạng thái hiển thị
                             </label>
                         </div>
+
+                        <div class="checkbox form-group" id="form-is_hot">
+                            <label>
+                                <input type="checkbox" name="is_hot" id="is_hot"> Bài viết nổi bật
+                            </label>
+                        </div>
                         
                     </div>
                     
@@ -108,7 +114,7 @@
             data.append('summary', CKEDITOR.instances.summary.getData());
             data.append('description', CKEDITOR.instances.description.getData());
             data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
-
+            data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0);
             addModel(model, data);
 
             e.preventDefault();

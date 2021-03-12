@@ -203,21 +203,7 @@
                     <p class="">về chúng tôi</p>
                 </div>
                 <div class="detail-about-us ">
-                    {{-- <p>Trang giới thiệu giúp khách hàng hiểu rõ hơn về cửa hàng của bạn. Hãy cung cấp thông tin cụ
-                        thể về việc kinh doanh, về cửa hàng, thông tin liên hệ. Điều này sẽ giúp khách hàng cảm thấy
-                        tin tưởng khi mua hàng trên website của bạn.</p>
-                    <p>Một vài gợi ý cho nội dung trang Giới thiệu:</p>
-                    <p>Bạn là ai
-                        Giá trị kinh doanh của bạn là gì
-                        Địa chỉ cửa hàng
-                        Bạn đã kinh doanh trong ngành hàng này bao lâu rồi
-                        Bạn kinh doanh ngành hàng online được bao lâu
-                        Đội ngũ của bạn gồm những ai
-                        Thông tin liên hệ
-                        Liên kết đến các trang mạng xã hội (Twitter, Facebook)
-                        Bạn có thể chỉnh sửa hoặc xoá bài viết này tại đây hoặc thêm những bài viết mới trong phần
-                        quản lý Trang nội dung.</p> --}}
-                        {!! $setting->introduce !!}
+                    {!! $setting->introduce !!}
                 </div>
             </div>
 
@@ -231,70 +217,21 @@
             </div>
 
             <div class="main-content col-lg-12">
+                @foreach ($new_articles as $item)
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="new-items">
                         <div class="new-banner">
-                            <a href="">
-                                <img class="zoom" src="../images/bg_2.jpg" alt="">
+                            <a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">
+                                <img class="zoom" src="{{$item->image}}" alt="">
                             </a>
                         </div>
                         <div class="new-detail">
-                            <h3><a href=""> Vì sao người tiêu dùng không "tin" rau sạch?</a></h3>
-                            <p>Sau hơn 6 năm triển khai Vietgap (thực hành sản xuất nông nghiệp tốt) tới nay mới
-                                chỉ có hơn 2.000 héc ta trên tổng số 830.000 héc ta rau sản xuất hàng năm đạt chứng
-                                nhận rau sạch Vietgap Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Libero, corrupti explicabo nam harum aperiam, aliquid quos non dolore voluptas
-                                architecto aut esse necessitatibus. Sit necessitatibus nesciunt eos at numquam
-                                itaque? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti
-                                distinctio assumenda, eum minima voluptate vel dolorem officia laboriosam odit ullam
-                                quis accusamus saepe cupiditate cumque aperiam! Eos voluptas rem reprehenderit?</p>
+                            <h3><a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h3>
+                            {!! $item->summary !!}
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="new-items">
-                        <div class="new-banner">
-                            <a href="">
-                                <img class="zoom" src="../images/Fresh-food-banner-2.jpg" alt="">
-                            </a>
-                        </div>
-                        <div class="new-detail">
-                            <h3><a href=""> Vì sao người tiêu dùng không "tin" rau sạch?</a></h3>
-                            <p>Sau hơn 6 năm triển khai Vietgap (thực hành sản xuất nông nghiệp tốt) tới nay mới
-                                chỉ có hơn 2.000 héc ta trên tổng số 830.000 héc ta rau sản xuất hàng năm đạt chứng
-                                nhận rau sạch Vietgap Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Libero, corrupti explicabo nam harum aperiam, aliquid quos non dolore voluptas
-                                architecto aut esse necessitatibus. Sit necessitatibus nesciunt eos at numquam
-                                itaque? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti
-                                distinctio assumenda, eum minima voluptate vel dolorem officia laboriosam odit ullam
-                                quis accusamus saepe cupiditate cumque aperiam! Eos voluptas rem reprehenderit?</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="new-items">
-                        <div class="new-banner">
-                            <a href="">
-                                <img class="zoom"
-                                    src="../images/EmeraldTransportationSolutionsLLC-seotool-32916-TipsForSafely-BlogBanner1.jpg"
-                                    alt="">
-                            </a>
-                        </div>
-                        <div class="new-detail">
-                            <h3><a href=""> Vì sao người tiêu dùng không "tin" rau sạch?</a></h3>
-                            <p>Sau hơn 6 năm triển khai Vietgap (thực hành sản xuất nông nghiệp tốt) tới nay mới
-                                chỉ có hơn 2.000 héc ta trên tổng số 830.000 héc ta rau sản xuất hàng năm đạt chứng
-                                nhận rau sạch Vietgap Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Libero, corrupti explicabo nam harum aperiam, aliquid quos non dolore voluptas
-                                architecto aut esse necessitatibus. Sit necessitatibus nesciunt eos at numquam
-                                itaque? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti
-                                distinctio assumenda, eum minima voluptate vel dolorem officia laboriosam odit ullam
-                                quis accusamus saepe cupiditate cumque aperiam! Eos voluptas rem reprehenderit?</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="more-info col-lg-12">
                 <a href="" class="more-info-btn">Xem thêm</a>
@@ -307,58 +244,23 @@
         <div class="container col-lg-10">
             <div class="left-content col-lg-7 col-sm-12">
                 <div class="header-content col-lg-12 ">
-                    <h2 class="home-title">Cẩm nang</h2>
+                    <h2 class="home-title">Tin tức nổi bật</h2>
                 </div>
+                @foreach ($hot_articles as $item)
                 <div class="cook-content">
-                    <h3 class="cook-content-header"><a href="">Cách làm bò viên trắng giòn, thơm ngon ngay tại nhà</a></h3>
+                    <h3 class="cook-content-header"><a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h3>
                     <div class="cook-main-content">
                         <div class="cook-content-img col-lg-3">
-                            <a href="">
-                                <img class="zoom" src="../images/all_fresh_vegetables.jpg" alt="">
+                            <a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">
+                                <img class="zoom" src="{{$item->image}}" alt="">
                             </a>
                         </div>
                         <div class="cook-content-detail col-lg-9">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam eaque veritatis
-                                nesciunt atque sit eligendi sequi perferendis. Voluptatibus perspiciatis tenetur
-                                aspernatur cumque odit. Officia quisquam accusamus similique nihil, accusantium
-                                provident!</p>
+                            {!! $item->summary !!}
                         </div>
                     </div>
                 </div>
-
-                <div class="cook-content">
-                    <h3 class="cook-content-header"><a href="">Cách làm nem chua rán thích hợp cho mùa đông</a></h3>
-                    <div class="cook-main-content">
-                        <div class="cook-content-img col-lg-3">
-                            <a href="">
-                                <img class="zoom" src="../images/2847407.jpg" alt="">
-                            </a>
-                        </div>
-                        <div class="cook-content-detail col-lg-9">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam eaque veritatis
-                                nesciunt atque sit eligendi sequi perferendis. Voluptatibus perspiciatis tenetur
-                                aspernatur cumque odit. Officia quisquam accusamus similique nihil, accusantium
-                                provident!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cook-content">
-                    <h3 class="cook-content-header"><a href="">Cách làm bò viên trắng giòn, thơm ngon ngay tại nhà</a></h3>
-                    <div class="cook-main-content">
-                        <div class="cook-content-img col-lg-3">
-                            <a href="">
-                                <img class="zoom" src="../images/fresh-meat-wallpaper-18.jpg" alt="">
-                            </a>
-                        </div>
-                        <div class="cook-content-detail col-lg-9">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam eaque veritatis
-                                nesciunt atque sit eligendi sequi perferendis. Voluptatibus perspiciatis tenetur
-                                aspernatur cumque odit. Officia quisquam accusamus similique nihil, accusantium
-                                provident!</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
 
                 <div class="right-more-info col-lg-12">
                     <a href="" class="right-more-info-btn">Xem thêm</a>

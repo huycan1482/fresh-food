@@ -29,8 +29,11 @@ class ShopController extends HomeController
         $popular_categories1 = Category::where([['is_active', '=', 1], ['position', '=', 1]])->orderBy('id', 'desc')->limit(1)->get();
         $popular_categories2 = Category::where([['is_active', '=', 1], ['position', '=', 2]])->orderBy('id', 'desc')->limit(2)->get();
 
-        $new_articles = Article::where([['is_active', '=' , 1]])->orderBy('id', 'desc')->limit(3);
+        $new_articles = Article::where([['is_active', '=' , 1]])->orderBy('id', 'desc')->limit(3)->get();
+        $hot_articles = Article::where([['is_active', '=' , 1], ['is_hot', '=', 1]])->orderBy('id', 'desc')->limit(3)->get();
         // $articles
+
+        // dd($hot_articles);
 
         return view ('shop.home', [
             'menu' => $this->menu,
@@ -41,6 +44,8 @@ class ShopController extends HomeController
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
             'popular_categories1' => $popular_categories1,
             'popular_categories2' => $popular_categories2,
+            'new_articles' => $new_articles,
+            'hot_articles' => $hot_articles,
         ]);
     }
 

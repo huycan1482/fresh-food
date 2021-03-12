@@ -134,24 +134,16 @@ class UserController extends Controller
     public function edit($id)
     {
         $currentUser = User::find(Auth()->user()->id);
-        if ($currentUser->can('update', User::class)) {
-
-            $user = User::findOrFail($id);
-    
+        $user = User::findOrFail($id);
+        if ($currentUser->can('update', User::class) || $currentUser->can('updateProfile', $user)) {
             $roles = Role::all();
-            // dd($user->roles);
             $user_roles = [];
             foreach ($user->roles as $item) {
-                // dd($item);
                 $user_roles [] = [
                     'id' => $item->id,
                     'name' => $item->name,
                 ];
             }
-
-            // dd($user_roles);
-            // dd($user_roles, $roles);
-            // dd($user_roles[1]['id']);
 
             $tables = Table::all();
             $permissions = Permission::all();
@@ -183,9 +175,9 @@ class UserController extends Controller
                 'permissions' => $permissions,
                 'user_permissions' => ( isset($user_permissions) ) ? $user_permissions : '',
             ]);
+        // } else if () {
         } else {
-            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
-
+            return view('errors.auth');
         }
     }
 
@@ -200,105 +192,98 @@ class UserController extends Controller
     {
         $currentUser = User::find(Auth::user()->id);
 
-        if ($currentUser->can('update', User::class)) {
-            $user = User::find($id);
+        // if ($currentUser->can('update', User::class)) {
+        $user = User::find($id);
     
-            if ( empty($user) ) {
-                return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
-            } 
+        if ( empty($user) ) {
+            return response()->json(['mess' => 'Bản ghi không tồn tại'], 400);
+        } 
             
-            if ( $currentUser->can('update', User::class) ) {
+        if ( $currentUser->can('update', User::class) ) {
 
-                $validator = Validator::make($request->all(), [
-                    'is_active' => 'integer|boolean',
-                ], [
-                    'is_active.integer' => 'Sai kiểu dữ liệu',
-                    'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-                ]); 
+            $validator = Validator::make($request->all(), [
+                'is_active' => 'integer|boolean',
+            ], [
+                'is_active.integer' => 'Sai kiểu dữ liệu',
+                'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+            ]); 
 
-                $errs = $validator->errors();
+            $errs = $validator->errors();
         
-                if ( $validator->fails() ) {
-                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
-                } else {
-
-                    $arr_role = $request->input('arr_role');
-
-                    // dd('here');
-
-                    if (!empty($arr_role)) {
-                        $user->roles()->sync($arr_role);
-                    }
-
-                    $user->is_active = (int)$request->input('is_active');
-
-                    if ($user->save()) {
-                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
-                    } else {
-                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
-                    }
-                }
-
-            } else if ( $currentUser->can('updateProfile', $user)  ) {
-                
-                $validator = Validator::make($request->all(), [
-                    'name' => 'required|max:255',
-                    'email' => 'required|email',
-                    'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-                    'new_password' => 'nullable',
-                    'repassword' =>'nullable|same:new_password',
-                    // 'is_active' => 'integer|boolean',
-                ], [
-                    'name.required' => 'Tên không được để trống',
-                    'email.required' => 'Yêu cầu không được để trống',
-                    'email.email' => 'Không đúng định dạng mail',
-                    'new_image.image' => 'Ảnh không đúng định dạng',
-                    'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
-                    'repassword.same' => 'Mật khẩu nhập lại phải giống mật khẩu mới',
-                    // 'is_active.integer' => 'Sai kiểu dữ liệu',
-                    // 'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
-                ]); 
-                
-                $errs = $validator->errors();
-        
-                if ( $validator->fails() ) {
-                    return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
-                } else {
-                    $user->name = $request->input('name');
-                    $user->email = $request->input('email');
-                    if ($request->hasFile('new_image')) {
-                        // xóa file cũ
-                        @unlink(public_path($user->image));
-                        // get file mới
-                        $file = $request->file('new_image');
-                        // get tên
-                        $filename = time().'_'.$file->getClientOriginalName();
-                        // duong dan upload
-                        $path_upload = 'uploads/user/';
-                        // upload file
-        
-                        $user->avatar = $path_upload.$filename;
-                    }
-        
-                    if (!empty($request->input('new_password'))) {
-                        $user->password = Hash::make($request->input('new_password'));
-                    }
-                        
-                    if ($user->save()) {
-                        ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
-                        return response()->json(['mess' => 'Sửa ghi thành công'], 200);
-                    } else {
-                        return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
-                    }
-                }
+            if ( $validator->fails() ) {
+                return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
             } else {
-                return response()->json(['mess' => 'Sửa bản ghi lỗi'], 400);
+
+                $arr_role = $request->input('arr_role');
+
+                if (!empty($arr_role)) {
+                    $user->roles()->sync($arr_role);
+                }
+
+                $user->is_active = (int)$request->input('is_active');
+
+                if ($user->save()) {
+                    return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                } else {
+                    return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                }
+            }
+
+        } else if ( $currentUser->can('updateProfile', $user)  ) {
+                
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|max:255',
+                'email' => 'required|email',
+                'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
+                'new_password' => 'nullable',
+                'repassword' =>'nullable|same:new_password',
+            ], [
+                'name.required' => 'Tên không được để trống',
+                'email.required' => 'Yêu cầu không được để trống',
+                'email.email' => 'Không đúng định dạng mail',
+                'new_image.image' => 'Ảnh không đúng định dạng',
+                'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
+                'repassword.same' => 'Mật khẩu nhập lại phải giống mật khẩu mới',
+            ]); 
+                
+            $errs = $validator->errors();
+        
+            if ( $validator->fails() ) {
+                return response()->json(['errors' => $errs, 'mess' => 'Thêm bản ghi lỗi'], 400);
+            } else {
+                $user->name = $request->input('name');
+                $user->email = $request->input('email');
+                if ($request->hasFile('new_image')) {
+                    // xóa file cũ
+                    @unlink(public_path($user->image));
+                    // get file mới
+                    $file = $request->file('new_image');
+                    // get tên
+                    $filename = time().'_'.$file->getClientOriginalName();
+                    // duong dan upload
+                    $path_upload = 'uploads/user/';
+                    // upload file
+        
+                    $user->avatar = $path_upload.$filename;
+                }
+        
+                if (!empty($request->input('new_password'))) {
+                    $user->password = Hash::make($request->input('new_password'));
+                }
+                        
+                if ($user->save()) {
+                    ( $request->hasFile('new_image') ) ? $request->file('new_image')->move($path_upload,$filename) : '';              
+                    return response()->json(['mess' => 'Sửa ghi thành công'], 200);
+                } else {
+                    return response()->json(['mess' => 'Sửa bản ghi lỗi'], 500);
+                }
             }
         } else {
-            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
-
+            return response()->json(['mess' => 'Sửa bản ghi lỗi'], 400);
         }
-        
+        // } else {
+        //     return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+  
     }
 
     /**

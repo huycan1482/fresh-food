@@ -107,6 +107,7 @@ class UserPolicy
     public function updateProfile(User $currentUser, User $user)
     {
         // dd($user->id === $currentId->id);
+        // return true;
         return $user->id === $currentUser->id;
     }
 

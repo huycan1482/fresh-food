@@ -93,23 +93,31 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
+        $order = Order::findOrFail($id);
+        // dd($order->status_id);
         $user = User::findOrFail(Auth::user()->id);
-        if ($user->can('update', Order::class)) {
-            $order = Order::findOrFail($id);
-        
-            $order->address2 = $request->input('address2');
-            $order->note = $request->input('note');
-            $order->status_id = $request->input('status_id');
-            if ($order->status_id == 3) {
-                Mail::to($order->mail)->send(new MailNotify($order, 'shopping'));
-            }
+        if ($order->status_id != 3 && $order->status_id != 4) {
+            if ($user->can('update', Order::class) ) {
+                $order = Order::findOrFail($id);
             
-            $order->save();
-
-            return redirect()->route('admin.order.index');
+                $order->address2 = $request->input('address2');
+                $order->note = $request->input('note');
+                $order->status_id = $request->input('status_id');
+                if ($order->status_id == 3) {
+                    Mail::to($order->mail)->send(new MailNotify($order, 'shopping'));
+                }
+                
+                $order->save();
+    
+                return redirect()->back()->with('suc_msg', "Sửa bản ghi thành công"); 
+            } else {
+                return redirect()->back()->with('errs_msg', "Sửa bản ghi lỗi"); 
+            }
         } else {
-            return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
+            return redirect()->back()->with('errs_msg', "Sửa bản ghi lỗi"); 
         }
+        
         
     }
 

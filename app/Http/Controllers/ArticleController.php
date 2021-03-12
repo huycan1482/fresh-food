@@ -73,6 +73,7 @@ class ArticleController extends Controller
                 'summary' => 'required',
                 'description' => 'required',
                 'is_active' => 'integer|boolean',
+                'is_hot' => 'integer|boolean',
             ], [
                 'name.required' => 'Tên không được để trống',
                 'name.unique' => 'Tên bị trùng',
@@ -87,6 +88,8 @@ class ArticleController extends Controller
                 'description.required' => 'Yêu cầu không để trống',
                 'is_active.integer' => 'Sai kiểu dữ liệu',
                 'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+                'is_hot.integer' => 'Sai kiểu dữ liệu',
+                'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
 
             ]);
 
@@ -115,6 +118,7 @@ class ArticleController extends Controller
                 $article->summary = $request->input('summary');
                 $article->description = $request->input('description');
                 $article->is_active = (int)$request->input('is_active');
+                $article->is_hot = (int)$request->input('is_hot');
                 $article->user_id = Auth::user()->id;
 
                 if ($article->save()) {
@@ -193,6 +197,7 @@ class ArticleController extends Controller
                 'summary' => 'required',
                 'description' => 'required',
                 'is_active' => 'integer|boolean',
+                'is_hot' => 'integer|boolean',
             ], [
                 'name.required' => 'Tên không được để trống',
                 'name.unique' => 'Tên bị trùng',
@@ -205,6 +210,8 @@ class ArticleController extends Controller
                 'description.required' => 'Yêu cầu không để trống',
                 'is_active.integer' => 'Sai kiểu dữ liệu',
                 'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+                'is_hot.integer' => 'Sai kiểu dữ liệu',
+                'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
 
             ]);
 
@@ -234,6 +241,7 @@ class ArticleController extends Controller
                 $article->summary = $request->input('summary');
                 $article->description = $request->input('description');
                 $article->is_active = (int)$request->input('is_active');
+                $article->is_hot = (int)$request->input('is_hot');
                 $article->user_id = Auth::user()->id;
 
                 if ($article->save()) {

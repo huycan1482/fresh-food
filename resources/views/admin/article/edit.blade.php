@@ -59,6 +59,12 @@
                             <textarea id="description" name="description" class="form-group rows=" >{{$article->description}}</textarea>
                         </div>
 
+                        <div class="checkbox form-group" id="form-is_hot">
+                            <label>
+                                <input type="checkbox" name="is_hot" id="is_hot" {{ ($article->is_hot == 1) ? 'checked' : '' }}> Bài viết nổi bật
+                            </label>
+                        </div>
+
                         <div class="checkbox form-group" id="form-is_active">
                             <label>
                                 <input type="checkbox" name="is_active" id="is_active" {{ ($article->is_active == 1) ? 'checked' : '' }}> Trạng thái hiển thị
@@ -120,6 +126,7 @@
             data.append('new_image', ($('#new_image').val()) ? $('#new_image')[0].files[0] : '');
             data.append('summary', CKEDITOR.instances.summary.getData());
             data.append('description', CKEDITOR.instances.description.getData());
+            data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0);
             data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
 
             updateModel(model, data);
