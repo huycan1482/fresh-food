@@ -128,6 +128,7 @@ class ShopController extends HomeController
 
     public function sortProducts (Request $request, $slug)
     {
+        // dd($request->all(), $slug);
         $category = DB::table('categories')->where([['is_active', '=' , 1], ['slug', '=', $slug]])->get();
 
         if ($category->isEmpty() && $slug != 'san-pham-hot' && $slug != 'san-pham-moi') {

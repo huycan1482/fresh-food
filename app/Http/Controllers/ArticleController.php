@@ -30,7 +30,7 @@ class ArticleController extends Controller
             ]);
         }
 
-        return view ('errors.404');
+        return view ('errors.auth');
     }
 
     /**
@@ -48,7 +48,7 @@ class ArticleController extends Controller
             ]);
         }
         
-        return view ('errors.404');
+        return view ('errors.auth');
         
     }
 
@@ -162,7 +162,7 @@ class ArticleController extends Controller
             ]); 
         }
         
-        return view ('errors.404');
+        return view ('errors.auth');
     }
 
     /**

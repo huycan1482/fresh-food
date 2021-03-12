@@ -183,7 +183,7 @@
 
     $(document).on('click', '.pages li', function (e) {
         var page_val = $(this).attr('id');
-
+        // console.log('here');
         if (page_val == 'pre') {
             if (page > 1) {
                 curent_page--;
@@ -198,6 +198,8 @@
             curent_page = page_val;
             page = curent_page;
         }
+
+        console.log(page, sort_price, range_price);
 
         send(page, sort_price, range_price);
     });
@@ -228,8 +230,10 @@
                 var products = response.products;
                 var products_val = response.products.data;
 
+                // console.log(products, products_val)
+
                 var html = ''; 
-                console.log(products);
+                // console.log(products);
                 // console.log(products_val)
                 products_val.forEach(element => {
                     var html_sale1 = '', html_sale2 = '';
@@ -238,6 +242,8 @@
                         html_sale1 += "<div class='on-sale'><span>-" + element.sale + "%</span></div>";
                         html_sale2 += "<span class='old-price'>"+ formatNumber(element.price) +"Đ</span>"; 
                     }
+
+                    // console.log(element.truePrice);
                         
                     html_sale2 += "<span class='new-price'>" + formatNumber(element.truePrice) + "Đ</span>";
 
@@ -299,7 +305,7 @@
         
         $.ajax({
             type: "POST",   
-            url: base_url + '/gio-hang',
+            url: base_url + '/gio-hang/add',
             data: {
                 number : pro_number,
                 id : pro_id,

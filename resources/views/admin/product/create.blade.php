@@ -73,7 +73,7 @@
                         
                         <div class="form-group" id="form-sale">
                             <label for="sale">Giá giảm</label>
-                            <input type="number" min="0" class="form-control" id="sale" name="sale" placeholder="Giá giảm">
+                            <input type="number" min="0" class="form-control" id="sale" name="sale" placeholder="Giá giảm" value="0">
                         </div>
 
                         <div class="form-group" id="form-unit">

@@ -39,6 +39,14 @@
                 </ul>
             </li> --}}
           <li class="">
+            <a href="{{ route('admin.dashboard') }}">
+                <i class="fa fa-files-o"></i>
+                <span>Thống kê (Dashboard)</span>
+            </a>
+          </li>
+
+          @can('viewAny', App\Category::class)
+          <li class="">
               <a href="{{ route('admin.category.index') }}">
                   <i class="fa fa-files-o"></i>
                   <span>QL Danh mục (Categories)</span>
@@ -54,91 +62,115 @@
                             Sidebar</a></li>
                 </ul> --}}
           </li>
+          @endcan
 
+          @can('viewAny', App\Vendor::class)
           <li class="">
             <a href="{{ route('admin.vendor.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL NCC (Vendors)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Product::class)
           <li class="">
             <a href="{{ route('admin.product.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Sản phẩm (Products)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\ProductImage::class)
           <li class="">
             <a href="{{ route('admin.productImage.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Ảnh Sản phẩm (Images)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Article::class)
           <li class="">
             <a href="{{ route('admin.article.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Bài viết (Articles)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Banner::class)
           <li class="">
             <a href="{{ route('admin.banner.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Ảnh bìa (Banners)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Order::class)
           <li class="">
             <a href="{{ route('admin.order.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Đơn đặt hàng (Orders)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Contact::class)
           <li class="">
             <a href="{{ route('admin.contact.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Liên hệ (Contacts)</span>
             </a>
           </li>
+          @endcan
 
-
+          @can('viewAny', App\Setting::class)
           <li class="">
             <a href="{{ route('admin.setting.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>Settings Website (Settings)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\User::class)
           <li class="">
             <a href="{{ route('admin.user.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Người dùng (Users)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Role::class)
           <li class="">
             <a href="{{ route('admin.role.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Vai trò (Roles)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Table::class)
           <li class="">
             <a href="{{ route('admin.table.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Bảng (Tables)</span>
             </a>
           </li>
+          @endcan
 
+          @can('viewAny', App\Permission::class)
           <li class="">
             <a href="{{ route('admin.permission.index') }}">
                 <i class="fa fa-files-o"></i>
                 <span>QL Quyền (Permissions)</span>
             </a>
           </li>
+          @endcan
 
 
         </ul>
