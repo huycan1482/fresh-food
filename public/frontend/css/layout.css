@@ -67,7 +67,8 @@ header {
 }
 
 header, .fake-menu {
-    height: 60px;
+    height: 80px;
+    transition: .5s ease;
 }
 
 nav {
@@ -159,7 +160,7 @@ nav {
 }
 
 .right-menu {
-    padding-right: 60px;
+    padding-right: 125px;
     display: flex;
     justify-content: flex-end;
     align-items: center;

@@ -37,7 +37,7 @@
     position: absolute;
     top: 35%;
     z-index: 2;
-    left: 0%;
+    left: 10px;
     font-size: 30px;
     color: #ecf0f1;
     cursor: pointer;
@@ -51,7 +51,7 @@
     position: absolute;
     top: 35%;
     z-index: 2;
-    right: 0%;
+    right: 10px;
     font-size: 30px;
     color: #ecf0f1;
     cursor: pointer;
@@ -62,7 +62,8 @@
 }
 
 .carousel-container i {
-    padding: 50px 15px;
+    padding: 5px 10px;
+    border-radius: 100%;
     /* padding: 25% 15px; */
     transition: .3s ease-in-out;
     background-color: rgba(0, 0, 0, 0.2);

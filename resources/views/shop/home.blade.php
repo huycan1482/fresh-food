@@ -8,8 +8,8 @@
     </div>
 
     <div class="carousel-container">
-        <i class="fas fa-arrow-left" id="prevBtn"></i>
-        <i class="fas fa-arrow-right" id="nextBtn"></i>
+        <i class="fas fa-chevron-left" id="prevBtn"></i>
+        <i class="fas fa-chevron-right" id="nextBtn"></i>
 
         <div class="carousel-slide">
 
