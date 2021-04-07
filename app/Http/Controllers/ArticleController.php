@@ -20,6 +20,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        
         $user = User::findOrFail(Auth::user()->id);
         if ($user->can('viewAny', Article::class)) {
             $articles = Article::latest()->paginate(10);

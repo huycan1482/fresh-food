@@ -120,6 +120,7 @@
         var chart = new google.visualization.ComboChart(document.getElementById('chart_div1'));
         chart.draw(data, options);
     }
+    
 
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart1);

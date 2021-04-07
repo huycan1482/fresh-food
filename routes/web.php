@@ -11,9 +11,12 @@
 |
 */
 
+use App\Article;
 use App\Http\Controllers\ShopController;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -60,6 +63,8 @@ Route::post('postRegister', 'Auth\RegisterController@postRegister')->name('admin
 // logout
 Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
+
+
 Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'], function () {
     Route::get('/', 'AdminController@index')->name('dashboard');
     Route::resource('category', 'CategoryController');
@@ -75,4 +80,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
     Route::resource('role', 'RoleController');
     Route::resource('table', 'TableController');
     Route::resource('permission', 'PermissionController');
+});
+
+//Test backup
+Route::get('/backup', function () {
+    // Storage::disk('local')->put('hello.txt', 'Hello World');
+    // Artisan::command('php artisan backup:run', '');
+    Artisan::queue('backup:run --only-db');
+    // ['--option' => 'foo']
+    return redirect()->route('');
 });

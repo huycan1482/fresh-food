@@ -219,8 +219,6 @@ class ShopController extends HomeController
             return response()->json(['products' => $products], 200);
         }
 
-        // dd('false');
-
         return view ('shop.searchProducts', [
             'menu' => $this->menu,
             'setting' => $this->setting,
@@ -228,7 +226,6 @@ class ShopController extends HomeController
             'hot_products' => $hot_products,
             'keyword' => $keyword,
             'cart_total' => session('cart') ? session('cart')->getTotalNumber() : 0,
-
         ]);
     }
 

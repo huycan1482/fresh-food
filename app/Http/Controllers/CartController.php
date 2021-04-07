@@ -107,15 +107,22 @@ class CartController extends HomeController
     public function postCheckout(Request $request) 
     {
 
-        // $request->validate([
-        //     'fullname' => 'required',
-        //     'mail' => 'required|email',
-        //     'address' => 'required',
-        //     'address2' => 'required',
-        //     'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-        // ], [
-
-        // ]);
+        $request->validate([
+            'name' => 'required',
+            'mail' => 'required|email',
+            'address' => 'required',
+            'address2' => 'required',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+        ], [
+            'name.required' => 'Yêu cầu không để trống',
+            'mail.required' => 'Yêu cầu không để trống',
+            'mail.email' => 'Sai kiểu dữ liệu',
+            'address.required' => 'Yêu cầu không để trống',
+            'address2.required' => 'Yêu cầu không để trống',
+            'phone.required' => 'Yêu cầu không để trống',
+            'phone.regex' => 'Không đúng định dạng dữ liệu',
+            'phone.min' => 'Số điện thoại phải lớn hơn 10 chữ số',
+        ]);
         $_cart = session('cart') ? session('cart') : '' ; 
             
         $order = new Order;

@@ -8,6 +8,7 @@ $.ajaxSetup({
 
 /* Xóa một row  */
 function destroyModel(model, id) {
+    // $this.data('id').val();
     var result = confirm("Bạn có chắc chắn muốn xóa ?");
     if (result) { // neu nhấn == ok , sẽ send request ajax
         $.ajax({
@@ -79,7 +80,7 @@ function messageResponse (status, mess) {
 function successResponse (response) {
     $("*").removeClass('has-error');
     $('.sp-error').remove();
-
+ 
     messageResponse('success',response.mess);
 }
 

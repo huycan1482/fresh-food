@@ -25,11 +25,21 @@ class AdminController extends Controller
         $dt_today = Carbon::now('Asia/Ho_Chi_Minh');
         // dd($dt_today->format('D / m'))  D sẽ hiện ra tên ngày =  TA;
 
-        $data_chart_1 = DB::table('order_details')
-            ->selectRaw('categories.name, IF( date(order_details.created_at) = (CURRENT_DATE), COUNT(order_details.id), 0 ) as number')
-            ->rightJoin('products', 'order_details.product_id', '=', 'products.id')
-            ->rightJoin('categories', 'products.category_id', '=', 'categories.id')
-            ->groupBy('categories.name', 'order_details.created_at')
+        // $data_chart_1 = DB::table('order_details')
+        //     ->selectRaw('categories.id, IF( date(order_details.created_at) = (CURRENT_DATE), COUNT(order_details.id), 0 ) as number')
+        //     ->rightJoin('products', 'order_details.product_id', '=', 'products.id')
+        //     ->rightJoin('categories', 'products.category_id', '=', 'categories.id')
+        //     ->groupBy('categories.name')
+        //     ->get();
+
+
+
+        $data_chart_1 = DB::table('categories')
+            ->selectRaw('categories.name, count(number.id) as number')
+            ->leftJoin(DB::raw("(select p.id, p.category_id from products as p
+            inner join order_details as od on p.id = od.product_id
+            where Date(od.created_at) = (CURRENT_DATE)) as number"), 'categories.id', '=', 'number.category_id')
+            ->groupBy('categories.name')
             ->get();
             // dd($data_chart_1);
 
