@@ -260,7 +260,6 @@
     </div>
     <!-- ./wrapper -->
 
-    @yield('my_script')
 
     <!-- jQuery 3 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -312,6 +311,8 @@
     {{-- <script src="/backend/bower_components/ckeditor/ckeditor.js"></script> --}}
 
     {{-- <script src="/backend/bower_components/ckfinder/ckfinder.js"></script> --}}
+    @yield('my_script')
+
     
     @yield('ck_editor')
 

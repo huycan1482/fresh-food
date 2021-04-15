@@ -88,7 +88,7 @@
 
 
     <script>
-        $('.add-image').click(function (e) {
+        $('.update-banner').click(function (e) {
             // disabled the submit button
             // $("#btnSubmit").prop("disabled", true);
             // console.log($('form').serialize());
@@ -97,11 +97,13 @@
             var data;
             data = new FormData();
             data.append('_method', 'PUT');
-            data.append('product_id', $('#product_id').val());
             data.append('new_image', ($('#new_image').val()) ? $('#new_image')[0].files[0] : '');
             data.append('url', $('#url').val());
             data.append('position', $('#position').val());
+            data.append('target', $('#target').val());
             data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
+
+            data.append('title', $('#title').val());
 
             updateModel(model, data);
 

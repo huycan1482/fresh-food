@@ -2,7 +2,7 @@
     <!-- <div class="logo-banner">
         <a class="navbar-brand" href="#">FRESH F<span style="font-size: 28px; margin-bottom: 5px;"><i class="fas fa-apple-alt"></i></span>OD</a>
     </div> -->
-    <nav>
+    <nav class="">
         <div class="left-nav">
             <a class="navbar-brand" href="#">FRESH F<span style="font-size: 28px; margin-bottom: 5px;"><i
                         class="fas fa-apple-alt"></i></span>OD</a>

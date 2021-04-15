@@ -168,12 +168,12 @@
                 <div class="form-group">
                     <label for="">Email</label>
                     <input type="email" class="form-control" name="email" value="{{old('email')}}">
-                    <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('email')}}</span>
+                    <span style="color:#bdc3c7; font-size:13px; margin-top: 5px">{{$errors->first('email')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Password</label>
                     <input type="password" class="form-control" name="password" value="{{old('password')}}">
-                    <span style="color:#d35400; font-size:13px; margin-top: 5px">{{$errors->first('password')}}</span>
+                    <span style="color:#bdc3c7; font-size:13px; margin-top: 5px">{{$errors->first('password')}}</span>
                 </div>
                 <div class="form-footer">
                     <div class="form-group">
@@ -182,7 +182,7 @@
                     <button class="">Sign In</button>
                 </div>
                 <div style="margin-top: 100px; text-align: center">
-                    <a href="#" style="font-family: roboto-light; font-weight: 600; color: #fff">Lấy lại mật khẩu</a>
+                    <a href="{{ route('admin.checkEmail') }}" style="font-family: roboto-light; font-weight: 600; color: #fff">Lấy lại mật khẩu</a>
                 </div>
             </form>
         </div>

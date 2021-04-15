@@ -33,11 +33,17 @@ class MailNotify extends Mailable
     public function build()
     {
         // return $this->view('view.name');
-        if ($this->job == 'shopping') {
-            
 
+        // dd('stop');
+        if ($this->job == 'shopping') {
             return $this->view ('mail.shopping', [
                 'order' => $this->order,
+            ]);
+        }
+
+        if ($this->job == 'passForgot') {
+            return $this->view ('mail.resetPassword', [
+                'token' => $this->order,
             ]);
         }
         

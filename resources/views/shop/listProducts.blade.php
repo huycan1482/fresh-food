@@ -32,7 +32,7 @@
     </div>
 
     <div class="section col-lg-12 main-shop">
-        <div class="container col-lg-11">
+        <div class="container col-lg-10">
             <div class="col-lg-3 col-md-12 shop-side-bar">
                 <div class="side-bar-category">
                     <h3 class="header-side-bar">Danh mục sản phẩm <i class="fas fa-list" id="close-category"></i>

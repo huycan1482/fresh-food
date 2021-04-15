@@ -39,7 +39,7 @@
 .on-sale {
     position: absolute;
     top: 5%;
-    left: 5%;
+    right: 5%;
     width: 40px;
     height: 40px;
     display: flex;
@@ -124,9 +124,15 @@
 
 .icon-detail{
     background-color: #669933;
+    transition: .5s;
 }
 
 .icon-card {
     background-color: #EE5A24;
+    transition: .5s;
 }
 
+.icon-detail:hover, .icon-card:hover {
+    transform: rotateZ(-20deg);
+    
+}

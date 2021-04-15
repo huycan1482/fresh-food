@@ -35,7 +35,7 @@
 
 #prevBtn {
     position: absolute;
-    top: 35%;
+    top: 48%;
     z-index: 2;
     left: 10px;
     font-size: 30px;
@@ -49,7 +49,7 @@
 
 #nextBtn {
     position: absolute;
-    top: 35%;
+    top: 48%;
     z-index: 2;
     right: 10px;
     font-size: 30px;

@@ -1,0 +1,1 @@
+Mã kích hoạt để lấy lại mật khẩu là {{$token}}

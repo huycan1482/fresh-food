@@ -60,10 +60,16 @@ Route::post('postLogin', 'Auth\LoginController@postLogin')->name('admin.postLogi
 Route::get('register', 'Auth\RegisterController@register')->name('admin.register');
 Route::post('postRegister', 'Auth\RegisterController@postRegister')->name('admin.postRegister');
 
+//ResetPassword
+Route::get('checkEmail', 'Auth\ResetPasswordController@checkEmail')->name('admin.checkEmail');
+Route::post('postCheckEmail', 'Auth\ResetPasswordController@postCheckEmail')->name('admin.postCheckEmail');
+// Route::get('checkToken', 'Auth\ResetPasswordController@checkToken')->name('admin.checkToken');
+// Route::post('postCheckToken', 'Auth\ResetPasswordController@postCheckToken')->name('admin.postCheckToken');
+Route::get('resetPassword', 'Auth\ResetPasswordController@index')->name('admin.resetPassword');
+Route::post('postResetPassword', 'Auth\ResetPasswordController@postResetPassword')->name('admin.postResetPassword');
+
 // logout
 Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
-
-
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'], function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

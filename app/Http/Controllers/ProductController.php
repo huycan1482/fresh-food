@@ -18,17 +18,71 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request);
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('viewAny', Product::class) ) {
-            $products = Product::latest()->paginate(10);
+
+            $category_id = $request->query('loai-hang');
+            $number = $request->query('so-luong');
+            $time = $request->query('thoi-gian');
+            $status = $request->query('trang-thai');
+
+            $query = Product::latest();
+
+            if ($category_id) {
+                $category = Category::where(['slug' => $category_id])->get()->first();
+                is_null($category) ? '' : $query->where(['category_id' => $category->id]);
+            }
+
+            // if ($number) {
+
+            // }
+
+            if ($time) {
+                if ($time == 'kha-dung') {
+                    $query->where([['HSD', '>=', date('Y-m-d')]]);
+                }
+
+                if ($time == 'khong-kha-dung') {
+                    $query->where([['HSD', '<', date('Y-m-d')]]);
+                }
+            }
+
+            if ($status) {
+                if ($status == 'hien-thi' ) {
+                    $query->where(['is_active' => 1]);
+                }
+
+                if ($status == 'khong-hien-thi') {
+                    $query->where(['is_active' => 0]);
+                }
+            }
+
+            // dd($query);
+
+            // $products = Product::latest()->paginate(10);
             $vendors = Vendor::all();
             $categories = Category::all();
+
+            $enabled_products = Product::where([['HSD', '>=', date('Y-m-d')]])->get()->count();   
+            $disabled_products = Product::where([['HSD', '<', date('Y-m-d')]])->get()->count();         
+            $total_product = Product::all()->count();
+
             return view ('admin.product.index', [
-                'products' => $products,
+                'products' => $query->paginate(10),
                 'vendors' => $vendors,
                 'categories' => $categories,
+
+                'enabled_products' => $enabled_products,
+                'disabled_products' => $disabled_products,
+                'total_products' => $total_product,
+
+                'category_id' => $category_id,
+                'time' => $time,
+                'status' => $status,
+                'number' => $number,
             ]);
         } else {
             return view ('errors.auth');
@@ -241,7 +295,7 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 'vendor_id' => 'required|exists:vendors,id',
                 'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
-                'number' => 'required|integer|min:0',
+                'number' => 'required|min:0|numeric|regex:/^\d+(\.\d{1})?$/', //11,1 
                 'price' => 'required|integer|min:0',
                 'sale' => 'nullable|integer|min:0',
                 'unit' => 'required',
@@ -264,8 +318,9 @@ class ProductController extends Controller
                 'vendor_id.exists' => 'Dữ liệu không tồn tại',
                 'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
                 'number.required' => 'Dữ liệu không được để trống',
-                'number.integer' => 'Sai kiểu dữ liệu',
+                'number.numeric' => 'Sai kiểu dữ liệu',
                 'number.min' => 'Giá trị phải lớn hơn 0',
+                'number.regex' => 'Sai kiểu dữ liệu',
                 'price.required' => 'Dữ liệu không được để trống',
                 'price.integer' => 'Sai kiểu dữ liệu',
                 'price.min' => 'Giá trị phải lớn hơn 0',
@@ -298,6 +353,7 @@ class ProductController extends Controller
             if ( $validator->fails() ) {
                 return response()->json(['errors' => $errs, 'mess' => 'Sửa bản ghi lỗi'], 400);
             } else {
+                dd($request->all());
                 $product->name = $request->input('trueName');
                 $product->slug = $request->input('name');
                 $product->category_id = $request->input('category_id');

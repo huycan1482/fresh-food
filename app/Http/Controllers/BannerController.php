@@ -58,14 +58,14 @@ class BannerController extends Controller
             $request['title'] = Str::slug($request->input('title'));
 
             $validator = Validator::make($request->all(), [
-                'title' => 'required|unique:banners,slug|max:255',
+                'title' => 'nullable|unique:banners,slug|max:255',
                 'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp',
                 'url' => 'nullable|url',
                 'target' => 'required',
                 'position' =>  'required|integer|min:0',
                 'is_active' => 'integer|boolean',
             ], [
-                'title.required' => 'Tên không được để trống',
+                // 'title.required' => 'Tên không được để trống',
                 'title.unique' => 'Tên bị trùng',
                 'image.required' => 'Ảnh không được để trống',
                 'image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
@@ -160,6 +160,7 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('update', Banner::class) ) {
 
@@ -172,14 +173,14 @@ class BannerController extends Controller
             $request['title'] = Str::slug($request->input('title'));
 
             $validator = Validator::make($request->all(), [
-                'title' => 'required|max:255|unique:banners,slug,'.$id,
+                'title' => 'nullable|max:255|unique:banners,slug,'.$id,
                 'new_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp',
                 'url' => 'nullable|url',
                 'target' => 'required',
                 'position' =>  'required|integer|min:0',
                 'is_active' => 'integer|boolean',
             ], [
-                'title.required' => 'Tên không được để trống',
+                // 'title.required' => 'Tên không được để trống',
                 'title.unique' => 'Tên bị trùng',
                 'new_image.mimes' => 'Ảnh không đúng định dạng, ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
                 'url.url' => 'Dữ liệu không đúng định dạng',

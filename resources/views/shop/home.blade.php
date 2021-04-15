@@ -15,7 +15,7 @@
 
             @foreach ($banners as $banner)
             <div style="background-image: url({{$banner->image}}) ;" alt="">
-                <p>{{$banner->title}}</p>
+                {{-- <p>{{$banner->title}}</p> --}}
             </div>
             @endforeach
 
@@ -24,11 +24,11 @@
 
     
     <div class="section col-lg-12">
-        <div class="container col-lg-10">
+        <div class="container col-lg-10" style="margin-top: 20px">
             <div class="header-content col-lg-12">
-                <h2 class="title">Loại thực phẩm phổ biến</h2>
+                <h2 class="title"><span>Loại thực phẩm phổ biến</span></h2>
             </div>
-            <div class="box col-lg-6 col-md-12">
+            <div class="box col-lg-6 col-md-12 wow animate__animated animate__bounceInLeft animate__slow">
                 <div class="left-banner banner-img" style="background-image: url({{$popular_categories1->first()->image}})">
                     <div class="box-banner">
                         <p>{{$popular_categories1->first()->name}}</p>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="box col-lg-6 col-md-12">
+            <div class="box col-lg-6 col-md-12 wow animate__animated animate__bounceInRight animate__slow">
                 <div class="right-banner ">
                     @foreach ($popular_categories2 as $key => $item)
                     <div class="right-banner-{{ ($key == 0) ? 'top' : 'bottom' }} banner-img" style="url({{$item->image}})">
@@ -54,11 +54,11 @@
     <div class="section col-lg-12" style="background-color: #f5f6fa;">
         <div class="container col-lg-10">
             <div class="header-content col-lg-12">
-                <h2 class="title">Sản phẩm hot</h2>
+                <h2 class="title"><span>Sản phẩm hot</span></h2>
             </div>
             <div class="main-content col-lg-12">
-                @foreach ($hot_products as $hot_product)
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                @foreach ($hot_products as $key => $hot_product)
+                <div class="col-lg-3 col-md-6 col-sm-12 wow animate__animated animate__bounceInRight animate__slow" data-wow-delay=".{{$key + 2}}s">
                     <div class="product move-up">
                         <div class="top-product ">
                             <a href="{{ route('shop.productDetail', ['slug' => $hot_product->slug]) }}" class="product-img zoom">
@@ -98,12 +98,12 @@
     </div>
 
     <div class="section col-lg-12 choose-us banner-img">
-        <div class="container col-lg-10">
-            <div class="header-content col-lg-12">
-                <h2 class="title">Vì sao nên chúng tôi</h2>
+        <div class="container col-lg-10 ">
+            <div class="header-content col-lg-12" style="margin-bottom: 40px">
+                <h2 class="title"><span>Vì sao nên chúng tôi</span></h2>
             </div>
-            <div class="box col-lg-4 col-md-6 col-sm-12">
-                <div class="box-service" style="background-color: #fff;">
+            <div class="box col-lg-4 col-md-6 col-sm-12 wow animate__animated animate__bounceInUp animate__slow" data-wow-delay=".2s">
+                <div class="box-service" style="">
                     <div class="box-icon zoom box-1 banner-img">
                         <!-- <img src="../images/banner_img_1.png" alt=""> -->
                         <!-- <img src="../images/bg_1.jpg" style=" width: 100%;" alt=""> -->
@@ -116,13 +116,13 @@
                 </div>
 
             </div>
-            <div class="box col-lg-4 col-md-6 col-sm-12">
-                <div class="box-service" style="background-color: #fff;">
+            <div class="box col-lg-4 col-md-6 col-sm-12 wow animate__animated animate__bounceInUp animate__slow" data-wow-delay=".4s">
+                <div class="box-service" style="">
                     <div class="box-icon zoom box-2 banner-img">
                         <!-- <img src="../images/banner_img_2.webp" alt=""> -->
                         <!-- <img src="../images/bg_2.jpg" style=" width: 100%;" alt=""> -->
                     </div>
-                    <div class="box-infor">
+                    <div class="box-infor ">
                         <h3>Chuẩn bị cảnh quan</h3>
                         <p>Xây dựng một khu vườn tất nhiên chúng ta sẽ cần cảnh quan của khu vườn, bố trí khu vườn
                             phù hợp với bạn nhất.</p>
@@ -130,12 +130,12 @@
                 </div>
 
             </div>
-            <div class="box col-lg-4 col-md-12 col-sm-12">
-                <div class="box-service" style="background-color: #fff;">
+            <div class="box col-lg-4 col-md-12 col-sm-12 wow animate__animated animate__bounceInUp animate__slow" data-wow-delay=".6s">
+                <div class="box-service" style="">
                     <div class="box-icon zoom box-3 banner-img">
                         <!-- <img src="../images/banner_img_3.png" alt=""> -->
                     </div>
-                    <div class="box-infor">
+                    <div class="box-infor ">
                         <h3>Nguồn cung cấp trái cây</h3>
                         <p>Chúng tôi cung cấp các dịch vụ làm vườn tốt nhất với giá cả rất phải chăng, rất nhiều sản
                             phẩm cho bạn lựa chọn.</p>
@@ -148,11 +148,11 @@
     <div class="section col-lg-12" style="background-color: #f5f6fa;">
         <div class="container col-lg-10">
             <div class="header-content col-lg-12">
-                <h2 class="title">Sản phẩm mới</h2>
+                <h2 class="title"><span>Sản phẩm mới</span></h2>
             </div>
             <div class="main-content col-lg-12">
-                @foreach ($products as $product)
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                @foreach ($products as $key => $product)
+                <div class="col-lg-3 col-md-6 col-sm-12 wow animate__animated animate__bounceInLeft animate__slow" data-wow-delay=".{{$key + 2}}s">
                     <div class="product move-up">
                         <div class="top-product ">
                             <a href="{{ route('shop.productDetail', ['slug' => $product->slug]) }}" class="product-img zoom">
@@ -193,9 +193,9 @@
     </div>
 
     <div class="section col-lg-12 about-us">
-        <div class="container col-lg-10">
-            <div class="about-us-banner col-lg-6 col-md-12">
-                <img src="frontend/images/left_image_ad.webp" alt="">
+        <div class="container col-lg-10 wow animate__animated animate__bounceInUp animate__slow">
+            <div class="about-us-banner col-lg-5 col-md-12">
+                <img src="frontend/images/Screenshot 2021-04-07 180637.png" alt="">
             </div>
             <div class="about-us-info col-lg-6 col-md-12">
                 <div class="title-about-us">
@@ -217,8 +217,8 @@
             </div>
 
             <div class="main-content col-lg-12">
-                @foreach ($new_articles as $item)
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                @foreach ($new_articles as $key => $item)
+                <div class="col-lg-4 col-md-6 col-sm-12 wow animate__animated animate__bounceInDown animate__slow" data-wow-delay=".{{$key + 2}}s">
                     <div class="new-items">
                         <div class="new-banner">
                             <a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">
@@ -242,12 +242,12 @@
 
     <div class="section col-lg-12 cook">
         <div class="container col-lg-10">
-            <div class="left-content col-lg-7 col-sm-12">
+            <div class="left-content col-lg-7 col-sm-12 wow animate__animated animate__bounceInLeft animate__slow">
                 <div class="header-content col-lg-12 ">
                     <h2 class="home-title">Tin tức nổi bật</h2>
                 </div>
                 @foreach ($hot_articles as $item)
-                <div class="cook-content">
+                <div class="cook-content wow animate__animated animate__fadeInUp animate__slow">
                     <h3 class="cook-content-header"><a href="{{ route('shop.articleDetail', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h3>
                     <div class="cook-main-content">
                         <div class="cook-content-img col-lg-3">
@@ -266,7 +266,7 @@
                     <a href="" class="right-more-info-btn">Xem thêm</a>
                 </div>
             </div>
-            <div class="right-content col-lg-4 col-sm-12">
+            <div class="right-content col-lg-4 col-sm-12 wow animate__animated animate__bounceInRight animate__slow">
                 <div class="header-content col-lg-12">
                     <h2 class="home-title">Video</h2>
                 </div>
