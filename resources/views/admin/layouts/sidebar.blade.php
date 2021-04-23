@@ -136,15 +136,15 @@
           </li>
           @endcan
 
-          @can('viewAny', App\User::class)
-          <li class="treeview" style="height: auto;">
-            <a href="#">
+          {{-- @can('viewAny', App\User::class) --}}
+          {{-- <li class="treeview" style="height: auto;"> --}}
+            {{-- <a href="#">
               <i class="fas fa-users-cog"></i> <span>Quản lí Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
-            </a>
-            <ul class="treeview-menu" style="display: none;">
+            </a> --}}
+            {{-- <ul class="treeview-menu" style="display: none;"> --}}
               @can('viewAny', App\User::class)
               <li class="">
                 <a href="{{ route('admin.user.index') }}">
@@ -180,9 +180,9 @@
                 </a>
               </li>
               @endcan
-            </ul>
-          </li>
-          @endcan
+            {{-- </ul> --}}
+          {{-- </li> --}}
+          {{-- @endcan --}}
 
           
 

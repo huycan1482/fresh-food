@@ -116,6 +116,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
     $('.edit-role').click(function (e) {
         // disabled the submit button
         // $("#btnSubmit").prop("disabled", true);

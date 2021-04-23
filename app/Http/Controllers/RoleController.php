@@ -161,6 +161,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('update', Role::class) ) {
             foreach ($request->all() as $key => $item) {
