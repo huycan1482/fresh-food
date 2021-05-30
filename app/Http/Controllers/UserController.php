@@ -26,6 +26,7 @@ class UserController extends Controller
         $currentUser = User::findOrFail(Auth()->user()->id);
         if ( $currentUser->can('viewAny', User::class) ) {
             $users = User::latest()->paginate(10);
+            dd($users->first()->roles);
             return view ('admin.user.index', [
                 'users' => $users,
             ]);

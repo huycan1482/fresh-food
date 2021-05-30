@@ -55,7 +55,6 @@ class VendorController extends Controller
      */
     public function store(Request $request)
     {
-        
         $currentUser = User::findOrFail(Auth::user()->id);
 
         if ($currentUser->can('create', Vendor::class)) {
