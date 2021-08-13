@@ -73,7 +73,7 @@ class CartController extends HomeController
 
         $cart = new Cart($_cart);
 
-        ($cart->edit($pro_id, $pro_number));
+        $cart->edit($pro_id, $pro_number);
 
         $request->session()->put('cart', $cart);
 

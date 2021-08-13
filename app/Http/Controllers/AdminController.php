@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    public function dashboard ()
+    {
+        // return view('admin.dashboard');
+    }
+
     public function index ()
     {
         // dd('here');

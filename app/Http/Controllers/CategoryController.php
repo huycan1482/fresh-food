@@ -18,15 +18,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $currentUser = User::findOrFail(Auth()->user()->id);
-        if ( $currentUser->can('viewAny', Category::class) ) {
-            $categories = Category::latest()->paginate(10);
-            return view ('admin.category.index', [
-                'categories' => $categories,
-            ]);
-        } else {
-            return view ('errors.auth');
-        }
+        // $currentUser = User::findOrFail(Auth()->user()->id);
+        // if ( $currentUser->can('viewAny', Category::class) ) {
+        //     $categories = Category::latest()->paginate(10);
+        //     return view ('admin.category.index', [
+        //         'categories' => $categories,
+        //     ]);
+        // } else {
+        //     return view ('errors.auth');
+        // }
+
+        $categories = Category::latest()->paginate(10);
+        // $category = Category::latest()->get();
+        // $category = Category::all();
+
+        return view ('admin.category.index', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -52,6 +60,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {   
+
+        // $category = new Category;
+        // $category->name = $request->input('name');
+        // $category->slug = Str::slug($request->input('name'));
+        // $category->is_active = ($request->input('is_active')) ? 1 : 0;
+
+        // $category->save();
+
+        // return redirect()->route('admin.category.index');
+
         $currentUser = User::findOrFail(Auth()->user()->id);
 
         if ( $currentUser->can('create', Category::class) ) {

@@ -49,6 +49,7 @@
     <script type="text/javascript">
         var base_url = '{{ url('/') }}';
     </script>
+    
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 </head>
 
@@ -328,3 +329,4 @@
 </body>
 
 </html>
+

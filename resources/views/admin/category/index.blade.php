@@ -42,7 +42,7 @@
                         <tbody>
                             @foreach($categories as $key => $category)
                             <tr class="item-{{ $category->id }}">
-                                <td class="text-center">{{ $key + 1}}</td>
+                                <td class="text-center">{{ $key + 1}} /td>
                                 <td class="text-center">{{ $category->name }}</td>
                                 <td class="text-center">
                                     @if ($category->image)

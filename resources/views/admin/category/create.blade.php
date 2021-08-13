@@ -23,20 +23,19 @@
                 {{-- {{ dd(route('admin.category.store')) }} --}}
                 {{-- <form role="form" action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">
                     @csrf --}}
-                <form class="">
+                <form class="" action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="box-body">
                         
                         <div class="form-group" id="form-name">
                             <label>Tên</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên">
                         </div>
-
-                        
-                        <div class="form-group" id="form-image">
+    
+                        <div class="form-group" id="form-image" >
                             <label for="exampleInputFile">Ảnh</label>
                             <input type="file" id="image" >
                         </div>
-
 
                         <div class="form-group" id="form-position">
                             <label for="">Vị trí hiển thị</label>
@@ -60,7 +59,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary add-product">Add</a>
+                        <button class="btn btn-primary add-product">Add</button>
                         <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
@@ -80,24 +79,24 @@
 
 
     <script>
-        $('.add-product').click(function (e) {
-            // disabled the submit button
-            // $("#btnSubmit").prop("disabled", true);
-            // console.log($('form').serialize());
+        // $('.add-product').click(function (e) {
+        //     // disabled the submit button
+        //     // $("#btnSubmit").prop("disabled", true);
+        //     // console.log($('form').serialize());
 
-            var model = '/admin/category';
-            var data;
-            data = new FormData();
-            data.append('name', $('#name').val());
-            data.append('image', $('#image')[0].files[0]);
-            data.append('position', $('#position').val());
-            data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0 );
-            data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
+        //     var model = '/admin/category';
+        //     var data;
+        //     data = new FormData();
+        //     data.append('name', $('#name').val());
+        //     data.append('image', $('#image')[0].files[0]);
+        //     data.append('position', $('#position').val());
+        //     data.append('is_hot', ( $('#is_hot').is(':checked') ) ? 1 : 0 );
+        //     data.append('is_active', ( $('#is_active').is(':checked') ) ? 1 : 0);
 
-            addModel(model, data);
+        //     addModel(model, data);
 
-            e.preventDefault();
+        //     e.preventDefault();
             
-        });
+        // });
     </script>
 @endsection

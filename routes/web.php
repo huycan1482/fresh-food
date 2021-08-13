@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 //     return view('welcome');
 // });
 
+
 Route::get('/', 'ShopController@index')->name('shop.home');
 
 Route::get('chi-tiet-san-pham/{slug}', 'ShopController@productDetail')->name('shop.productDetail');
@@ -72,6 +73,8 @@ Route::post('postResetPassword', 'Auth\ResetPasswordController@postResetPassword
 Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'], function () {
+// Route::get('/', 'AdminController@dashboard')->name('dashboard');
+
     Route::get('/', 'AdminController@index')->name('dashboard');
     Route::resource('category', 'CategoryController');
     Route::resource('vendor', 'VendorController');
