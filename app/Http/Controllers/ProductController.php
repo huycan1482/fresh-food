@@ -427,6 +427,7 @@ class ProductController extends Controller
             } else {
                 return response()->json(['mess' => 'Xóa bản không thành công'], 400);
             }
+            
         } else {
             return response()->json(['mess' => 'Thêm bản ghi lỗi', 403]);
         }

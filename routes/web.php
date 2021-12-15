@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'checkLogin'
 // Route::get('/', 'AdminController@dashboard')->name('dashboard');
 
     Route::get('/', 'AdminController@index')->name('dashboard');
-    Route::resource('category', 'CategoryController');
+    Route::resource('category', 'CategoryController'); 
     Route::resource('vendor', 'VendorController');
     Route::resource('product', 'ProductController');
     Route::resource('productImage', 'ProductImageController');
