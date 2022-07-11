@@ -37,8 +37,6 @@ class AdminController extends Controller
         //     ->groupBy('categories.name')
         //     ->get();
 
-
-
         $data_chart_1 = DB::table('categories')
             ->selectRaw('categories.name, count(number.id) as number')
             ->leftJoin(DB::raw("(select p.id, p.category_id from products as p
